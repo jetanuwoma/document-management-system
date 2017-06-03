@@ -1,1 +1,1 @@
-web: npm run open:src
+web: npm run open:server
