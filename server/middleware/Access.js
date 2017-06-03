@@ -7,6 +7,7 @@ import { Users, Roles, Documents, ExpiredTokens, } from '../models';
  * authentication access based on different users role
  */
 class Access {
+
   /**
    * init - Pass jwt secret to the routes
    * @param {object} req -  Request Object
@@ -20,7 +21,7 @@ class Access {
   }
 
   /**
-   * verifyToken - Verified the token supplied by user
+   * verifyToken - Verifies the token supplied by user
    * @param {object} req -  Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
@@ -134,7 +135,7 @@ class Access {
   }
 
   /**
-   * user - check if i can view the respective user documents
+   * user - check if the user is existing
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function

@@ -1,6 +1,9 @@
 import { Roles } from '../models';
 
-const RolesController = {
+/**
+ * Roles Controller class that handles creating and modifying roles
+ */
+class RolesController {
 
   /**
    * getAllRoles - Get all Roles
@@ -8,13 +11,13 @@ const RolesController = {
    * @param {Object} res - Response object
    * @returns {void} - Returns void
    */
-  getAllRoles(req, res) {
+  static getAllRoles(req, res) {
     Roles.findAll()
     .then((role) => {
       res.status(201)
       .send(role);
     });
-  },
+  }
 
   /**
    * getRole - Get a single Role by ID supplied
@@ -22,17 +25,17 @@ const RolesController = {
    * @param {Object} res - Response Object
    * @returns {void} - Returns void
    */
-  getRole(req, res) {
+  static getRole(req, res) {
     res.status(200)
       .send(req.body.role);
-  },
+  }
   /**
    * updateRoles - Update an existing Roles
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
    * @returns {void} - Returns void
    */
-  updateRole(req, res) {
+  static updateRole(req, res) {
     req.body.role.update(req.body)
     .then(update => res
     .status(200)
@@ -42,7 +45,7 @@ const RolesController = {
         res.status(500)
           .send({ message: 'An error occurred please try again' });
       });
-  },
+  }
 
   /**
    * createRoles - Creates a new role
@@ -50,7 +53,7 @@ const RolesController = {
    * @param {Object} res - Response Object
    * @returns {void} - Returns void
    */
-  createRole(req, res) {
+  static createRole(req, res) {
     // If roles have been created, just alert the user
     Roles.findOne({ where: { title: req.body.title } })
     .then((role) => {
@@ -70,7 +73,7 @@ const RolesController = {
         .send({ message: 'error occurred' });
       });
     });
-  },
+  }
 
   /**
    * deleteRole - Delete a single role by id
@@ -78,7 +81,7 @@ const RolesController = {
    * @param {Object} res - Response Object
    * @returns {void} Returns void
    */
-  deleteRole(req, res) {
+  static deleteRole(req, res) {
     req
       .body
       .role
@@ -88,6 +91,6 @@ const RolesController = {
       .send({ message: `${req.params.id} Role has been deleted!` });
     });
   }
-};
+}
 
 export default RolesController;
