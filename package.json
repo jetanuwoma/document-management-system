@@ -6,7 +6,13 @@
   "scripts": {
     "start": "node dist/server.js",
     "open:src": "nodemon server.js --exec babel-node",
-    "build": "rm -rf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./tests,./coverage --copy-files"
+    "test": "npm run db:test:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test _mocha --compilers js:babel-core/register server/test/models/*.spec.js ",
+    "test:watch": "npm run test -- -w",
+    "db:test:migrate": "NODE_ENV=test sequelize db:migrate",
+    "db:seed": "./node_modules/.bin/babel-node server/test/helpers/Seeder.js",
+    "build": "rm -rf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./tests,./coverage --copy-files",
+    "cover": "NODE_ENV=test npm run db:seed && NODE_ENV=test istanbul cover _mocha -- ./server/test/models/*.spec.js --compilers js:babel-core/register",
+    "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls"
   },
   "keywords": [
     "document",
@@ -83,7 +89,7 @@
     "pg-hstore": "^2.3.2",
     "rimraf": "2.5.2",
     "sequelize": "^3.29.0",
-    "sequelize-cli": "^2.5.1",
+    "sequelize-cli": "^2.7.0",
     "style-loader": "^0.13.1",
     "superagent": "^3.4.1",
     "supertest": "^2.0.1",

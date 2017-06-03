@@ -1,0 +1,23 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+  - node
+
+services:
+  - postgresql
+
+postgres:
+  adapter: postgresql
+  database: myapp_test
+  username: postgres
+before_script:
+  - psql -c 'create database travis;' -U postgres
+  - dropdb --if-exists travis && createdb travis
+  - NODE_ENV=test npm run db:test:migrate
+  - npm run coveralls
+after_success:
+- npm run coveralls
+
+after_failure:
+- npm run coveralls
