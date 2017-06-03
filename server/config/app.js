@@ -23,17 +23,10 @@ Routes(router);
 // route every call to the api through the router
 app.use('/api', router);
 
-// Reserve for client pages display
-app.get('/', (req, res) => {
-  res.status(200).send('Welcome to Document Management System');
-});
-
-// Notify users of undefined route
-app.get('*', (req, res) => {
-  res.status(404).send({
-    message: `Hello its like you are lost,
-              please kindly find your way back`
-  });
-});
+// Express only serves static assets in production
+if (process.env.NODE_ENV === 'production') {
+  console.log('hurray am alive');
+  app.use(express.static('client/build'));
+}
 
 export default app;

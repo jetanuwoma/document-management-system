@@ -12,6 +12,7 @@ postgres:
   database: myapp_test
   username: postgres
 before_script:
+  -  npm --prefix ./client install ./client
   - psql -c 'create database travis;' -U postgres
   - dropdb --if-exists travis && createdb travis
   - NODE_ENV=test npm run db:test:migrate

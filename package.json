@@ -5,21 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-    "open:src": "nodemon server.js --exec babel-node",
-    "test": "npm run db:test:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test _mocha --compilers js:babel-core/register server/test/models/*.spec.js ",
+    "open:client": "babel-node start-client.js",
+    "open:server": "nodemon server.js --exec babel-node",
+    "test": "npm run db:test:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test _mocha --compilers js:babel-core/register server/test/models/*.spec.js && npm run test:client ",
     "test:watch": "npm run test -- -w",
+    "test:client": "babel-node start-client-test.js",
     "db:test:migrate": "NODE_ENV=test sequelize db:migrate",
     "db:seed": "./node_modules/.bin/babel-node server/test/helpers/Seeder.js",
     "build": "rm -rf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./tests,./coverage --copy-files",
     "cover": "NODE_ENV=test npm run db:seed && NODE_ENV=test istanbul cover _mocha -- ./server/test/models/*.spec.js --compilers js:babel-core/register",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls"
   },
-  "keywords": [
-    "document",
-    "management",
-    "sequelize",
-    "mongodb"
-  ],
   "author": "Etanuwoma Jude",
   "license": "ISC",
   "devDependencies": {

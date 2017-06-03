@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import app from './server/config/app';
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 app.listen(port, (err) => {
   if (err) {
     console.log(err);

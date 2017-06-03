@@ -12,7 +12,11 @@ const userRecordDetail = newUser => ({
   updatedAt: newUser.updatedAt
 });
 
-const UsersController = {
+
+/**
+ * Users Controller class that handles all User's requests
+ */
+class UsersController {
 
   /**
    * login - Login in the user with the credentials supplied
@@ -21,7 +25,7 @@ const UsersController = {
    * @param  {Object} res - Response Object
    * @return {void}
    */
-  login(req, res) {
+  static login(req, res) {
     // find if record exists in the database
     Users.findOne({
       where: {
@@ -43,7 +47,7 @@ const UsersController = {
           .send({ message: 'Invalid credentials supplied!' });
       }
     });
-  },
+  }
 
   /**
    * logout - Logs out a user
@@ -51,14 +55,14 @@ const UsersController = {
    * @param {Object} res Response Object
    * @returns {void} Returns void
    */
-  logout(req, res) {
+  static logout(req, res) {
     ExpiredTokens.create({ token: req.headers['x-access-token']
     || req.headers.authorization });
     ExpiredTokens.destroy({ where: {
       createdAt: { $lt: new Date() - (48 * 60 * 60 * 1000) } } });
     return res.status(200).send({ message:
       `User with id:${req.decoded.UserId} logged out` });
-  },
+  }
 
   /**
   * signUp - Create a user
@@ -66,7 +70,7 @@ const UsersController = {
   * @param {Object} res - Response Object
   * @returns {void} Returns void
   */
-  signUp(req, res) {
+  static signUp(req, res) {
     Users.findOne({
       where: {
         email: req.body.email
@@ -81,16 +85,17 @@ const UsersController = {
                          choose a new one or login`
              });
          }
+         const { username, fullNames, email, password, RoleId } = req.body;
          // Reject non admin creating an admin account
-         if (req.body.RoleId === '1') {
+         if (req.body.RoleId === '1' && req.decoded.RoleId !== 1) {
            return res.status(403)
              .send({
                message: 'You can\'t create an admin account yourself'
              });
          }
-         const { username, fullNames, email, password } = req.body;
-         const userToCreate = { username, fullNames, email, password };
-         // Create user's account and set session to expire in 2 days
+
+         const userToCreate = { username, fullNames, email, password, RoleId };
+         // Create user's account and set session to expire in 3 days
          Users.create(userToCreate)
              .then((newUser) => {
                const token = jwt.sign({
@@ -114,7 +119,7 @@ const UsersController = {
                });
              });
        });
-  },
+  }
 
   /**
    * getUser - Get a single user based on email or username
@@ -122,7 +127,7 @@ const UsersController = {
    * @param {Object} res Response Object
    * @returns {void} Returns void
    */
-  getUser(req, res) {
+  static getUser(req, res) {
     // Find user with either their username or password
     Users.findOne({
       where: {
@@ -140,7 +145,7 @@ const UsersController = {
       // Display result
       res.status(200).send(user);
     });
-  },
+  }
 
   /**
    * updateUser - Update user details
@@ -148,7 +153,7 @@ const UsersController = {
    * @param {Object} res - Response Object
    * @returns {void} Returns void
    */
-  updateUser(req, res) {
+  static updateUser(req, res) {
     Users.find({ where: {
       id: req.params.id } })
         .then((user) => {
@@ -163,7 +168,7 @@ const UsersController = {
             message: `${req.params.id} does not meet any record`
           });
         });
-  },
+  }
 
   /**
    * searchUsers - Search list of user where the search term
@@ -172,7 +177,7 @@ const UsersController = {
    * @param {Object} res Response Object
    * @returns {void} Returns void
    */
-  searchUsers(req, res) {
+  static searchUsers(req, res) {
     const query = req.query.searchQuery;
     Users.findAndCountAll({
       order: '"createdAt" DESC',
@@ -191,14 +196,15 @@ const UsersController = {
       res.status(404)
         .send({ message: `${query} does not meet any record in the database` });
     });
-  },
+  }
+
   /**
    * getAllUsers - Gets all user details in the databae
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
    * @returns {void} Returns void
    */
-  getAllUsers(req, res) {
+  static getAllUsers(req, res) {
     Users.findAll({ fields: [
       'id',
       'username',
@@ -209,7 +215,7 @@ const UsersController = {
       'updatedAt'
     ] })
       .then(Allusers => res.status(200).send(Allusers));
-  },
+  }
 
   /**
    * deleteUser - Delete a user
@@ -217,7 +223,7 @@ const UsersController = {
    * @param {Object} res Response Object
    * @returns {void} Returns void
    */
-  deleteUser(req, res) {
+  static deleteUser(req, res) {
     Users.find({ where: {
       id: req.params.id } })
       .then((user) => {
@@ -228,6 +234,6 @@ const UsersController = {
       });
   }
 
-};
+}
 
 export default UsersController;
