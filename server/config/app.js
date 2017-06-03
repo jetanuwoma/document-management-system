@@ -30,7 +30,10 @@ app.get('/', (req, res) => {
 
 // Notify users of undefined route
 app.get('*', (req, res) => {
-  res.status(404).send({ message: 'Hello its like you are lost, please kindly find your way back' });
+  res.status(404).send({
+    message: `Hello its like you are lost,
+              please kindly find your way back`
+  });
 });
 
 export default app;
