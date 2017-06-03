@@ -1,6 +1,6 @@
 import UsersController from '../controllers/UsersController';
+import DocumentsController from '../controllers/DocumentsController';
 
-// User routes, Please take a look at the User controller for details
 const UsersRoutes = (router) => {
   router.route('/users')
     .get(UsersController.getAllUsers)

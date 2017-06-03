@@ -182,7 +182,10 @@ const UsersController = {
     .then((result) => {
       res.status(200)
        .send({ result: result.rows,
-         metadata: { count: result.count, searchTerm: query }
+         metadata: {
+           count: result.count,
+           searchTerm: query
+         }
        });
     })
     .catch((err) => {
