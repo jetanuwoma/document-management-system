@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Users, ExpiredTokens, Roles } from '../models';
 
-const secret = process.env.SECRET || 'thisissupposetobeasecret';
 
 const userRecordDetail = newUser => ({
   id: newUser.id,
@@ -36,7 +35,7 @@ const UsersController = {
         const token = jwt.sign({
           UserId: user.id,
           RoleId: user.RoleId
-        }, secret, { expiresIn: '3 days' });
+        }, req.secret, { expiresIn: '3 days' });
         res.status(200)
          .send({ user: userRecordDetail(user), token, expiresIn: '3 days' });
       } else {
@@ -97,7 +96,7 @@ const UsersController = {
                const token = jwt.sign({
                  UserId: newUser.id,
                  RoleId: newUser.RoleId
-               }, secret, {
+               }, req.secret, {
                  expiresIn: '3 days'
                });
                const user = userRecordDetail(newUser);

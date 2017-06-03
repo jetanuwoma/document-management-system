@@ -30,9 +30,11 @@ const DocumentsController = {
    * @returns {void} Returns void
    */
   getDocumentById(req, res) {
-    return res
-    .status(200)
-    .send(req.body.document);
+    Documents.findById(req.params.id)
+      .then((document) => {
+        res.status(200)
+          .send(document);
+      });
   },
 
   /**
@@ -42,6 +44,7 @@ const DocumentsController = {
    * @returns {void} no return
    */
   createDocument(req, res) {
+    req.body.OwnerId = req.decoded.UserId;
     Documents.create(req.body)
       .then((document) => {
         res.status(201)

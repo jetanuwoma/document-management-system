@@ -1,23 +1,34 @@
 import DocumentsController from '../controllers/DocumentsController';
+import Access from '../middleware/Access';
 
 const DocumentsRoutes = (router) => {
+  router.use(Access.init, Access.verifyToken);
+
   router.route('/documents')
-    .get(DocumentsController.getAllDocuments)
+    .get(Access.isAdmin, DocumentsController.getAllDocuments)
     .post(DocumentsController.createDocument);
-
-  router.route('/documents/:id')
-    .get(DocumentsController.getDocumentById)
-    .put(DocumentsController.updateDocument)
-    .delete(DocumentsController.deleteDocument);
-
-  router.route('/users/:id/documents/all')
-    .get(DocumentsController.getAllUserPublicDocuments);
-
-  router.route('/users/:id/documents')
-    .get(DocumentsController.getUserDocuments);
 
   router.route('/search/document')
     .get(DocumentsController.searchDocuments);
+
+  router.route('/documents/:id')
+    .get(Access.documentExists,
+         Access.iCanAccessDocument,
+         DocumentsController.getDocumentById
+       )
+    .put(Access.documentExists,
+         Access.iCanAccessDocument,
+         DocumentsController.updateDocument
+       )
+    .delete(Access.documentExists,
+            Access.iCanAccessDocument,
+            DocumentsController.deleteDocument
+          );
+
+  router.route('/users/:id/documents')
+    .get(Access.userExists,
+       Access.documentsAreMine,
+       DocumentsController.getUserDocuments);
 };
 
 export default DocumentsRoutes;
