@@ -1,24 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import logo from './logo.svg';
-import './App.css';
-
-const axiosInstance = axios.create({
-  timeout: 5000,
-  headers: { 'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjcsIlJvbGVJZCI6MSwiaWF0IjoxNDk2NDg2MjA0LCJleHAiOjE0OTY3NDU0MDR9.BqcYDneEtVleQgzlQRNtvdI8nseTFDx2Qj4TAzqXXxI' }
-});
+import logo from './assets/images/logo.svg';
+import './assets/styles/App.css';
 
 class App extends Component {
-
-  componentDidMount() {
-    axiosInstance.get('/api/users')
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 
   render() {
     return (
