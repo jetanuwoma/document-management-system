@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Users, Roles, Documents, ExpiredTokens, } from '../models';
+import { Users, Documents, ExpiredTokens, } from '../models';
 
 
 /**
@@ -13,7 +13,6 @@ class Access {
    * @param {object} req -  Request Object
    * @param {object} res - Response Object
    * @param {callback} next - callback to the next middleware or function
-   * @returns {Object} next call to middleware
    */
   static init(req, res, next) {
     req.secret = process.env.SECRET || 'thisissupposetobeasecret';
@@ -25,7 +24,6 @@ class Access {
    * @param {object} req -  Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
-   * @returns {Object | void} token validity response | void
    */
   static verifyToken(req, res, next) {
     const token = req.headers.authorization || req.headers['x-access-token'];
@@ -61,7 +59,6 @@ class Access {
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
-   * @returns {Object | void} returns void if user is not admin
    */
   static isAdmin(req, res, next) {
     if (req.decoded.RoleId === 1) {
@@ -77,7 +74,6 @@ class Access {
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
-   * @returns {Object | void} obect containing message or void
    */
   static documentExists(req, res, next) {
     Documents.findById(req.params.id)
@@ -96,7 +92,6 @@ class Access {
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
-   * @returns {Object | void} obect containing message or void
    */
   static iCanAccessDocument(req, res, next) {
     Documents.findById(req.params.id)
@@ -123,7 +118,6 @@ class Access {
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
-   * @returns {Object | void} obect containing message or void
    */
   static documentsAreMine(req, res, next) {
     if (req.params.id === req.decoded.UserId || req.decoded.RoleId === 1) {
@@ -139,7 +133,6 @@ class Access {
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
-   * @returns {Object | void} obect containing message or void
    */
   static userExists(req, res, next) {
     Users.findById(req.params.id)

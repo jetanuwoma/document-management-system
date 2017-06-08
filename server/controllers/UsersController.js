@@ -38,7 +38,9 @@ class UsersController {
       if (user && user.validPassword(req.body.password)) {
         const token = jwt.sign({
           UserId: user.id,
-          RoleId: user.RoleId
+          RoleId: user.RoleId,
+          fullNames: user.fullNames,
+          email: user.email
         }, req.secret, { expiresIn: '3 days' });
         res.status(200)
          .send({ user: userRecordDetail(user), token, expiresIn: '3 days' });
