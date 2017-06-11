@@ -55,16 +55,28 @@ class Document extends React.Component {
    </ul>
  );
    }
+   const isPublic = (
+     <a className="btn-floating btn-large
+       btn-permission waves-effect waves-light
+          green">
+       <i className="fa fa-unlock" />
+       </a>
+   );
+
+   const isPrivate = (
+     <a className="btn-floating btn-large
+       btn-permission waves-effect waves-light
+         pink red">
+       <i className="fa fa-lock" />
+       </a>
+   );
 
    return (
      <div className="col s12 m12 l4">
         <div className="document-card">
           <div className="card hoverable">
             <div className="card-image waves-effect waves-block waves-light">
-              <a className="btn-floating btn-large
-                btn-permission waves-effect waves-light
-                  pink red">
-                <i className="fa fa-lock" /></a>
+              { permission === 'public' ? isPublic : isPrivate }
                 <img src={sampleDoc} alt="document-img" />
             </div>
                {action}
