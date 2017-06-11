@@ -5,7 +5,13 @@ dotenv.config();
 const config = {
   development: {
     url: process.env.DATABASE_URL,
-    dialect: 'postgres'
+    dialect: 'postgres',
+    ssl: true,
+    dailectOptions: {
+      ssl: {
+        required: true
+      }
+    }
   },
   test: {
     url: process.env.TEST_DATABASE_URL,

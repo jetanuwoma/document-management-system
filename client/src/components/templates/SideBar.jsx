@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { logout } from '../../actions/userActions';
 import profile from '../../assets/images/user-profile.png';
 
@@ -15,6 +16,7 @@ class SideBar extends React.Component {
   logOut(event) {
     event.preventDefault();
     this.props.logout();
+    this.context.router.push('/');
   }
 
 
@@ -64,7 +66,7 @@ class SideBar extends React.Component {
                 </li>
 
                 <li className="">
-                  <Link to="/" className="waves-effect waves-cyan">
+                  <Link to="/doc" className="waves-effect waves-cyan">
                     <i className="fa fa-briefcase"></i> My Documents</Link>
                 </li>
 
@@ -96,10 +98,14 @@ class SideBar extends React.Component {
 
 }
 
- SideBar.propTypes = {
-   logout: React.PropTypes.func.isRequired,
-   user: React.PropTypes.object.isRequired,
- };
+SideBar.contextTypes = {
+  router: PropTypes.object.isRequired
+};
+
+SideBar.propTypes = {
+  logout: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
 
  function mapStateToProps(state) {
    return {

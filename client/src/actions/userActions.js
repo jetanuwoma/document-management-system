@@ -6,9 +6,10 @@ import actionTypes from '../constants';
  * loginError login user error
  * @returns {Object} object
  */
-export function loginError() {
+export function loginError(error) {
   return {
-    type: actionTypes.LOGIN_USER_ERROR
+    type: actionTypes.LOGIN_USER_ERROR,
+    error
   };
 }
 
@@ -27,6 +28,39 @@ export function setLoggedInUser(user) {
 }
 
 /**
+ * isUserExisting - check if a user has been existing
+ * @export
+ * @param {any} identifier
+ * @returns {objeect} uuser
+ */
+export function isUserExisting(identifier) {
+  return () => {
+    return axios.get(`/api/users/${identifier}`);
+  };
+}
+
+/**
+ * Creates a new user details
+ * @export registerUser
+ * @param {object} user
+ * @returns {Object} api response
+ */
+export function registerUser(user) {
+  return (dispatch) => {
+    return axios.post('/api/users', user)
+    .then((result) => {
+      const token = result.data.token;
+      localStorage.setItem('tokenize', token);
+      axios.defaults.headers = { 'x-access-token': result.data.token };
+      dispatch(setLoggedInUser(jwtDecode(token)));
+    })
+    .catch((err) => {
+      dispatch(loginError(err));
+    });
+  };
+}
+
+/**
  * loginUser login a user
  * POST /users/login
  * @export saveUser
@@ -40,6 +74,9 @@ export function loginUser(user) {
         localStorage.setItem('tokenize', result.data.token);
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
+      })
+      .catch((err) => {
+        dispatch(loginError({ message: 'Invalid credentials supplied' }));
       });
   };
 }

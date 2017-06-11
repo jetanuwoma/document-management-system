@@ -1,35 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import LandingPage from './LandingPage';
 
 class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = { Page: null };
+    this.state = { Page: <LandingPage /> };
   }
 
   async componentDidMount() {
     if (this.props.user.isAuthenticated) {
       const { default: Page } = await import('./DashBoard');
       this.setState({ Page: <Page /> });
-    } else {
-      const { default: Page } = await import('./LandingPage');
-      this.setState({ Page: <Page /> });
     }
   }
+
   render() {
+    const { isAuthenticated } = this.props;
     return (
       <div>
-      {this.state.Page}
+      { isAuthenticated ? this.state.Page : <LandingPage /> }
     </div>
     );
   }
 }
 
 HomePage.propTypes = {
-  isAuthenticated: React.PropTypes.bool.isRequired,
-  user: React.PropTypes.object.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 /**
