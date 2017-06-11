@@ -1,5 +1,7 @@
+/* global $ */
 import React from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { loginUser } from '../actions/userActions';
@@ -19,11 +21,38 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.loginUser(this.state.user)
-      .then(() => {
-        toastr.success('Login Successfull');
-        this.context.router.push('/');
-      });
+    $('.login-form').validate({
+      rules: {
+        username: {
+          required: true,
+          email: true
+        },
+        password: {
+          required: true,
+          minlength: 5
+        }
+      },
+      submitHandler: (form) => {
+        this.props.loginUser(this.state.user)
+          .then((res) => {
+            if (!this.props.auth.error) {
+              toastr.success('Login Successfull');
+              this.context.router.push('/');
+            } else {
+              toastr.error(this.props.auth.error.message);
+            }
+          });
+      },
+      errorElement: 'div',
+      errorPlacement: (error, element) => {
+        const placement = $(element).data('error');
+        if (placement) {
+          $(placement).append(error);
+        } else {
+          error.insertAfter(element);
+        }
+      }
+    });
   }
 
   onChange(event) {
@@ -34,12 +63,13 @@ class Login extends React.Component {
     this.setState({ user });
   }
 
+
   render() {
     return (
       <div className="login-page-wrapper">
       <div id="login-page" className="row">
     <div className="col s12 z-depth-4 card-panel">
-      <form className="login-form" onSubmit={this.handleSubmit} >
+      <form className="login-form left-alert" onSubmit={this.handleSubmit} >
         <div className="row">
           <div className="input-field col s12 center">
            <h5><Link to="/" className="app-name"> We Doc</Link></h5>
@@ -48,14 +78,16 @@ class Login extends React.Component {
         </div>
         <div className="row margin">
           <div className="input-field col s12">
-            <input name="username" type="text" required="required" onChange={this.onChange} />
-            <label className="center-align">Username</label>
+            <input id="username" name="username" className="validate"
+               type="email" onChange={this.onChange} />
+            <label className="center-align"
+               data-error="email is required" >email</label>
           </div>
         </div>
         <div className="row margin">
           <div className="input-field col s12">
-            <input name="password" type="password" required="required" onChange={this.onChange} />
-            <label>Password</label>
+            <input name="password" type="password" onChange={this.onChange} />
+            <label data-error="enter your password">Password</label>
           </div>
         </div>
         <div className="row">
@@ -81,11 +113,19 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  loginUser: React.PropTypes.func.isRequired
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 Login.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 };
 
-export default connect(null, { loginUser })(Login);
+
+function mapStateToProps(state) {
+  return {
+    auth: state.user.auth,
+  };
+}
+
+export default connect(mapStateToProps, { loginUser })(Login);

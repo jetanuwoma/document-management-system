@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import SideBar from './SideBar';
 
 class Header extends React.Component {
@@ -29,10 +30,12 @@ class Header extends React.Component {
     );
 
     const isAuthLink = (
-      <div className="nav-wrapper container">
+      <div className="nav-wrapper">
         <Link id="logo-container" to="/" className="brand-logo">We Doc</Link>
-        <ul className="right hide-on-med-and-down">
-        </ul>
+          <div className="header-search-wrapper hide-on-med-and-down">
+                <i className="fa fa-search"></i>
+              <input type="text" name="Search" className="header-search-input z-depth-2" placeholder="Search For Document" />
+          </div>
         <SideBar />
       </div>
     );
@@ -47,7 +50,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  isAuthenticated: React.PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {

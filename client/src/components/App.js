@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Header from './templates/Header';
-import Footer from './templates/Footer';
 
 class App extends React.Component {
 

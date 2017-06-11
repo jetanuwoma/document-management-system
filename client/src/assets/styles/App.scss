@@ -158,6 +158,9 @@ ul.side-nav li {
     left: -170px;
     top: 15px;
 }
+#sidenav-overlay {
+  display: none;
+}
 
 #profile-page-header .card-image {
     height: 250px;
@@ -198,4 +201,84 @@ ul.side-nav li {
     font-size: 1.1rem;
     line-height: 1.6rem;
     font-weight: 400;
+}
+
+.input-field div.error {
+    position: relative;
+    top: -1rem;
+    left: 0rem;
+    font-size: 0.8rem;
+    color: #FF4081;
+    -webkit-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+}
+
+.header-search-wrapper {
+    margin: 10px auto 0 240px;
+    width: calc(100% - 600px);
+    height: 40px;
+    display: inline-block;
+    position: relative;
+}
+.header-search-wrapper i {
+    position: absolute;
+    font-size: 24px;
+    top: 6px;
+    left: 24px;
+    line-height: 32px !important;
+    -webkit-transition: color 200ms ease;
+    transition: color 200ms ease;
+}
+
+input.header-search-input {
+    display: block;
+    padding: 8px 8px 8px 72px;
+    width: 100%;
+    background: rgba(255,255,255,0.3);
+    height: 24px;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
+    border: none;
+    font-size: 16px;
+    appearance: textfield;
+    font-weight: 400;
+    outline: none;
+    border-radius: 3px;
+}
+
+.preloader-wrapper{
+  width: 70%;
+  height: auto;
+  position: absolute;
+  top :0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.breadcrumbs-title {
+    font-size: 1.5rem;
+    line-height: 1.804rem;
+    margin: 18px 0 0;
+}
+.breadcrumbs {
+    padding: 0;
+    margin: 15px 0;
+    list-style: none;
+}
+
+.breadcrumbs>li {
+    display: inline-block;
+}
+
+.breadcrumbs>li+li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/\00a0";
+}
+
+#breadcrumbs-wrapper {
+    background: #f3f3f3;
 }

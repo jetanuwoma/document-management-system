@@ -46,7 +46,7 @@ class Access {
       jwt.verify(token, req.secret, (err, decoded) => {
         if (err) {
           return res.status(401)
-                    .send({ message: err });
+                    .send({ message: "jude" });
         }
         req.decoded = decoded;
         next();
@@ -120,11 +120,12 @@ class Access {
    * @param {callback} next callback to the next middleware or function
    */
   static documentsAreMine(req, res, next) {
-    if (req.params.id === req.decoded.UserId || req.decoded.RoleId === 1) {
+    if (parseInt(req.params.id) === req.decoded.UserId || req.decoded.RoleId === 1) {
       next();
     } else {
+      console.log(req.params.id);
       res.status(404)
-        .send({ message: 'Unauthorized access to documents' });
+        .send({ message: 'Unauthorized access' });
     }
   }
 

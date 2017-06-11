@@ -1,5 +1,4 @@
 import UsersController from '../controllers/UsersController';
-import DocumentsController from '../controllers/DocumentsController';
 import Access from '../middleware/Access';
 
 const UsersRoutes = (router) => {
@@ -14,7 +13,7 @@ const UsersRoutes = (router) => {
 
   router.route('/users/:id')
     .put(Access.verifyToken, UsersController.updateUser)
-    .get(Access.verifyToken, UsersController.getUser)
+    .get(UsersController.getUser)
     .delete(Access.verifyToken, Access.isAdmin, UsersController.deleteUser);
 
   router.route('/users/logout')

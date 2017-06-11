@@ -1,7 +1,12 @@
+/* global $ */
 import React from 'react';
 
 
 class LandingPage extends React.Component {
+
+  componentDidMount() {
+    $('.button-collapse').sideNav();
+  }
 
   render() {
     return (

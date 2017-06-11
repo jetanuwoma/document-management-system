@@ -45,7 +45,7 @@ class UsersController {
         res.status(200)
          .send({ user: userRecordDetail(user), token, expiresIn: '3 days' });
       } else {
-        res.status(400)
+        res.status(409)
           .send({ message: 'Invalid credentials supplied!' });
       }
     });
@@ -102,7 +102,9 @@ class UsersController {
              .then((newUser) => {
                const token = jwt.sign({
                  UserId: newUser.id,
-                 RoleId: newUser.RoleId
+                 RoleId: newUser.RoleId,
+                 fullNames: newUser.fullNames,
+                 email: newUser.email,
                }, req.secret, {
                  expiresIn: '3 days'
                });

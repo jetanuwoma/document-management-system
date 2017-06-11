@@ -12,11 +12,14 @@ import { setLoggedInUser } from './actions/userActions';
 
 const store = configureStore();
 
-if (localStorage.tokenize) {
-  axios.defaults.headers.common.Authorization = localStorage.tokenize;
-  axios.defaults.headers = { 'x-access-token': localStorage.getItem('tokenize') };
-  console.log(localStorage.tokenize);
+if (localStorage.tokenize && localStorage.tokenize !== 'undefined') {
+  axios.defaults.headers = {
+    'x-access-token': localStorage.getItem('tokenize')
+  };
+
   store.dispatch(setLoggedInUser(jwtDecode(localStorage.tokenize)));
+} else {
+    axios.defaults.headers = {};
 }
 
 
