@@ -36,7 +36,6 @@ class DocumentPage extends React.Component {
       <div> {this.state.ActivePage} </div>
     );
   }
-
 }
 
 DocumentPage.propTypes = {
