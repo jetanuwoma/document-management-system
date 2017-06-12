@@ -102,9 +102,12 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static updateDocument(req, res) {
-    req.body.document.update(req.body)
-      .then((updated) => {
-        res.status(200).send(updated);
+    Documents.find({ where: { id: req.params.id } })
+      .then((document) => {
+        document.update(req.body)
+          .then((updated) => {
+            res.status(200).send(req.body);
+          });
       });
   }
 
@@ -140,7 +143,6 @@ class DocumentsController {
   static deleteDocument(req, res) {
     Documents.findById(req.params.id)
        .then((document) => {
-         console.log(document);
          document.destroy()
          .then(() => {
           res.status(200).send({ message: `${document.title} has been deleted` });

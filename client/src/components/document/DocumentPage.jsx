@@ -11,28 +11,34 @@ class DocumentPage extends React.Component {
     // set Dynamic import for code splitting and optimisation
     this.state = {
       ActivePage: <PreLoader />,
+      pathName: this.props.location.pathname
     };
 
-
-    console.log(this.props);
+    this.loadListDocument = this.loadListDocument.bind(this);
   }
 
+  componentWillMount() {
+    console.log('mount');
+  }
 
   componentDidMount() {
+    this.loadListDocument();
+  }
+
+  loadListDocument() {
     this.props.loadUserDocuments()
       .then(() => {
         import('./DocumentList')
           .then((DocumentList) => {
-             this.setState({
-               ActivePage:
-                 <DocumentList.default
-                  documents={this.props.myDocuments}
-                  user={this.props.user}
-                  deleteDocument={this.props.deleteDocument}
-                  archived={this.props.archived}
-                  undoDelete={this.props.undoDelete}
-                  />
-             });
+            this.setState({
+              ActivePage: <DocumentList.default
+              documents={this.props.myDocuments}
+              user={this.props.user}
+              deleteDocument={this.props.deleteDocument}
+              archived={this.props.archived}
+              undoDelete={this.props.undoDelete}
+               />
+            });
           });
       });
   }

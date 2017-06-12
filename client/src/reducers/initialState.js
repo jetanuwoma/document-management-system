@@ -5,6 +5,7 @@ export default {
   manageDocument: {
     loaded: false,
     alldocuments: [],
-    archived: {}
+    archived: {},
+    selectedDocument: {},
   },
 };
