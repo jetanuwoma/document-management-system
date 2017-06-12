@@ -16,6 +16,18 @@ export default function documentReducer(state = initialState.manageDocument, act
       alldocuments: [...action.documents]
     };
 
+  case actionTypes.DOCUMENT_DELETED_SUCCESSFULLY:
+    return {
+      ...state,
+      archived: action.document
+    };
+
+  case actionTypes.UNDO_DELETED_ITEM:
+    return {
+      ...state,
+      alldocuments: [...action.documents]
+    };
+
   default:
     return state;
   }

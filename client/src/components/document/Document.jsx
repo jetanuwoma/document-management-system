@@ -1,58 +1,83 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import sampleDoc from '../../assets/images/document.png';
 
 class Document extends React.Component {
 
- render() {
-  const { UserId, RoleId } = this.props.user;
-  const { OwnerId, permission } = this.props.document;
-   let action = (
-     <li>
-       <a className="btn-floating waves-effect waves-light light-blue">
-         <i className="fa fa-info activator"></i>
-       </a>
+  constructor(props) {
+    super(props);
 
-     </li>
-   );
+    this.state = { displayState: 'inline' };
 
-   if (RoleId === 1 || OwnerId === UserId) {
-     action = (
-       <ul className="card-action-buttons">
-       <li>
-         <a className="btn-floating waves-effect waves-light light-blue">
-           <i className="fa fa-info activator"></i>
-         </a>
-       </li>
-       <li>
-         <a className="btn-floating waves-effect waves-light green">
-           <i className="fa fa-edit"></i>
-         </a>
-       </li>
-       <li>
-         <a className="btn-floating waves-effect waves-light red">
-           <i className="fa fa-trash"></i>
-         </a>
+    this.deleteDocument = this.deleteDocument.bind(this);
+  }
+
+  deleteDocument() {
+    this.setState({ displayState: 'none' });
+    this.props.deleteDocument(this.props.document)
+      .then(() => {
+        toastr.success('<span>Item Deleted</span><a class="btn light-blue clear">Undo</a>');
+        toastr.options.timeOut = 50000;
+        toastr.options.onclick = () => {
+          this.props.undoDelete();
+          this.setState({ displayState: 'inline' });
+        };
+      });
+  }
+
+  render() {
+    const { UserId, RoleId } = this.props.user;
+    const { OwnerId, permission } = this.props.document;
+    const { displayState } = this.state;
+
+    let action = (
+      <li>
+        <a className="btn-floating waves-effect waves-light light-blue">
+          <i className="fa fa-info activator"></i>
+        </a>
+
+      </li>
+     );
+
+    if (RoleId === 1 || OwnerId === UserId) {
+      action = (
+        <ul className="card-action-buttons">
+         <li>
+          <a className="btn-floating waves-effect waves-light light-blue">
+            <i className="fa fa-info activator"></i>
+          </a>
+        </li>
+        <li>
+          <a className="btn-floating waves-effect waves-light green">
+            <i className="fa fa-edit"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            className="btn-floating waves-effect waves-light red"
+            onClick={this.deleteDocument}
+            >
+             <i className="fa fa-trash"></i>
+          </a>
 
        </li>
      </ul>
      );
-   } else if (permission === 'public') {
-     return (
-     <ul className="card-action-buttons">
-     <li>
-       <a className="btn-floating waves-effect waves-light light-blue">
-         <i className="fa fa-info activator"></i>
-       </a>
-     </li>
-     <li>
-       <a className="btn-floating waves-effect waves-light light-blue">
-         <i className="fa fa-edit"></i>
-       </a>
-     </li>
-     <li>
-     </li>
-   </ul>
+    } else if (permission === 'public') {
+      return (
+       <ul className="card-action-buttons">
+         <li>
+           <a className="btn-floating waves-effect waves-light light-blue">
+             <i className="fa fa-info activator"></i>
+          </a>
+        </li>
+       <li>
+         <a className="btn-floating waves-effect waves-light light-blue">
+            <i className="fa fa-edit"></i>
+        </a>
+      </li>
+    </ul>
  );
    }
    const isPublic = (
@@ -70,9 +95,12 @@ class Document extends React.Component {
        <i className="fa fa-lock" />
        </a>
    );
+   const style = {
+     display: displayState
+   };
 
    return (
-     <div className="col s12 m12 l4">
+     <div className="col s12 m12 l4" style={style} >
         <div className="document-card">
           <div className="card hoverable">
             <div className="card-image waves-effect waves-block waves-light">
@@ -101,7 +129,10 @@ class Document extends React.Component {
 
 Document.propTypes = {
   document: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  deleteDocument: PropTypes.func.isRequired,
+  archived: PropTypes.object.isRequired,
+  undoDelete: PropTypes.func.isRequired,
 };
 
 export default Document;

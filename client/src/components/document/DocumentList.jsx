@@ -5,6 +5,12 @@ import Document from './Document';
 
 class DocumentList extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    console.log(this.props);
+  }
+
   render() {
     return (
     <div className="main">
@@ -25,7 +31,14 @@ class DocumentList extends React.Component {
         </div>
         <div className="row">
           {this.props.documents.map((document, index) => {
-            return (<Document key={index} document={document} user={this.props.user} />);
+            return (<Document
+                key={index}
+                document={document}
+                user={this.props.user}
+                deleteDocument={this.props.deleteDocument}
+                archived={this.props.archived}
+                undoDelete={this.props.undoDelete}
+                />);
           })}
         </div>
       </div>
@@ -36,6 +49,9 @@ class DocumentList extends React.Component {
 DocumentList.propTypes = {
   documents: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
+  deleteDocument: PropTypes.func.isRequired,
+  archived: PropTypes.object.isRequired,
+  undoDelete: PropTypes.func.isRequired
 };
 
 export default DocumentList;

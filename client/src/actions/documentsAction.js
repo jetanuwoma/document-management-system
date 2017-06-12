@@ -15,6 +15,13 @@ export function loadDocumentsSuccess(documents) {
   };
 }
 
+export function documentDeletedSuccessfully(document) {
+  return {
+    type: actionTypes.DOCUMENT_DELETED_SUCCESSFULLY,
+    document
+  };
+}
+
 /* save new documents to database
 *
 * @export
@@ -35,5 +42,21 @@ export function saveDocument(document) {
        .then((res) => {
          dispatch(loadDocumentsSuccess(res.data));
        });
+   };
+ }
+
+
+ export function deleteDocument(document) {
+   return (dispatch) => {
+     return axios.delete(`/api/documents/${document.id}`)
+       .then(() => {
+         dispatch(documentDeletedSuccessfully(document));
+       });
+   };
+ }
+
+ export function undoDelete() {
+   return (dispatch, getState) => {
+     dispatch(saveDocument(getState().manageDocument.archived));
    };
  }

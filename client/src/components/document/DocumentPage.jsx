@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { loadUserDocuments } from '../../actions/documentsAction';
+import { loadUserDocuments, deleteDocument, undoDelete } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader';
 
 class DocumentPage extends React.Component {
@@ -12,8 +12,11 @@ class DocumentPage extends React.Component {
     this.state = {
       ActivePage: <PreLoader />,
     };
+
+
     console.log(this.props);
   }
+
 
   componentDidMount() {
     this.props.loadUserDocuments()
@@ -25,11 +28,15 @@ class DocumentPage extends React.Component {
                  <DocumentList.default
                   documents={this.props.myDocuments}
                   user={this.props.user}
+                  deleteDocument={this.props.deleteDocument}
+                  archived={this.props.archived}
+                  undoDelete={this.props.undoDelete}
                   />
              });
           });
       });
   }
+
 
   render() {
     return (
@@ -41,7 +48,10 @@ class DocumentPage extends React.Component {
 DocumentPage.propTypes = {
   myDocuments: PropTypes.array.isRequired,
   loadUserDocuments: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  deleteDocument: PropTypes.func.isRequired,
+  archived: PropTypes.object.isRequired,
+  undoDelete: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -49,9 +59,10 @@ function mapStateToProps(state) {
   const myDocuments = currentState.alldocuments;
   return {
     myDocuments,
-    user: state.user.user
+    user: state.user.user,
+    archived: currentState.archived,
   };
 }
 
 
-export default connect(mapStateToProps, { loadUserDocuments })(DocumentPage);
+export default connect(mapStateToProps, { loadUserDocuments, deleteDocument, undoDelete })(DocumentPage);
