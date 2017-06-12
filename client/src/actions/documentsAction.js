@@ -15,6 +15,13 @@ export function loadDocumentsSuccess(documents) {
   };
 }
 
+export function loadDocumentSuccess(document) {
+  return {
+    type: actionTypes.LOAD_DOCUMENT_SUCCESS,
+    document
+  };
+}
+
 export function documentDeletedSuccessfully(document) {
   return {
     type: actionTypes.DOCUMENT_DELETED_SUCCESSFULLY,
@@ -59,4 +66,19 @@ export function saveDocument(document) {
    return (dispatch, getState) => {
      dispatch(saveDocument(getState().manageDocument.archived));
    };
+ }
+
+ export function loadDocument(id) {
+   return (dispatch) => {
+     return axios.get(`/api/documents/${id}`)
+       .then((result) => {
+         dispatch(loadDocumentSuccess(result.data));
+       });
+   };
+ }
+
+ export function updateDocument(document) {
+   return (dispatch) => {
+     return axios.put(`/api/documents/${document.id}`, document);
+   }
  }

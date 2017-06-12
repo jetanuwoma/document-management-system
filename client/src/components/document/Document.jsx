@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
+import { Link } from 'react-router';
 import sampleDoc from '../../assets/images/document.png';
 
 class Document extends React.Component {
@@ -49,9 +50,10 @@ class Document extends React.Component {
           </a>
         </li>
         <li>
-          <a className="btn-floating waves-effect waves-light green">
+          <Link to={`/doc/edit/${this.props.document.id}`}
+            className="btn-floating waves-effect waves-light green">
             <i className="fa fa-edit"></i>
-          </a>
+          </Link>
         </li>
         <li>
           <a
