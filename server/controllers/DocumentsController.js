@@ -86,12 +86,7 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static getAllUserPublicDocuments(req, res) {
-    Documents.findAll({ where: {
-      $or: {
-        permission: 'public',
-        OwnerId: req.params.id
-      }
-    } })
+    Documents.findAll({ where: { permission: req.accessType } })
       .then(documents => res.status(200).send(documents));
   }
 

@@ -25,6 +25,10 @@ const DocumentsRoutes = (router) => {
             DocumentsController.deleteDocument
           );
 
+
+    router.route('/documents/access/:access')
+      .get(Access.accessType, DocumentsController.getAllUserPublicDocuments);
+
   router.route('/users/:id/documents')
     .get(Access.userExists,
        Access.documentsAreMine,

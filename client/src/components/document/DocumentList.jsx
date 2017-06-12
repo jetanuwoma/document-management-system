@@ -4,13 +4,11 @@ import PropTypes from 'prop-types';
 import Document from './Document';
 
 class DocumentList extends React.Component {
-
   constructor(props) {
     super(props);
 
     console.log(this.props);
   }
-
   render() {
     return (
     <div className="main">
@@ -19,7 +17,7 @@ class DocumentList extends React.Component {
           <div className="">
             <div className="row">
               <div className="col s12 m12 l12">
-                <h5 className="breadcrumbs-title">My Documents</h5>
+                <h5 className="breadcrumbs-title">Documents</h5>
                 <ol className="breadcrumbs">
                   <li><Link to="/">Dashboard</Link>
                   </li>

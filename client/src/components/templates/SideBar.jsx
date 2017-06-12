@@ -22,6 +22,7 @@ class SideBar extends React.Component {
 
   render() {
     const { fullNames, RoleId } = this.props.user;
+
     return (
       <aside id="left-sidebar-nav">
                 <ul id="slide-out" className="side-nav
@@ -57,23 +58,21 @@ class SideBar extends React.Component {
                   <i className="fa fa-dashboard"></i> Dashboard</Link>
                 </li>
                 <li className="">
-                  <Link to="/" className="waves-effect waves-cyan">
-                    <i className="fa fa-edit"></i> Update Profile</Link>
-                </li>
-                <li className="">
-                  <Link to="/" className="waves-effect waves-cyan">
-                    <i className="fa fa-plus"></i> Create Document</Link>
-                </li>
-
-                <li className="">
                   <Link to="/doc" className="waves-effect waves-cyan">
-                    <i className="fa fa-briefcase"></i> My Documents</Link>
+                    <i className="fa fa-file"></i> My Documents</Link>
                 </li>
 
                 <li className="">
-                  <Link to="/" className="waves-effect waves-cyan">
-                    <i className="fa fa-briefcase"></i> Public Documents</Link>
+                  <Link to="/doc/public" className="waves-effect waves-cyan">
+                    <i className="fa fa-file-o"></i> Public Documents</Link>
                 </li>
+
+                {RoleId === 1 &&
+                  <li className="">
+                    <Link to="/doc/public" className="waves-effect waves-cyan">
+                      <i className="fa fa-users"></i> ManageUser</Link>
+                  </li>
+                }
 
                 <li className="">
                   <a href=""

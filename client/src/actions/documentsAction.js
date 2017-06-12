@@ -82,3 +82,12 @@ export function saveDocument(document) {
      return axios.put(`/api/documents/${document.id}`, document);
    }
  }
+
+ export function loadPublicDocuments() {
+   return (dispatch) => {
+     return axios.get('/api/documents/access/public')
+       .then((res) => {
+         dispatch(loadDocumentsSuccess(res.data));
+       });
+   };
+ }
