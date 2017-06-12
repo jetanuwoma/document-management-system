@@ -138,13 +138,14 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static deleteDocument(req, res) {
-    return req.body.document.destroy()
-      .then(() => {
-        res.status(200)
-        .send({
-          message: 'Document deleted successfully'
-        });
-      });
+    Documents.findById(req.params.id)
+       .then((document) => {
+         console.log(document);
+         document.destroy()
+         .then(() => {
+          res.status(200).send({ message: `${document.title} has been deleted` });
+         });
+       });
   }
 
 }

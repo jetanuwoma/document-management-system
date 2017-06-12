@@ -8,4 +8,6 @@ export default keymirror({
   LOGIN_USER_ERROR: null,
   CREATE_DOCUMENT_SUCCESS: null,
   LOAD_DOCUMENTS_SUCCESS: null,
+  DOCUMENT_DELETED_SUCCESSFULLY: null,
+  UNDO_DELETED_ITEM: null,
 });
