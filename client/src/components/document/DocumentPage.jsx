@@ -13,19 +13,17 @@ class DocumentPage extends React.Component {
       ActivePage: <PreLoader />,
       pathName: this.props.location.pathname
     };
-
+    console.log(this.props);
     this.loadListDocument = this.loadListDocument.bind(this);
-  }
-
-  componentWillMount() {
-    console.log('mount');
   }
 
   componentDidMount() {
     this.loadListDocument();
+    console.log('okay');
   }
 
   loadListDocument() {
+    console.log(this.props.route.path)
     this.props.loadUserDocuments()
       .then(() => {
         import('./DocumentList')

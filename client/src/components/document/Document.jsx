@@ -32,22 +32,17 @@ class Document extends React.Component {
     const { OwnerId, permission } = this.props.document;
     const { displayState } = this.state;
 
-    let action = (
-      <li>
-        <a className="btn-floating waves-effect waves-light light-blue">
-          <i className="fa fa-info activator"></i>
-        </a>
-
-      </li>
-     );
+    let action;
 
     if (RoleId === 1 || OwnerId === UserId) {
       action = (
         <ul className="card-action-buttons">
          <li>
-          <a className="btn-floating waves-effect waves-light light-blue">
-            <i className="fa fa-info activator"></i>
-          </a>
+          <Link
+            to={`/doc/${this.props.document.id}`}
+            className="btn-floating waves-effect waves-light light-blue">
+            <i className="fa fa-info"></i>
+          </Link>
         </li>
         <li>
           <Link to={`/doc/edit/${this.props.document.id}`}
@@ -67,21 +62,19 @@ class Document extends React.Component {
      </ul>
      );
     } else if (permission === 'public') {
-      return (
+      action = (
        <ul className="card-action-buttons">
          <li>
-           <a className="btn-floating waves-effect waves-light light-blue">
-             <i className="fa fa-info activator"></i>
-          </a>
+           <Link
+             to={`/doc/${this.props.document.id}`}
+             className="btn-floating waves-effect waves-light light-blue">
+             <i className="fa fa-info" />
+          </Link>
         </li>
-       <li>
-         <a className="btn-floating waves-effect waves-light light-blue">
-            <i className="fa fa-edit"></i>
-        </a>
-      </li>
     </ul>
- );
+      );
    }
+
    const isPublic = (
      <a className="btn-floating btn-large
        btn-permission waves-effect waves-light
@@ -132,9 +125,9 @@ class Document extends React.Component {
 Document.propTypes = {
   document: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  deleteDocument: PropTypes.func.isRequired,
-  archived: PropTypes.object.isRequired,
-  undoDelete: PropTypes.func.isRequired,
+  deleteDocument: PropTypes.func,
+  archived: PropTypes.object,
+  undoDelete: PropTypes.func,
 };
 
 export default Document;

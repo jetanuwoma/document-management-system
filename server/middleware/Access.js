@@ -147,6 +147,26 @@ class Access {
       });
   }
 
+  /**
+   * accessType - check requested access type
+   * @param {object} req - Request Object
+   * @param {object} res - Response Object
+   * @param {callback} next callback to the next middleware or function
+   */
+  static accessType(req, res, next) {
+    if (req.params.access === 'public') {
+      req.accessType = 'public';
+      next();
+    } else if (req.params.access === 'role') {
+      req.accessType = 'role';
+      next();
+    } else {
+      res.status(404).send({
+        message: 'Sorry you are requesting for a wrong documents type'
+      });
+    }
+  }
+
 }
 
 export default Access;
