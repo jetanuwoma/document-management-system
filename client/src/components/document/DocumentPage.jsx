@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { loadUserDocuments, deleteDocument, undoDelete } from '../../actions/documentsAction';
+import { loadUserDocuments,
+         deleteDocument,
+         undoDelete } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader';
 
 class DocumentPage extends React.Component {
@@ -13,7 +15,7 @@ class DocumentPage extends React.Component {
       ActivePage: <PreLoader />,
       pathName: this.props.location.pathname
     };
-    console.log(this.props);
+
     this.loadListDocument = this.loadListDocument.bind(this);
   }
 
@@ -69,4 +71,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { loadUserDocuments, deleteDocument, undoDelete })(DocumentPage);
+export default connect(mapStateToProps, { loadUserDocuments, deleteDocument, undoDelete, })(DocumentPage);

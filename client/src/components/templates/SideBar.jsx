@@ -53,7 +53,7 @@ class SideBar extends React.Component {
                     </div>
                 </div>
                 </li>
-                <li className="bold active">
+                <li className="bold">
                   <Link to="/" className="waves-effect waves-cyan">
                   <i className="fa fa-dashboard"></i> Dashboard</Link>
                 </li>
@@ -69,8 +69,14 @@ class SideBar extends React.Component {
 
                 {RoleId === 1 &&
                   <li className="">
-                    <Link to="/doc/public" className="waves-effect waves-cyan">
-                      <i className="fa fa-users"></i> ManageUser</Link>
+                    <Link to="/users" className="waves-effect waves-cyan">
+                      <i className="fa fa-users"></i> Manage Users</Link>
+                  </li>
+                }
+                {RoleId === 1 &&
+                  <li className="">
+                    <Link to="/documents" className="waves-effect waves-cyan">
+                      <i className="fa fa-file-o"></i> Manage Documents</Link>
                   </li>
                 }
 

@@ -22,7 +22,6 @@ class DashBoard extends React.Component {
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearForm = this.clearForm.bind(this);
-    console.log(this.props);
   }
 
   componentDidMount() {

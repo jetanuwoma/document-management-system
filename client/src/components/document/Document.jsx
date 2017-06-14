@@ -94,31 +94,36 @@ class Document extends React.Component {
      display: displayState
    };
 
-   return (
-     <div className="col s12 m12 l4" style={style} >
-        <div className="document-card">
-          <div className="card hoverable">
-            <div className="card-image waves-effect waves-block waves-light">
-              { permission === 'public' ? isPublic : isPrivate }
-                <img src={sampleDoc} alt="document-img" />
-            </div>
+    return (
+      <div className="col s12 m12 l4" style={style} >
+         <div className="document-card">
+           <div className="card hoverable">
+             <div className="card-image waves-effect waves-block waves-light">
+               { permission === 'public' ? isPublic : isPrivate }
+               <img src={sampleDoc} alt="document-img" />
+             </div>
                {action}
-            <div className="card-content">
-                <div className="row">
-                  <p className="card-title grey-text text-darken-4">
-                    <a href="#" className="grey-text text-darken-4">{this.props.document.title}</a>
-                  </p>
-               </div>
+             <div className="card-content">
+               <div className="row">
+                <p className="card-title grey-text text-darken-4">
+                  <a href="#" className="grey-text text-darken-4">
+                    {this.props.document.title}
+                  </a>
+                </p>
+              </div>
              </div>
              <div className="card-reveal">
-              <span className="card-title grey-text text-darken-4"><i className="fa fa-close right"></i> {this.props.document.title} </span>
+              <span className="card-title grey-text text-darken-4">
+                <i className="fa fa-close right" />
+                {this.props.document.title}
+              </span>
                 {this.props.document.content}
              </div>
          </div>
       </div>
     </div>
-   );
- }
+    );
+  }
 
 }
 

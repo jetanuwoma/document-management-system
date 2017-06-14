@@ -8,6 +8,8 @@ import DocumentPage from '../components/document/DocumentPage';
 import EditDocument from '../components/document/EditDocument';
 import DocumentDetail from '../components/document/DocumentDetail';
 import PublicDocuments from '../components/document/PublicDocuments';
+import ManageUsers from '../components/admin/ManageUsers';
+import ManageDocuments from '../components/admin/ManageDocuments';
 import '../assets/styles/App.css';
 
 
@@ -19,6 +21,8 @@ export default (
     <Route path="doc/public" component={PublicDocuments} />
     <Route path="doc/edit/:id" component={EditDocument} />
     <Route path="doc/:id" component={DocumentDetail} />
+    <Route path="users" component={ManageUsers} />
+    <Route path="documents" component={ManageDocuments} />
   </Route>
   <Route path="login" component={Login}/>
   <Route path="signup" component={SignUp}/>
