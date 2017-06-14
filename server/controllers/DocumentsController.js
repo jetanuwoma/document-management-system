@@ -13,7 +13,8 @@ class DocumentsController {
    */
   static getAllDocuments(req, res) {
     Documents.findAll({
-      limit: req.query.limit,
+      limit: req.query.limit || 6,
+      offset: req.query.offset * (req.query.limit || 6) || 0,
       order: '"createdAt" DESC',
     })
       .then((documents) => {
@@ -67,6 +68,8 @@ class DocumentsController {
    */
   static getUserDocuments(req, res) {
     Documents.findAll({
+      limit: req.query.limit || 6,
+      offset: req.query.offset || 0,
       where: { OwnerId: req.params.id }
     })
     .then((documents) => {
@@ -117,6 +120,8 @@ class DocumentsController {
 
     Documents.findAndCountAll({
       order: '"createdAt" DESC',
+      limit: req.query.limit || 6,
+      offset: req.query.offet || 0,
       where: { title: { $iLike: `%${queryTerm}%` } }
     })
     .then((results) => {

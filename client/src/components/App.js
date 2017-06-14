@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from './templates/Header';
 
 class App extends React.Component {
@@ -7,7 +8,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header />
+        <Header {...this.props} />
         {this.props.children}
       </div>
     );

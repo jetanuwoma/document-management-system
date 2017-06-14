@@ -47,6 +47,7 @@ export function saveDocument(document) {
    return (dispatch, getState) => {
      return axios.get(`/api/users/${getState().user.user.UserId}/documents`)
        .then((res) => {
+         console.log(res.data);
          dispatch(loadDocumentsSuccess(res.data));
        });
    };

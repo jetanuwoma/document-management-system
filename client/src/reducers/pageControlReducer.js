@@ -1,0 +1,22 @@
+import actionTypes from '../constants';
+import initialState from './initialState';
+
+export default function pageControlReducer(state = initialState.pageControls, action) {
+  switch (action.type) {
+  case actionTypes.CHANGE_SEARCH_LOCATION:
+    return {
+      ...state,
+      searchSource: action.source,
+    };
+
+  case actionTypes.CHANGE_SEARCH_QUERY:
+    return {
+      ...state,
+      isSearching: action.query.length >= 1,
+      searchQuery: action.query,
+    };
+
+  default:
+    return state;
+  }
+}
