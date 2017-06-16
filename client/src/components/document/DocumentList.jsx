@@ -4,15 +4,12 @@ import PropTypes from 'prop-types';
 import Document from './Document';
 
 class DocumentList extends React.Component {
-  constructor(props) {
-    super(props);
 
-    console.log(this.props);
-  }
   render() {
     return (
     <div className="main">
       <div className="main-section">
+        {!this.props.isSearching &&
       <div id="breadcrumbs-wrapper">
           <div className="">
             <div className="row">
@@ -27,6 +24,12 @@ class DocumentList extends React.Component {
             </div>
           </div>
         </div>
+      }
+        {this.props.isSearching &&
+          <div>
+          <h4>{this.props.searchCount} Search Result</h4>
+          </div>
+        }
         <div className="row">
           {this.props.documents.map((document, index) => {
             return (<Document

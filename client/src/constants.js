@@ -15,4 +15,5 @@ export default keymirror({
   LOAD_ALL_DOCUMENTS_SUCCESS: null,
   CHANGE_SEARCH_LOCATION: null,
   CHANGE_SEARCH_QUERY: null,
+  LOAD_DOCUMENT_SEARCH_SUCCESS: null,
 });

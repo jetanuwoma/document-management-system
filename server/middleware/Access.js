@@ -46,7 +46,9 @@ class Access {
       jwt.verify(token, req.secret, (err, decoded) => {
         if (err) {
           return res.status(401)
-                    .send({ message: "jude" });
+          .send({
+            message: 'Could not verify that token please obtain new one'
+          });
         }
         req.decoded = decoded;
         next();
@@ -120,10 +122,10 @@ class Access {
    * @param {callback} next callback to the next middleware or function
    */
   static documentsAreMine(req, res, next) {
-    if (parseInt(req.params.id) === req.decoded.UserId || req.decoded.RoleId === 1) {
+    if (parseInt(req.params.id, 10) === req.decoded.UserId ||
+       req.decoded.RoleId === 1) {
       next();
     } else {
-      console.log(req.params.id);
       res.status(404)
         .send({ message: 'Unauthorized access' });
     }
@@ -167,6 +169,29 @@ class Access {
     }
   }
 
+  /**
+   * setSearchCriterial - define search zone for users
+   * @param {object} req - Request Object
+   * @param {object} res - Response Object
+   * @param {callback} next callback to the next middleware or function
+   */
+  static setSearchCriterial(req, res, next) {
+    const term = req.query.q;
+    let query = { where: { title: { $iLike: `%${term}%` } } };
+
+    // if it's admin, perform global search
+    if (req.decoded.RoleId === 1) {
+      req.searchQuery = query;
+    } else {
+      // Search only users documents
+      query = { where: { $and: [
+        { title: { $iLike: `%${term}%` } },
+        { OwnerId: req.decoded.UserId }
+      ] } };
+      req.searchQuery = query;
+    }
+    next();
+  }
 }
 
 export default Access;

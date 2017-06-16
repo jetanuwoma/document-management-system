@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Users, ExpiredTokens, Roles } from '../models';
+import { Users, ExpiredTokens } from '../models';
 
 
 const userRecordDetail = newUser => ({
@@ -132,7 +132,7 @@ class UsersController {
    * @returns {void} Returns void
    */
   static getUser(req, res) {
-    // Find user with either their username or password
+    // Find user with either their username or email
     Users.findOne({
       where: {
         $or: [{ email: req.params.id },
@@ -167,7 +167,7 @@ class UsersController {
                 data: userRecordDetail(updatedUser)
               }));
         })
-        .catch((err) => {
+        .catch(() => {
           res.status(404).send({
             message: `${req.params.id} does not meet any record`
           });
@@ -196,7 +196,7 @@ class UsersController {
          }
        });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404)
         .send({ message: `${query} does not meet any record in the database` });
     });

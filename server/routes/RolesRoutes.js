@@ -6,13 +6,13 @@ const RoleRoutes = (router) => {
   router.use(Access.init, Access.verifyToken);
 
   router.route('/roles')
-    .get(RolesController.getAllRoles)
-    .post(RolesController.createRole);
+    .get(Access.isAdmin, RolesController.getAllRoles)
+    .post(Access.isAdmin, RolesController.createRole);
 
   router.route('/roles/:id')
-    .get(RolesController.getRole)
-    .put(RolesController.updateRole)
-    .delete(RolesController.deleteRole);
+    .get(Access.isAdmin, RolesController.getRole)
+    .put(Access.isAdmin, RolesController.updateRole)
+    .delete(Access.isAdmin, RolesController.deleteRole);
 };
 
 export default RoleRoutes;

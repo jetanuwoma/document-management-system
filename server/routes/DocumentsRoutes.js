@@ -9,7 +9,7 @@ const DocumentsRoutes = (router) => {
     .post(DocumentsController.createDocument);
 
   router.route('/search/document')
-    .get(DocumentsController.searchDocuments);
+    .get(Access.setSearchCriterial, DocumentsController.searchDocuments);
 
   router.route('/documents/:id')
     .get(Access.documentExists,
@@ -26,7 +26,7 @@ const DocumentsRoutes = (router) => {
           );
 
 
-    router.route('/documents/access/:access')
+  router.route('/documents/access/:access')
       .get(Access.accessType, DocumentsController.getAllUserPublicDocuments);
 
   router.route('/users/:id/documents')

@@ -16,6 +16,12 @@ export default function pageControlReducer(state = initialState.pageControls, ac
       searchQuery: action.query,
     };
 
+  case actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS:
+    return {
+      ...state,
+      searchCount: action.result.count
+    };
+
   default:
     return state;
   }

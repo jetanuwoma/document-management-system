@@ -11,24 +11,30 @@ class Header extends React.Component {
 
     this.onFocus = this.onFocus.bind(this);
     this.onSearch = this.onSearch.bind(this);
-    console.log(this.props);
+  }
+
+  componentWillReceiveProps() {
+    if (this.props.searchQuery !== '') {
+      this.props.triggerSearch(this.props.searchQuery);
+    }
   }
 
   onFocus() {
     if (this.props.location.pathname === '/') {
-      this.context.router.push('/doc');
+      this.context.router.push('/documents');
       this.props.changeSearchSource('document');
     } else if (this.props.location.pathname === '/doc') {
-      this.props.changeSearchSource('document');
+      this.props.changeSearchSource('userdocuments');
     } else if (this.props.location.pathname === '/users') {
       this.props.changeSearchSource('users');
+    } else {
+      this.context.router.push('/documents');
+      this.props.changeSearchSource('document');
     }
   }
 
   onSearch(event) {
-    console.log(event.target.value);
     this.props.triggerSearch(event.target.value);
-    console.log(this.props);
   }
 
   render() {
@@ -82,8 +88,8 @@ Header.propTypes = {
   location: PropTypes.object.isRequired,
   changeSearchSource: PropTypes.func.isRequired,
   triggerSearch: PropTypes.func.isRequired,
-  isSearching: PropTypes.bool.isRequired,
   searchQuery: PropTypes.string.isRequired,
+  allUsersDocuments: PropTypes.object,
 };
 
 Header.contextTypes = {
@@ -96,6 +102,7 @@ function mapStateToProps(state) {
     searchSource: state.pageControls.searchSource,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
+    allUsersDocuments: state.adminManagement.allUsersDocuments,
   };
 }
 

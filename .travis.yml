@@ -9,7 +9,7 @@ services:
 
 postgres:
   adapter: postgresql
-  database: myapp_test
+  database: travis
   username: postgres
 before_script:
   -  npm --prefix ./client install ./client
