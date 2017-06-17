@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// Set database connection settings
 const config = {
   development: {
     url: process.env.DATABASE_URL,

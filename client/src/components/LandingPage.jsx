@@ -68,9 +68,7 @@ class LandingPage extends React.Component {
         </div>
         <br /><br />
 
-        <div className="section">
-
-        </div>
+        <div className="section" />
       </div>
       <div id="modal1" className="modal modal-fixed-footer">
     <div className="modal-content">
@@ -78,7 +76,9 @@ class LandingPage extends React.Component {
       <p>A bunch of text</p>
     </div>
     <div className="modal-footer">
-      <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+      <a href="#!"
+        className="modal-action modal-close waves-effect waves-green btn-flat ">
+        Agree</a>
     </div>
   </div>
     </div>

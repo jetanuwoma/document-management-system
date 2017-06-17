@@ -1,5 +1,6 @@
 import { Logger } from 'logger';
-import { sequelize, Roles } from '../../models';
+import bcrypt from 'bcrypt-nodejs';
+import { sequelize, Roles, Users } from '../../models';
 /**
  * Seeder - Class to populate database with values for testing purpose
  */
@@ -12,7 +13,10 @@ class Seeder {
   static seed() {
     sequelize.sync({ force: true })
     .then(() => {
-      Seeder.seedRoles();
+      Seeder.seedRoles()
+      .then(() => {
+        Seeder.seedUsers();
+      });
     })
     .catch((err) => {
       Logger.error(err);
@@ -45,6 +49,30 @@ class Seeder {
       }
     ];
     return Roles.bulkCreate(roles);
+  }
+
+  /**
+   * Seed database with some default users
+   * @returns {object} - A Promise object
+   */
+  static seedUsers() {
+    const users = [
+      {
+        username: 'wapjude',
+        email: 'wapjude@gmail.com',
+        password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
+        fullNames: 'Etanuwoma Jude',
+        RoleId: 1
+      },
+      {
+        username: 'smalling',
+        email: 'small@gmail.com',
+        password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
+        fullNames: 'Small Jude',
+        RoleId: 2
+      }
+    ];
+    return Users.bulkCreate(users);
   }
 
 }

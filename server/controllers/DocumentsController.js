@@ -19,11 +19,11 @@ class DocumentsController {
     })
       .then((documents) => {
         res.status(200)
-           .send(documents);
+          .send(documents);
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
-           .send({ message: 'Error retrieving documents' });
+          .send({ message: 'Error retrieving documents' });
       });
   }
 
@@ -52,11 +52,11 @@ class DocumentsController {
     Documents.create(req.body)
       .then((document) => {
         res.status(201)
-           .send(document);
+          .send(document);
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
-           .send({ message: 'Error creating documents' });
+          .send({ message: 'Error creating documents' });
       });
   }
 
@@ -72,18 +72,18 @@ class DocumentsController {
       offset: req.query.offset || 0,
       where: { OwnerId: req.params.id }
     })
-    .then((documents) => {
-      res.status(200)
-         .send(documents);
-    })
-    .catch((err) => {
-      res.status(500)
-         .send({ message: 'Error fetching documents' });
-    });
+      .then((documents) => {
+        res.status(200)
+          .send(documents);
+      })
+      .catch(() => {
+        res.status(500)
+          .send({ message: 'Error fetching documents' });
+      });
   }
 
   /**
-   * Get all public Access documents of a users
+   * Get all public or role documents of a users
    * @param {Object} req - Request object
    * @param {Object} res - Response object
    * @returns {void} Returns void
@@ -104,7 +104,7 @@ class DocumentsController {
       .then((document) => {
         document.update(req.body)
           .then((updated) => {
-            res.status(200).send(req.body);
+            res.status(200).send(updated);
           });
       });
   }
@@ -116,22 +116,23 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static searchDocuments(req, res) {
-    const queryTerm = req.query.q;
+    // defined in the access middleware
+    const searchQuery = req.searchQuery.where;
 
     Documents.findAndCountAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offet || 0,
-      where: { title: { $iLike: `%${queryTerm}%` } }
+      where: searchQuery
     })
-    .then((results) => {
-      res.status(200).send(results);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: 'Error fetching documents with that term'
+      .then((results) => {
+        res.status(200).send(results);
+      })
+      .catch(() => {
+        res.status(500).send({
+          message: 'Error fetching documents with that term'
+        });
       });
-    });
   }
 
   /**
@@ -142,12 +143,14 @@ class DocumentsController {
    */
   static deleteDocument(req, res) {
     Documents.findById(req.params.id)
-       .then((document) => {
-         document.destroy()
-         .then(() => {
-          res.status(200).send({ message: `${document.title} has been deleted` });
-         });
-       });
+      .then((document) => {
+        document.destroy()
+          .then(() => {
+            res.status(200).send({
+              message: `${document.title} has been deleted`
+            });
+          });
+      });
   }
 
 }

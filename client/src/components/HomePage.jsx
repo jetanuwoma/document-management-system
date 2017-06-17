@@ -1,28 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import LandingPage from './LandingPage';
+import LandingPage from './LandingPage.jsx';
+import DashBoard from './DashBoard.jsx';
 
 class HomePage extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = { Page: <LandingPage /> };
-  }
-
-  async componentDidMount() {
-    if (this.props.user.isAuthenticated) {
-      const { default: Page } = await import('./DashBoard');
-      this.setState({ Page: <Page /> });
-    }
-  }
 
   render() {
     const { isAuthenticated } = this.props;
     return (
       <div>
-      { isAuthenticated ? this.state.Page : <LandingPage /> }
+      { isAuthenticated ? <DashBoard /> : <LandingPage /> }
     </div>
     );
   }

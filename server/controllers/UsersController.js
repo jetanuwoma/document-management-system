@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Users, ExpiredTokens, Roles } from '../models';
+import { Users, ExpiredTokens } from '../models';
 
 
 const userRecordDetail = newUser => ({
@@ -63,7 +63,7 @@ class UsersController {
     ExpiredTokens.destroy({ where: {
       createdAt: { $lt: new Date() - (48 * 60 * 60 * 1000) } } });
     return res.status(200).send({ message:
-      `User with id:${req.decoded.UserId} logged out` });
+      'User logged out' });
   }
 
   /**
@@ -83,45 +83,49 @@ class UsersController {
          if (userExist) {
            return res.status(409)
              .send({
-               message: `This email is in existence please
-                         choose a new one or login`
+               message: `This email is in existence please choose a new one or login` //eslint-disable-line
              });
          }
-         const { username, fullNames, email, password, RoleId } = req.body;
+         const { username, fullNames, email, password } = req.body;
          // Reject non admin creating an admin account
-         if (req.body.RoleId === '1' && req.decoded.RoleId !== 1) {
+         console.log(req.body.RoleId);
+         if (req.body.RoleId === 1) {
            return res.status(403)
              .send({
                message: 'You can\'t create an admin account yourself'
              });
-         }
-
-         const userToCreate = { username, fullNames, email, password, RoleId };
-         // Create user's account and set session to expire in 3 days
-         Users.create(userToCreate)
-             .then((newUser) => {
-               const token = jwt.sign({
-                 UserId: newUser.id,
-                 RoleId: newUser.RoleId,
-                 fullNames: newUser.fullNames,
-                 email: newUser.email,
-               }, req.secret, {
-                 expiresIn: '3 days'
-               });
-               const user = userRecordDetail(newUser);
-               res.status(201)
-                 .send({
-                   user,
-                   token,
+         } else {
+           const userToCreate = { username,
+             fullNames,
+             email,
+             password
+           };
+           // Create user's account and set session to expire in 3 days
+           Users.create(userToCreate)
+               .then((newUser) => {
+                 const token = jwt.sign({
+                   UserId: newUser.id,
+                   RoleId: newUser.RoleId,
+                   fullNames: newUser.fullNames,
+                   email: newUser.email,
+                 }, req.secret, {
                    expiresIn: '3 days'
                  });
-             })
-             .catch((err) => {
-               res.status(500)
-               .send({
-                 message: err
+                 const user = userRecordDetail(newUser);
+                 res.status(201)
+                   .send({
+                     user,
+                     token,
+                     expiresIn: '3 days'
+                   });
+               })
+               .catch((err) => {
+                 res.status(500)
+                 .send({
+                   message: err
+                 });
                });
-             });
+         }
        });
   }
 
@@ -132,7 +136,7 @@ class UsersController {
    * @returns {void} Returns void
    */
   static getUser(req, res) {
-    // Find user with either their username or password
+    // Find user with either their username or email
     Users.findOne({
       where: {
         $or: [{ email: req.params.id },
@@ -167,7 +171,7 @@ class UsersController {
                 data: userRecordDetail(updatedUser)
               }));
         })
-        .catch((err) => {
+        .catch(() => {
           res.status(404).send({
             message: `${req.params.id} does not meet any record`
           });
@@ -196,7 +200,7 @@ class UsersController {
          }
        });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404)
         .send({ message: `${query} does not meet any record in the database` });
     });

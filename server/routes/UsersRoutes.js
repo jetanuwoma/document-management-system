@@ -12,9 +12,14 @@ const UsersRoutes = (router) => {
     .post(UsersController.login);
 
   router.route('/users/:id')
-    .put(Access.verifyToken, UsersController.updateUser)
-    .get(UsersController.getUser)
-    .delete(Access.verifyToken, Access.isAdmin, UsersController.deleteUser);
+    .put(Access.verifyToken,
+      UsersController.updateUser)
+    .get(Access.verifyToken,
+      UsersController.getUser)
+    .delete(Access.verifyToken,
+      Access.isAdmin,
+      Access.canDeleteUser,
+      UsersController.deleteUser);
 
   router.route('/users/logout')
     .post(UsersController.logout);

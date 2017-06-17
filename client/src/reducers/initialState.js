@@ -9,6 +9,7 @@ export default {
     searchSource: 'document',
     isSearching: false,
     searchQuery: '',
+    searchCount: 0
   },
   isAuthenticated: false,
   manageDocument: {

@@ -41,7 +41,7 @@ class RolesController {
     .status(200)
     .send({ message: `${req.params.id} successfully updated`,
       data: update }))
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
           .send({ message: 'An error occurred please try again' });
       });
@@ -62,13 +62,13 @@ class RolesController {
           .send({ message: `${req.body.title} Role is already created` });
       }
 
-      // Create Role is not existing before
+      // Create Role if is not existing before
       Roles.create(req.body)
       .then((newRole) => {
         res.status(201)
         .send(newRole);
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
         .send({ message: 'error occurred' });
       });

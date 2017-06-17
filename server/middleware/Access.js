@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { Users, Documents, ExpiredTokens, } from '../models';
+import { Users, Documents } from '../models';
 
 
 /**
  * This class create and check
- * authentication access based on different users role
+ * authentication access based on different user roles
  */
 class Access {
 
@@ -33,20 +33,13 @@ class Access {
          .send({ message: 'Unauthorized Access' });
     } else {
     // Check if token has expired
-      ExpiredTokens.find({ where: { token } })
-      .then((expires) => {
-        if (expires) {
-          return res.status(401)
-        .send({
-          message: 'Your token has expired please login to obtain a new one'
-        });
-        }
-      });
       // Decode token and allow access if valid
       jwt.verify(token, req.secret, (err, decoded) => {
         if (err) {
           return res.status(401)
-                    .send({ message: "jude" });
+          .send({
+            message: 'Could not verify that token please obtain new one'
+          });
         }
         req.decoded = decoded;
         next();
@@ -103,7 +96,7 @@ class Access {
           // i am the admin/superAdmin
           next();
         } else if (document.permission === 'public') {
-          // is open to everybody to edit
+          // is opened for everybody to edit
           next();
         } else {
           // you are forbidden
@@ -120,10 +113,10 @@ class Access {
    * @param {callback} next callback to the next middleware or function
    */
   static documentsAreMine(req, res, next) {
-    if (parseInt(req.params.id) === req.decoded.UserId || req.decoded.RoleId === 1) {
+    if (parseInt(req.params.id, 10) === req.decoded.UserId ||
+       req.decoded.RoleId === 1) {
       next();
     } else {
-      console.log(req.params.id);
       res.status(404)
         .send({ message: 'Unauthorized access' });
     }
@@ -167,6 +160,49 @@ class Access {
     }
   }
 
+  /**
+   * setSearchCriterial - define search zone for users
+   * @param {object} req - Request Object
+   * @param {object} res - Response Object
+   * @param {callback} next callback to the next middleware or function
+   */
+  static setSearchCriterial(req, res, next) {
+    const term = req.query.q;
+    let query = { where: { title: { $iLike: `%${term}%` } } };
+
+    // if it's admin, perform global search
+    if (req.decoded.RoleId === 1) {
+      req.searchQuery = query;
+    } else {
+      // Search only users documents
+      query = { where: { $and: [
+        { title: { $iLike: `%${term}%` } },
+        { OwnerId: req.decoded.UserId }
+      ] } };
+      req.searchQuery = query;
+    }
+    next();
+  }
+
+  /**
+   *canDeleteUser - Check if the admin can delete the given user
+   * @param {object} req - Request Object
+   * @param {object} res - Response Object
+   * @param {callback} next callback to the next middleware or function
+   */
+  static canDeleteUser(req, res, next) {
+    Users.findById(req.params.id)
+      .then((user) => {
+        // The user is an admin or himself
+        if (user.id === req.decoded.UserId &&
+          req.decoded.RoleId === user.RoleId) {
+          res.status(401)
+            .send({ message: 'You cant delete yourself' });
+        } else {
+          next();
+        }
+      });
+  }
 }
 
 export default Access;

@@ -21,8 +21,7 @@ module.exports = {
       }
     });
   },
-  down(queryInterface, Sequelize) {
-    queryInterface.dropTable('ExpiredTokens');
-    return queryInterface.dropTable('InvalidTokens');
+  down(queryInterface) {
+    return queryInterface.dropTable('ExpiredTokens');
   }
 };

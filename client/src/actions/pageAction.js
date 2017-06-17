@@ -1,4 +1,5 @@
 import actionTypes from '../constants';
+import { searchDocuments } from './adminActions';
 
 export function changeSearchSource(source) {
   return (dispatch) => {
@@ -21,5 +22,6 @@ export function changeSearchQuery(query) {
 export function triggerSearch(query) {
   return (dispatch) => {
     dispatch(changeSearchQuery(query));
+    dispatch(searchDocuments(query));
   };
 }

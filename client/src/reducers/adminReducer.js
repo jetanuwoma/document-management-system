@@ -15,6 +15,12 @@ export default function adminReducer(state = initialState.adminManagement, actio
       allUsersDocuments: [...state.allUsersDocuments, ...action.documents]
     };
 
+  case actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS:
+    return {
+      ...state,
+      allUsersDocuments: [...action.result.rows]
+    };
+
   default:
     return state;
   }
