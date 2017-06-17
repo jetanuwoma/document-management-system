@@ -46,7 +46,9 @@ describe('Role', () => {
         .send(roleData)
         .expect(201)
         .end((err, res) => {
-          if (err) return done(err);
+          if (err) {
+            return done(err);
+          }
           expect(res.body.title).to.equal(roleData.title);
           done();
         });
@@ -70,7 +72,9 @@ describe('Role', () => {
         .send({ title: faker.lorem.word() })
         .expect(401)
         .end((err, res) => {
-          if (err) return done(err);
+          if (err) {
+            return done(err);
+          }
           expect(res.body.message).to
             .equal('Requires an admin access to proceed');
           done();
