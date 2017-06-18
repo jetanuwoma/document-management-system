@@ -1,6 +1,7 @@
 import { Logger } from 'logger';
 import bcrypt from 'bcrypt-nodejs';
-import { sequelize, Roles, Users } from '../../models';
+import faker from 'faker';
+import { sequelize, Roles, Users, Documents } from '../../models';
 /**
  * Seeder - Class to populate database with values for testing purpose
  */
@@ -15,7 +16,10 @@ class Seeder {
     .then(() => {
       Seeder.seedRoles()
       .then(() => {
-        Seeder.seedUsers();
+        Seeder.seedUsers()
+         .then(() => {
+           Seeder.seedDocuments();
+         });
       });
     })
     .catch((err) => {
@@ -74,6 +78,35 @@ class Seeder {
     ];
     return Users.bulkCreate(users);
   }
+
+  /**
+   * Add some documents to database
+   * @returns {object} - A Promise object
+   */
+  static seedDocuments() {
+    const documents = [
+      {
+        title: faker.lorem.words(),
+        content: faker.lorem.paragraph(),
+        permission: 'public',
+        OwnerId: '1'
+      },
+      {
+        title: faker.lorem.words(),
+        content: faker.lorem.paragraph(),
+        permission: 'public',
+        OwnerId: '1'
+      },
+      {
+        title: faker.lorem.words(),
+        content: faker.lorem.words(),
+        permission: 'public',
+        OwnerId: '2'
+      }
+    ];
+    return Documents.bulkCreate(documents);
+  }
+
 
 }
 
