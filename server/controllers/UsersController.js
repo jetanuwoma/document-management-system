@@ -186,7 +186,7 @@ class UsersController {
    * @returns {void} Returns void
    */
   static searchUsers(req, res) {
-    const query = req.query.searchQuery;
+    const query = req.query.q;
     Users.findAndCountAll({
       order: '"createdAt" DESC',
       where: { fullNames: { $iLike: `%${query}%` } }
