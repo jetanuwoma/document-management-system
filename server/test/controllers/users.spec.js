@@ -177,7 +177,7 @@ describe('Users', () => {
           });
      });
 
-    it('Should not allow regular users to view all users', (done) => {
+    it('Should not allow regular users to view all registere', (done) => {
       request.get('/api/users')
         .set({ 'x-access-token': regularDetails.token })
           .end((err, res) => {
