@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import toastr from 'toastr';
-import { Link } from 'react-router';
 import ReactScrollPagination from 'react-scroll-pagination';
 import { listAllDocuments } from '../../actions/adminActions';
 import { deleteDocument, undoDelete } from '../../actions/documentsAction';
-import PreLoader from '../templates/PreLoader';
-import DocumentList from '../document/DocumentList';
+import PreLoader from '../templates/PreLoader.jsx';
+import DocumentList from '../document/DocumentList.jsx';
 
 class ManageDocuments extends React.Component {
   constructor(props) {
@@ -17,7 +15,10 @@ class ManageDocuments extends React.Component {
       isFetching: true,
       requestPagin: false,
       totalPages: 1,
-      activePagination: 0 };
+      activePagination: 0,
+      totalDocument: 0,
+      documents: []
+    };
     this.nextPage = this.nextPage.bind(this);
   }
 
@@ -28,8 +29,20 @@ class ManageDocuments extends React.Component {
       });
   }
 
+  componentWillReceiveProps(nextProps) {
+    // calculate total pages
+    // totalDocument divides by a page limit
+    const totalPage = nextProps.totalDocument / 6;
+    this.setState({ totalDocument: nextProps.totalDocument,
+      documents: nextProps.documents,
+      totalPages: Math.ceil(totalPage) });
+  }
+
+
   nextPage() {
-    if (!this.state.requestPagin) {
+    if (!this.state.requestPagin &&
+        this.state.documents.length <= this.state.totalDocument
+      ) {
       this.setState({ requestPagin: true });
       this.setState({ activePagination: this.state.activePagination + 1 });
       this.props.listAllDocuments(this.state.activePagination)
@@ -57,6 +70,11 @@ class ManageDocuments extends React.Component {
             searchCount={this.props.searchCount}
             />
         }
+        {this.state.requestPagin &&
+        <div className="progress">
+          <div className="indeterminate" />
+      </div>
+       }
         <ReactScrollPagination
           fetchFunc={this.nextPage}
           totalPages={this.state.totalPages}
@@ -79,7 +97,8 @@ ManageDocuments.propTypes = {
   undoDelete: PropTypes.func.isRequired,
   isSearching: PropTypes.bool.isRequired,
   searchQuery: PropTypes.string.isRequired,
-  searchCount: PropTypes.string.isRequired,
+  searchCount: PropTypes.number.isRequired,
+  totalDocument: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
@@ -90,6 +109,7 @@ function mapStateToProps(state) {
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
     searchCount: state.pageControls.searchCount,
+    totalDocument: state.pageControls.totalDocument,
   };
 }
 

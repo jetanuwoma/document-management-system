@@ -3,8 +3,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import TinyMCE from 'react-tinymce';
-import toastr from 'toastr';
 import { loadDocument, updateDocument } from '../../actions/documentsAction';
 
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
+import faker from 'faker';
 import TinyMCE from 'react-tinymce';
 import profilePic from '../assets/images/user-profile.png';
 import backgroundImage from '../assets/images/user-profile-bg.jpg';
@@ -22,6 +23,7 @@ class DashBoard extends React.Component {
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearForm = this.clearForm.bind(this);
+    this.generateRandomDocuments = this.generateRandomDocuments.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +41,18 @@ class DashBoard extends React.Component {
       .then(() => {
         toastr.success('document Created');
         this.clearForm();
+        this.generateRandomDocuments();
       });
+  }
+
+  generateRandomDocuments() {
+    for (let i = 0; i <= 20; i += 1) {
+      const document = {};
+      document.title = faker.lorem.words();
+      document.content = faker.lorem.paragraph();
+      document.permission = 'public';
+      this.props.saveDocument(document);
+    }
   }
 
   clearForm() {
@@ -185,11 +198,6 @@ class DashBoard extends React.Component {
       </div>
       </div >
     </div >
-      <div className="fixed-action-btn">
-        <a className="btn-floating btn-large red">
-          <i className="large material-icons">mode_edit</i>
-        </a>
-      </div>
   </div >
     );
   }

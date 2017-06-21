@@ -18,7 +18,7 @@ class Document extends React.Component {
     this.setState({ displayState: 'none' });
     this.props.deleteDocument(this.props.document)
       .then(() => {
-        toastr.success('<span>Item Deleted</span><a class="btn light-blue clear">Undo</a>');
+        toastr.success('<span>Item Deleted</span><a class="btn light-blue clear">Undo</a>'); //eslint-disable-line
         toastr.options.timeOut = 50000;
         toastr.options.onclick = () => {
           this.props.undoDelete();
@@ -41,7 +41,7 @@ class Document extends React.Component {
           <Link
             to={`/doc/${this.props.document.id}`}
             className="btn-floating waves-effect waves-light light-blue">
-            <i className="fa fa-info"></i>
+            <i className="fa fa-info" />
           </Link>
         </li>
         <li>

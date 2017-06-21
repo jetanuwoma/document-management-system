@@ -167,11 +167,15 @@ class Access {
    * @param {callback} next callback to the next middleware or function
    */
   static setSearchCriterial(req, res, next) {
-    const term = req.query.q;
+    const access = req.query.access;
+    const term = req.query.q || '';
     let query = { where: { title: { $iLike: `%${term}%` } } };
 
     // if it's admin, perform global search
     if (req.decoded.RoleId === 1) {
+      if (access !== undefined && access !== null) {
+        query.where.permission = access;
+      }
       req.searchQuery = query;
     } else {
       // Search only users documents
@@ -179,8 +183,14 @@ class Access {
         { title: { $iLike: `%${term}%` } },
         { OwnerId: req.decoded.UserId }
       ] } };
+
+      if (access !== undefined && access !== null) {
+        query.where.$and.push({ permission: access });
+      }
       req.searchQuery = query;
     }
+
+
     next();
   }
 

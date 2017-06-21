@@ -41,12 +41,27 @@ export function saveDocument(document) {
      dispatch(createDocumentSuccess(result.data));
    });
  };
- }
+}
 
- export function loadUserDocuments() {
+export function getDocumentCounts(access = null) {
+  if (access === null) {
+    return axios.get('/api/count/document');
+  }
+  return axios.get(`/api/count/document?access=${access}`);
+}
+
+
+ export function loadUserDocuments(offset = 0) {
    return (dispatch, getState) => {
-     return axios.get(`/api/users/${getState().user.user.UserId}/documents`)
+     return axios.get(`/api/users/${getState().user.user.UserId}/documents?offset=${offset}`) //eslint-disable-line
        .then((res) => {
+         getDocumentCounts()
+          .then((response) => {
+            dispatch({
+              type: actionTypes.SET_DOCUMENT_COUNT,
+              count: response.data.count
+            });
+          });
          dispatch(loadDocumentsSuccess(res.data));
        });
    };
@@ -78,15 +93,20 @@ export function saveDocument(document) {
  }
 
  export function updateDocument(document) {
-   return (dispatch) => {
-     return axios.put(`/api/documents/${document.id}`, document);
-   }
+   return axios.put(`/api/documents/${document.id}`, document);
  }
 
  export function loadPublicDocuments() {
    return (dispatch) => {
      return axios.get('/api/documents/access/public')
        .then((res) => {
+         getDocumentCounts('public')
+          .then((response) => {
+            dispatch({
+              type: actionTypes.SET_DOCUMENT_COUNT,
+              count: response.data.count
+            });
+          });
          dispatch(loadDocumentsSuccess(res.data));
        });
    };

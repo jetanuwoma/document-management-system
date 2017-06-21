@@ -21,6 +21,18 @@ export default function adminReducer(state = initialState.adminManagement, actio
       allUsersDocuments: [...action.result.rows]
     };
 
+  case actionTypes.SELECT_USER:
+    return {
+      ...state,
+      selectedUsers: [...state.selectedUsers, action.id]
+    };
+
+  case actionTypes.REMOVE_SELECTED_USER:
+    return {
+      ...state,
+      selectedUsers: [...action.users]
+    };
+
   default:
     return state;
   }

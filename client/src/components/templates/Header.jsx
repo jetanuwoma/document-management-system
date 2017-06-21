@@ -3,38 +3,39 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeSearchSource, triggerSearch } from '../../actions/pageAction';
-import SideBar from './SideBar';
+import SideBar from './SideBar.jsx';
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = { searchSource: 'document' };
     this.onFocus = this.onFocus.bind(this);
     this.onSearch = this.onSearch.bind(this);
   }
 
-  componentWillReceiveProps() {
-    if (this.props.searchQuery !== '') {
-      this.props.triggerSearch(this.props.searchQuery);
-    }
-  }
-
   onFocus() {
     if (this.props.location.pathname === '/') {
-      this.context.router.push('/documents');
-      this.props.changeSearchSource('document');
+      if (this.props.user.RoleId !== 1) {
+        this.setState({ searchSource: 'userdocument' });
+        this.props.changeSearchSource('userdocument');
+        this.context.router.push('/doc');
+      } else {
+        this.props.changeSearchSource('document');
+        this.context.router.push('/documents');
+      }
     } else if (this.props.location.pathname === '/doc') {
-      this.props.changeSearchSource('userdocuments');
+      this.setState({ searchSource: 'userdocument' });
     } else if (this.props.location.pathname === '/users') {
-      this.props.changeSearchSource('users');
-    } else {
-      this.context.router.push('/documents');
-      this.props.changeSearchSource('document');
+      this.setState({ searchSource: 'users' });
     }
   }
 
   onSearch(event) {
-    this.props.triggerSearch(event.target.value);
+    if (event.keyCode === 13) {
+      this.props.triggerSearch(event.target.value, this.state.searchSource);
+    }
+    //
   }
 
   render() {
@@ -61,7 +62,7 @@ class Header extends React.Component {
       <div className="nav-wrapper">
         <Link id="logo-container" to="/" className="brand-logo">We Doc</Link>
           <div className="header-search-wrapper hide-on-med-and-down">
-              <i className="fa fa-search"></i>
+              <i className="fa fa-search" />
               <input type="text" name="Search"
                 className="header-search-input z-depth-2"
                 placeholder={`Search for ${this.props.searchSource}`}
@@ -89,7 +90,7 @@ Header.propTypes = {
   changeSearchSource: PropTypes.func.isRequired,
   triggerSearch: PropTypes.func.isRequired,
   searchQuery: PropTypes.string.isRequired,
-  allUsersDocuments: PropTypes.object,
+  user: PropTypes.object,
 };
 
 Header.contextTypes = {
@@ -102,7 +103,7 @@ function mapStateToProps(state) {
     searchSource: state.pageControls.searchSource,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
-    allUsersDocuments: state.adminManagement.allUsersDocuments,
+    user: state.user.user,
   };
 }
 

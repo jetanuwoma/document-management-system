@@ -16,4 +16,7 @@ export default keymirror({
   CHANGE_SEARCH_LOCATION: null,
   CHANGE_SEARCH_QUERY: null,
   LOAD_DOCUMENT_SEARCH_SUCCESS: null,
+  SELECT_USER: null,
+  REMOVE_SELECTED_USER: null,
+  SET_DOCUMENT_COUNT: null,
 });
