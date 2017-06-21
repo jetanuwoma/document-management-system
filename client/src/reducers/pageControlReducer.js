@@ -22,6 +22,11 @@ export default function pageControlReducer(state = initialState.pageControls, ac
       searchCount: action.result.count
     };
 
+  case actionTypes.SET_DOCUMENT_COUNT:
+    return {
+      ...state,
+      totalDocument: action.count
+    };
   default:
     return state;
   }

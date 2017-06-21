@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { loadPublicDocuments, deleteDocument, undoDelete } from '../../actions/documentsAction';
-import PreLoader from '../templates/PreLoader';
+import { loadPublicDocuments,
+  deleteDocument,
+  undoDelete } from '../../actions/documentsAction';
+import PreLoader from '../templates/PreLoader.jsx';
 
 class PublicDocuments extends React.Component {
   constructor(props) {
@@ -11,11 +13,8 @@ class PublicDocuments extends React.Component {
     // set Dynamic import for code splitting and optimisation
     this.state = {
       ActivePage: <PreLoader />,
-      pathName: this.props.location.pathname
     };
     this.loadDocumentList = this.loadDocumentList.bind(this);
-
-    console.log(this.props);
   }
 
   componentDidMount() {

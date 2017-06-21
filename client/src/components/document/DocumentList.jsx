@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import Document from './Document';
+import Document from './Document.jsx';
 
 class DocumentList extends React.Component {
 

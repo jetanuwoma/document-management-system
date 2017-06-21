@@ -69,7 +69,7 @@ class DocumentsController {
   static getUserDocuments(req, res) {
     Documents.findAll({
       limit: req.query.limit || 6,
-      offset: req.query.offset || 0,
+      offset: req.query.offset * (req.query.limit || 6) || 0,
       where: { OwnerId: req.params.id }
     })
       .then((documents) => {
@@ -122,7 +122,7 @@ class DocumentsController {
     Documents.findAndCountAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
-      offset: req.query.offet || 0,
+      offset: req.query.offset * (req.query.limit || 6) || 0,
       where: searchQuery
     })
       .then((results) => {
@@ -151,6 +151,23 @@ class DocumentsController {
             });
           });
       });
+  }
+
+  /**
+   * Get total number of users documents based on access level
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {void} Returns void
+   */
+  static getDocumentCounts(req, res) {
+    const searchQuery = req.searchQuery.where;
+    Documents.findAndCountAll({
+      where: searchQuery
+    }).then((result) => {
+      res.send({ count: result.count });
+    }).catch((error) => {
+      res.send({ message: error });
+    });
   }
 
 }

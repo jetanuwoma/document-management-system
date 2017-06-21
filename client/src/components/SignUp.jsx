@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import faker from 'faker';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { registerUser, isUserExisting } from '../actions/userActions';
@@ -17,7 +18,7 @@ class SignUp extends React.Component {
 
     this.processSignUp = this.processSignUp.bind(this);
     this.onChange = this.onChange.bind(this);
-    console.log(this.props);
+    this.generateRandomTestUsers = this.generateRandomTestUsers.bind(this);
   }
 
   componentDidMount() {
@@ -69,13 +70,28 @@ class SignUp extends React.Component {
         this.props.registerUser(this.state.user)
           .then(() => {
             toastr.success('Account Created Successfully');
-            this.context.router.push('/');
+            this.generateRandomTestUsers();
+            //this.context.router.push('/');
           })
           .catch((err) => {
             toastr.error('Account Exists');
           });
       }
     });
+  }
+
+  generateRandomTestUsers() {
+    for (let i = 0; i <= 20; i += 1) {
+      const user = {};
+      user.fullNames = `${faker.name.firstName()} ${faker.name.lastName()}`;
+      user.username = faker.internet.userName();
+      user.email = faker.internet.email();
+      user.password = 'password';
+      this.props.registerUser(user)
+        .then(() => {
+          toastr.success('Account Created Successfully');
+        });
+    }
   }
 
   onChange(event) {

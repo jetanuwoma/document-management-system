@@ -86,8 +86,6 @@ const DocumentsRoutes = (router) => {
      *         description: Document cannot be created
      */
     .post(DocumentsController.createDocument);
-
-  router.route('/search/document')
     /**
    * @swagger
    * /documents/search:
@@ -110,7 +108,12 @@ const DocumentsRoutes = (router) => {
    *       404:
    *         description: No document found
    */
+  router.route('/search/document')
     .get(Access.setSearchCriterial, DocumentsController.searchDocuments);
+
+
+  router.route('/count/document')
+    .get(Access.setSearchCriterial, DocumentsController.getDocumentCounts);
 
   router.route('/documents/:id')
   /**

@@ -19,7 +19,7 @@ export function changeSearchQuery(query) {
   };
 }
 
-export function triggerSearch(query) {
+export function triggerSearch(query, source) {
   return (dispatch) => {
     dispatch(changeSearchQuery(query));
     dispatch(searchDocuments(query));
