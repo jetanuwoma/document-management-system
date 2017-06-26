@@ -133,7 +133,7 @@ describe('DashBoard component', () => {
     const updateProfile = (user) => {
       TestWrapper.dispatch({
         type: actionTypes.USER_RECORD_UPDATED,
-        user
+        user: TestWrapper.call().state.user
       });
       return Promise.resolve(true);
     };
