@@ -3,29 +3,58 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
-import faker from 'faker';
-import TinyMCE from 'react-tinymce';
+import TinyMCEInput from 'react-tinymce-input';
 import profilePic from '../assets/images/user-profile.png';
 import backgroundImage from '../assets/images/user-profile-bg.jpg';
+import { updateProfile } from '../actions/userActions';
 import { saveDocument } from '../actions/documentsAction';
 
+
+const TINYMCE_CONFIG = {
+  language: 'en',
+  theme: 'modern',
+  toolbar: 'bold italic underline strikethrough hr | bullist numlist | link unlink | undo redo | spellchecker code',
+  menubar: false,
+  statusbar: true,
+  resize: true,
+  plugins: 'link,spellchecker,paste',
+  theme_modern_toolbar_location: 'top',
+  theme_modern_toolbar_align: 'left'
+};
+/**
+ * Dashboard - Dashboard component
+ */
 class DashBoard extends React.Component {
 
+  /**
+   * set default state
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
 
     this.state = {
-      document: {},
-      initialContent: '<p>some initial content here</p>'
+      document: {
+        content: 'some initial content here',
+        permission: 'public',
+        title: ''
+      },
+      user: { ...this.props.user },
+      updateProfile: this.props.updateProfile,
+      saveDocument: this.props.saveDocument,
     };
 
     this.onChange = this.onChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearForm = this.clearForm.bind(this);
-    this.generateRandomDocuments = this.generateRandomDocuments.bind(this);
+    this.onProfileChange = this.onProfileChange.bind(this);
+    this.handleProfileSubmit = this.handleProfileSubmit.bind(this);
   }
 
+  /**
+   * reloads jquery plugins
+   */
   componentDidMount() {
     $('ul.tabs').tabs();
     $('.sidebar-collapse').sideNav();
@@ -35,31 +64,39 @@ class DashBoard extends React.Component {
       .on('change', this.onChange);
   }
 
+  /**
+   * Update props when it changes
+   * @param {Object} nextProps
+   **/
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.updateProfile !== undefined) {
+      this.setState({ updateProfile: nextProps.updateProfile });
+    }
+  }
+  /**
+   * handleSubmit - creates a new document
+   * @param {Object} event - DOM element
+   */
   handleSubmit(event) {
     event.preventDefault();
-    this.props.saveDocument(this.state.document)
+    this.state.saveDocument(this.state.document)
       .then(() => {
         toastr.success('document Created');
         this.clearForm();
-        this.generateRandomDocuments();
       });
   }
 
-  generateRandomDocuments() {
-    for (let i = 0; i <= 20; i += 1) {
-      const document = {};
-      document.title = faker.lorem.words();
-      document.content = faker.lorem.paragraph();
-      document.permission = 'public';
-      this.props.saveDocument(document);
-    }
-  }
-
+  /**
+   * Clears form after creating a document
+   */
   clearForm() {
-    this.setState({ document: {} });
-    $('#title').val('');
+    this.setState({ document: { content: '', title: '', permission: 'public' } });
   }
 
+  /**
+   * Handles changes on input fields
+   * @param {Object} event - DOM element
+   */
   onChange(event) {
     const name = event.target.name;
     const value = event.target.value;
@@ -68,17 +105,49 @@ class DashBoard extends React.Component {
     this.setState({ document });
   }
 
-  handleEditorChange(event) {
-    const content = event.target.getContent();
+  /**
+   * Handles changes on TinyMCE
+   * @param {Object} event - DOM element
+   */
+  handleEditorChange(newValue) {
+    const content = newValue;
     const document = this.state.document;
     document.content = content;
     this.setState({ document });
   }
 
+  /**
+   * Handles profile input field updates
+   * @param {Object} event - DOM element
+   */
+  onProfileChange(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    const user = this.state.user;
+    user[name] = value;
+    this.setState({ user });
+  }
 
+  /**
+   * Processes profile form update
+   * @param {Object} event - DOM element
+   */
+  handleProfileSubmit(event) {
+    event.preventDefault();
+    const user = this.state.user;
+    user.UserId = this.props.user.UserId;
+    this.state.updateProfile(user)
+      .then(() => {
+        toastr.success('Profile Updated Successfully');
+      });
+  }
+
+  /**
+   *Displays the login page
+   * @return {any}
+  */
   render() {
-    const { fullNames, RoleId } = this.props.user;
-    const { initialContent } = this.state;
+    const { fullNames, RoleId, email } = this.props.user;
     return (
       <div className="main">
         <div className="main-section">
@@ -88,8 +157,7 @@ class DashBoard extends React.Component {
                 <img className="activator" src={backgroundImage} />
               </div>
               <figure className="card-profile-image">
-                <img src={profilePic} className="circle z-depth-2 responsive-img
-                  activator" />
+                <img src={profilePic} className="circle z-depth-2 responsive-img activator" />
               </figure>
               <div className="card-content">
                 <div className="row">
@@ -102,103 +170,115 @@ class DashBoard extends React.Component {
                     </p>
                   </div>
                   <div className="col s2 center-align">
-                    <h4 className="card-title
-                      grey-text text-darken-4">3</h4>
-                    <p
-                      className="medium-small
-                      grey-text">
-                    Documents
-                         </p>
+                    <h4
+                      className="card-title grey-text text-darken-4">Active</h4>
+                    <p className="medium-small grey-text">Status</p>
+                  </div>
                 </div>
-                <div className="col s2 center-align">
-                  <h4
-                    className="card-title
-                    grey-text text-darken-4">Active</h4>
-                  <p className="medium-small grey-text">Status</p>
-                </div>
-                <div className="col s1 right-align">
-                  <a className="btn-floating
-                    activator
-                    waves-effect
-                    waves-light
-                    cyan right"
-                  title="Update Profile">
-                          <i className="fa fa-edit" />
-                      </a>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div id="profile-page-wall-share" className="row">
-          <div className="col s12">
-            <ul className="tabs tab-profile z-depth-1 cyan" >
-              <li className="tab col s3">
-                <a className="white-text waves-effect waves-light active"
-                  href="#CreateDocument">
-                  <i className="fa fa-plus" />
-                  Create A Document
+            <div id="profile-page-wall-share" className="row">
+              <div className="col s12">
+                <ul className="tabs tab-profile z-depth-1 cyan" >
+                  <li className="tab col s3">
+                    <a className="white-text waves-effect waves-light active"
+                      href="#CreateDocument">
+                      <i className="fa fa-plus" />
+                      Create A Document
                          </a>
-              </li>
-              <li className="tab col s3">
-                <a className="white-text
-                  waves-effect
-                  waves-light"
-                href="#UpdateProfile">
-                          <i className="fa fa-user-o" />
-                Update Profile
+                  </li>
+                  <li className="tab col s3">
+                    <a className="white-text waves-effect waves-light"
+                      href="#UpdateProfile">
+                      <i className="fa fa-user-o" />
+                      Update Profile
                          </a>
-                      </li>
-            <div className="indicator" />
-            </ul>
-          <div id="CreateDocument"
-            className="tab-content col s12  grey lighten-4">
-            <form className="left-alert" onSubmit={this.handleSubmit} >
-              <div className="row">
-                <div className="row margin">
-                  <div className="input-field col s12">
-                    <input id="title" name="title" className="validate"
-                      type="text" required="required"
-                      onChange={this.onChange} />
-                    <label className="center-align">Document Title</label>
-                  </div>
-                </div>
+                  </li>
+                  <div className="indicator" />
+                </ul>
+                <div id="CreateDocument"
+                  className="tab-content col s12  grey lighten-4">
+                  <form className="left-alert" onSubmit={this.handleSubmit} >
+                    <div className="row">
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <input id="title" name="title" className="validate"
+                            type="text"
+                            value={this.state.document.title}
+                            required="required"
+                            onChange={this.onChange} />
+                          <label className="center-align">Document Title</label>
+                        </div>
+                      </div>
 
-                <div className="row margin">
-                  <div className="input-field col s12">
-                    <select name="permission"
-                      required="required"
-                      id="selectRole"
-                      onChange={this.onChange}>
-                      <option value="public">Public Access</option>
-                      <option value="private">Private Access</option>
-                      <option value="role">My Department</option>
-                    </select>
-                    <label htmlFor="permission"
-                      className="center-align">Permission</label>
-                  </div>
-                </div>
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <select name="permission"
+                            required="required"
+                            id="selectRole"
+                            onChange={this.onChange}>
+                            <option value="public">Public Access</option>
+                            <option value="private">Private Access</option>
+                            <option value="role">My Department</option>
+                          </select>
+                          <label htmlFor="permission"
+                            className="center-align">Permission</label>
+                        </div>
+                      </div>
 
-                <TinyMCE
-                  content={initialContent}
-                  config={{
-                    plugins: 'link image code',
-                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code' //eslint-disable-line
-                  }}
-                  onChange={this.handleEditorChange}
-                />
-                <button className="waves-effect waves-light btn cyan"
-                  type="submit">Create Document</button>
+                      <TinyMCEInput
+                        value={this.state.document.content}
+                        tinymceConfig={TINYMCE_CONFIG}
+                        onChange={this.handleEditorChange}
+                      />
+                      <button className="waves-effect waves-light btn cyan"
+                        type="submit">Create Document</button>
+                    </div>
+                  </form>
+                </div>
+                <div id="UpdateProfile"
+                  className="tab-content col s12  grey lighten-4" >
+                  <form className="left-alert" onSubmit={this.handleProfileSubmit} >
+                    <div className="row">
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <input id="title" name="fullNames" className="validate"
+                            type="text" required="required"
+                            onChange={this.onProfileChange}
+                            value={fullNames}
+                          />
+                          <label className="center-align">fullNames</label>
+                        </div>
+                      </div>
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <input id="title" name="email" className="validate"
+                            type="text" required="required"
+                            onChange={this.onProfileChange}
+                            value={email} />
+                          <label className="center-align">email</label>
+                        </div>
+                      </div>
+                      <hr />
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <input id="title" name="title" className="validate"
+                            type="text"
+                            onChange={this.onProfileChange} />
+                          <label className="center-align">Update Password</label>
+                        </div>
+                      </div>
+                      <button className="waves-effect waves-light btn cyan"
+                        type="submit">Update Profile</button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </form>
-          </div>
-          <div id="CreateAlbum"
-            className="tab-content col s12  grey lighten-4" />
-        </div>
-      </div>
+            </div>
+          </div >
+        </div >
       </div >
-    </div >
-  </div >
     );
   }
 }
@@ -207,12 +287,13 @@ DashBoard.propTypes = {
   user: PropTypes.object.isRequired,
   alldocuments: PropTypes.object.isRequired,
   saveDocument: PropTypes.func.isRequired,
+  updateProfile: PropTypes.func.isRequired,
 };
 
 /**
- * mapStateToProps
- * @param  {Object} state redux state
- * @return {Object} return an object
+ * mapStateToProps - copies states to component
+ * @param {object} state - initalState
+ * @return {object} any
  */
 function mapStateToProps(state) {
   return {
@@ -222,4 +303,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { saveDocument })(DashBoard);
+export default connect(mapStateToProps, { saveDocument, updateProfile })(DashBoard);

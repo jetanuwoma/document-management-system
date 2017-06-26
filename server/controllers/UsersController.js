@@ -88,7 +88,6 @@ class UsersController {
          }
          const { username, fullNames, email, password } = req.body;
          // Reject non admin creating an admin account
-         console.log(req.body.RoleId);
          if (req.body.RoleId === 1) {
            return res.status(403)
              .send({

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 import user from './userReducer';
 import manageDocument from './documentReducer';
 import adminManagement from './adminReducer';
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   manageDocument,
   adminManagement,
   pageControls,
+  routing: routerReducer,
 });
 
 export default rootReducer;

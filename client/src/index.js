@@ -19,14 +19,14 @@ if (localStorage.tokenize && localStorage.tokenize !== 'undefined') {
 
   store.dispatch(setLoggedInUser(jwtDecode(localStorage.tokenize)));
 } else {
-    axios.defaults.headers = {};
+  axios.defaults.headers = {};
 }
 
 
 ReactDOM.render(
-<Provider store={store}>
-  <Router history={browserHistory} routes={routes}/>
-</Provider>,
+  <Provider store={store}>
+    <Router history={browserHistory} routes={routes} />
+  </Provider>,
 
- document.getElementById('root'));
+  document.getElementById('root'));
 registerServiceWorker();

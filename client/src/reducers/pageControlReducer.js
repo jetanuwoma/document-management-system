@@ -27,6 +27,13 @@ export default function pageControlReducer(state = initialState.pageControls, ac
       ...state,
       totalDocument: action.count
     };
+
+  case actionTypes.CLEAR_SEARCH_QUERY:
+    return {
+      ...state,
+      isSearching: false,
+      searchQuery: ''
+    };
   default:
     return state;
   }

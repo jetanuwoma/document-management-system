@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Preloader stateless Component
+ */
 const PreLoader = () =>
     (
       <div className="preloader-wrapper big active">

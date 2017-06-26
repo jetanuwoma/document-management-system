@@ -7,13 +7,9 @@ import { listAllUsers, deleteUser } from '../../actions/adminActions';
 import profilePic from '../../assets/images/user-profile.png';
 
 class ManageUsers extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    console.log(this.props);
-  }
-
+  /**
+   * gets all registered users
+   */
   componentDidMount() {
     this.props.listAllUsers()
       .then(() => {
@@ -21,16 +17,16 @@ class ManageUsers extends React.Component {
       });
   }
 
-  nextPage() {
-    console.log('scrolling');
-  }
-
+  /**
+   * renders all registered users
+   * @return {any}
+   */
   render() {
     const { users } = this.props;
     return (
       <div className="main">
         <div className="main-section">
-        <div id="breadcrumbs-wrapper">
+          <div id="breadcrumbs-wrapper">
             <div className="">
               <div className="row">
                 <div className="col s12 m12 l12">
@@ -44,25 +40,25 @@ class ManageUsers extends React.Component {
               </div>
             </div>
           </div>
-      <div className="col s12 m12">
-        <ul id="profile-page-about-feed" className="collection z-depth-1">
-                {users.map((user, index) => {
-                  return (
-                    <li className="collection-item avatar" key={index}>
-                      <img src={profilePic} className="circle" />
-                      <span className="title">{user.fullNames}</span>
-                      <p>{user.email}
-                        <br /> <span className="ultra-small">Regular</span>
-                      </p>
-                      <a href="#!" className="secondary-content">
-                        <i className="fa fa-trash" /></a>
-                    </li>
-                  );
-                })}
-                </ul>
+          <div className="col s12 m12">
+            <ul id="profile-page-about-feed" className="collection z-depth-1">
+              {users.map((user, index) => {
+                return (
+                  <li className="collection-item avatar" key={index}>
+                    <img src={profilePic} className="circle" />
+                    <span className="title">{user.fullNames}</span>
+                    <p>{user.email}
+                      <br /> <span className="ultra-small">Regular</span>
+                    </p>
+                    <a href="#!" className="secondary-content">
+                      <i className="fa fa-trash" /></a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
     );
   }
 }
@@ -73,6 +69,11 @@ ManageUsers.propTypes = {
   listAllUsers: PropTypes.func
 };
 
+/**
+* mapStateToProps - copies states to component
+* @param {object} state - initalState
+* @return {object} any
+*/
 function mapStateToProps(state) {
   return {
     users: state.manageUsers.users

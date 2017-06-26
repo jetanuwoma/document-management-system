@@ -89,7 +89,11 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static getAllUserPublicDocuments(req, res) {
-    Documents.findAll({ where: { permission: req.accessType } })
+    Documents.findAll({
+      limit: req.query.limit || 6,
+      offset: req.query.offset * (req.query.limit || 6) || 0,
+      where: { permission: req.accessType }
+    })
       .then(documents => res.status(200).send(documents));
   }
 

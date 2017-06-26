@@ -3,8 +3,9 @@ import jwtDecode from 'jwt-decode';
 import actionTypes from '../constants';
 
 /**
- * loginError login user error
- * @returns {Object} object
+ * loginError - login user error
+ * @param {String}  error -report
+ * @returns {Object} - action type and error message
  */
 export function loginError(error) {
   return {
@@ -17,8 +18,8 @@ export function loginError(error) {
  * setLoggedInUser
  *
  * @export
- * @param {any} user selected user data
- * @returns {any} data
+ * @param {Object} user selected user data
+ * @returns {Object} data
  */
 export function setLoggedInUser(user) {
   return {
@@ -30,8 +31,8 @@ export function setLoggedInUser(user) {
 /**
  * isUserExisting - check if a user has been existing
  * @export
- * @param {any} identifier
- * @returns {objeect} uuser
+ * @param {Sring} identifier - users email or address
+ * @returns {Promise} - axios promise call
  */
 export function isUserExisting(identifier) {
   return () => {
@@ -42,8 +43,8 @@ export function isUserExisting(identifier) {
 /**
  * Creates a new user details
  * @export registerUser
- * @param {object} user
- * @returns {Object} api response
+ * @param {object} user - user record to be created
+ * @returns {Promise}  -  axios response
  */
 export function registerUser(user) {
   return (dispatch) => {
@@ -61,11 +62,10 @@ export function registerUser(user) {
 }
 
 /**
- * loginUser login a user
- * POST /users/login
+ * loginUser logs in a user
  * @export saveUser
- * @param {object} user
- * @returns {Object} api response
+ * @param {object} user - user record for authorization
+ * @returns {Promise} - axios promise call
  */
 export function loginUser(user) {
   return (dispatch) => {
@@ -75,7 +75,7 @@ export function loginUser(user) {
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
       })
-      .catch((err) => {
+      .catch(() => {
         dispatch(loginError({ message: 'Invalid credentials supplied' }));
       });
   };
@@ -89,8 +89,27 @@ export function loginUser(user) {
  */
 export function logout() {
   return (dispatch) => {
-    localStorage.removeItem('tokenize');
+    window.localStorage.removeItem('tokenize');
     axios.default.headers = {};
     dispatch(setLoggedInUser({}));
+  };
+}
+
+/**
+ * updateProfile updates a user profile
+ * PUT /users/:id
+ * @export updateProfile
+ * @param {object} user
+ * @returns {Promise} - axios promise
+ */
+export function updateProfile(user) {
+  return (dispatch) => {
+    return axios.put(`/api/users/${user.UserId}`, user)
+      .then((res) => {
+        dispatch({
+          type: actionTypes.USER_RECORD_UPDATED,
+          user: res.data.user
+        });
+      });
   };
 }
