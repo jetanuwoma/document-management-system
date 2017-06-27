@@ -39,12 +39,26 @@ describe('EditDocument Component', () => {
     document: documents[0],
     user: userDetail,
     params: { id: 1 },
+    updateDocument: () => { return Promise.resolve(true); },
     loadDocument,
   });
   const rendered = wrapper.render().html();
 
   it('Should render the title input', () => {
-    console.log(TestWrapper.call().state);
-    expect(rendered.includes('The book of mistery')).toBe(true);
+    expect(rendered.includes('<input type="text" id="title" name="title" value="The book of mistery">')).toBe(true);
+  });
+
+  it('Should update state when user typed', () => {
+    const event = { target: { name: 'title', value: 'the book of mistery edited' } };
+    TestWrapper.call().onChange(event);
+    expect(TestWrapper.call().state.document.title).toBe('the book of mistery edited');
+    event.target.name = 'content';
+    event.target.value = 'some content changed';
+    TestWrapper.call().handleEditorChange(event.target.value);
+    expect(TestWrapper.call().state.document.content).toBe('some content changed');
+  });
+
+  it('should allow update', () => {
+    expect(TestWrapper.call().handleSubmit({ preventDefault: jest.fn() }));
   });
 });
