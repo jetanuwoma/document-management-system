@@ -2,13 +2,25 @@ import axios from 'axios';
 import actionTypes from '../constants';
 import { getDocumentCounts } from './documentsAction';
 
+
+/**
+ * loadDocumentsSucess - Dispatches document loading success from the database
+ *
+ * @param  {array} documents - array to be dispatched
+ * @return {object}         - dispatched action type and documents
+ */
 export function loadDocumentsSucess(documents) {
   return {
     type: actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS,
     documents
   };
 }
-
+/**
+ * loadDocumentsSearchSucess - Dispatches searches results
+ *
+ * @param  {array} result  - array of documents
+ * @return {object}         - dispatched action type and documents
+ */
 export function loadDocumentsSearchSucess(result) {
   return {
     type: actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS,
@@ -16,6 +28,12 @@ export function loadDocumentsSearchSucess(result) {
   };
 }
 
+/**
+ * loadUsersSuccessful - lists of all users
+ *
+ * @param  {array} users - list of users
+ * @return {object}       -   dispatched action type and results
+ */
 export function loadUsersSuccessful(users) {
   return {
     type: actionTypes.LOAD_USERS_SUCCESSFUL,
@@ -23,6 +41,11 @@ export function loadUsersSuccessful(users) {
   };
 }
 
+/**
+ * listAllUsers - get all users from the database
+ * /api/users
+ * @return {Promise}  - axios Promise
+ */
 export function listAllUsers() {
   return (dispatch) => {
     return axios.get('api/users')
@@ -32,6 +55,12 @@ export function listAllUsers() {
   };
 }
 
+/**
+ * removeSelectedUser - Remove a user from list of users to be deleted
+ * @param {Number} id - User id
+ * @param {Number} index - User position
+ * @return {Promise}   - axios Promise
+ */
 export function removeSelectedUser(id, index) {
   return (dispatch, getState) => {
     const selectedUsers = getState().adminManagement.selectedUsers.slice();
@@ -42,6 +71,14 @@ export function removeSelectedUser(id, index) {
     });
   };
 }
+
+
+/**
+ * selectUser - Add a user to list of selected users
+ *
+ * @param  {Number} id - user id
+ * @return {callback}  -  dispatch callback
+ */
 export function selectUser(id) {
   return (dispatch) => {
     dispatch({
@@ -51,6 +88,12 @@ export function selectUser(id) {
   };
 }
 
+
+/**
+ * deleteUsers - deletes all selected user(s)
+ * @param  {array} allUsers - list of all selected users to be deleted
+ * @return {Promise}        - Promise call
+ */
 export function deleteUsers(allUsers) {
   return (dispatch) => {
     const actionCall = allUsers.map((id) => {
@@ -64,6 +107,13 @@ export function deleteUsers(allUsers) {
   };
 }
 
+
+/**
+ * listAllDocuments - get all users documents
+ * api/documents
+ * @param  {Number} offset = 0 - offset
+ * @return {Promise}          - axios promise call
+ */
 export function listAllDocuments(offset = 0) {
   return (dispatch) => {
     return axios.get(`api/documents?offset=${offset}`)
@@ -80,9 +130,18 @@ export function listAllDocuments(offset = 0) {
   };
 }
 
-export function searchDocuments(query) {
+
+/**
+ * searchDocuments - Search for document
+ * api/search/document?q
+ * @param  {String} query     -  search term
+ * @param  {String} source = '' - search scope either users or document
+ * @param  {Number} offset = 0  - offset for Pagination
+ * @return {Promise}            - axios promise
+ */
+export function searchDocuments(query, source = '', offset = 0) {
   return (dispatch) => {
-    return axios.get(`api/search/document?q=${query}`)
+    return axios.get(`api/search/document?q=${query}&offset=${offset}`)
       .then((documents) => {
         dispatch(loadDocumentsSearchSucess(documents.data));
         dispatch({

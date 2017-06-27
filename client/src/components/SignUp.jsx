@@ -2,11 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import faker from 'faker';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { registerUser, isUserExisting } from '../actions/userActions';
 
+
+/**
+ * SignUp Component
+ */
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
@@ -18,21 +21,26 @@ class SignUp extends React.Component {
 
     this.processSignUp = this.processSignUp.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.generateRandomTestUsers = this.generateRandomTestUsers.bind(this);
+    this.userExisting = this.userExisting.bind(this);
   }
 
-  componentDidMount() {
-    $.validator.addMethod('validateUserEmail', (value, element) => {
-      return this.userExisting(value);
-    });
+  /**
+   * userExisting - check if users details is alrealy created
+   * @param {String} value - user email
+   */
+  userExisting(value) {
+    this.props.isUserExisting(value);
   }
 
-  userExisting() {
-    this.props.isUserExisting();
-  }
 
+  /**
+   * processSignUp - perform user Sign Up action
+   *
+   * @param  {Object} event DOM element of sign up form
+   */
   processSignUp(event) {
     event.preventDefault();
+    this.setState({ error: {} });
     $('.signup-form').validate({
       rules: {
         fullNames: {
@@ -42,7 +50,7 @@ class SignUp extends React.Component {
         email: {
           email: true,
           required: true,
-          validateUserEmail: false,
+          validateUserEmail: true,
         },
         password: {
           required: true,
@@ -62,6 +70,7 @@ class SignUp extends React.Component {
         const placement = $(element).data('error');
         if (placement) {
           $(placement).append(error);
+          this.setState({ error: { ...this.state.error, error } });
         } else {
           error.insertAfter(element);
         }
@@ -70,30 +79,23 @@ class SignUp extends React.Component {
         this.props.registerUser(this.state.user)
           .then(() => {
             toastr.success('Account Created Successfully');
-            this.generateRandomTestUsers();
-            //this.context.router.push('/');
+            this.context.router.push('/');
           })
-          .catch((err) => {
+          .catch(() => {
             toastr.error('Account Exists');
           });
+      },
+      validateUserEmail: (email) => {
+        return this.userExisting(email);
       }
     });
   }
 
-  generateRandomTestUsers() {
-    for (let i = 0; i <= 20; i += 1) {
-      const user = {};
-      user.fullNames = `${faker.name.firstName()} ${faker.name.lastName()}`;
-      user.username = faker.internet.userName();
-      user.email = faker.internet.email();
-      user.password = 'password';
-      this.props.registerUser(user)
-        .then(() => {
-          toastr.success('Account Created Successfully');
-        });
-    }
-  }
 
+  /**
+   * onChange - handles input field change event
+   * @param  {Object} event DOM element
+   */
   onChange(event) {
     const name = event.target.name;
     const value = event.target.value;
@@ -102,84 +104,90 @@ class SignUp extends React.Component {
     this.setState({ user });
   }
 
+
+  /**
+   * render - Renders Signup Page
+   * @return {any}
+   */
   render() {
     return (
       <div className="login-page-wrapper">
-      <div id="login-page" className="row">
-    <div className="col s12 z-depth-4 card-panel">
-      <form className="signup-form left-alert" onSubmit={this.processSignUp}>
-        <div className="row">
-          <div className="input-field col s12 center">
-           <h4><Link to="/" className="app-name"> We Doc</Link></h4>
-            <p className="center login-form-text">Create An Account</p>
+        <div id="login-page" className="row">
+          <div className="col s12 z-depth-4 card-panel">
+            <form className="signup-form left-alert"
+              onSubmit={this.processSignUp}>
+              <div className="row">
+                <div className="input-field col s12 center">
+                  <h4><Link to="/" className="app-name"> We Doc</Link></h4>
+                  <p className="center login-form-text">Create An Account</p>
+                </div>
+              </div>
+              <div className="row margin">
+                <div className="input-field col s12">
+                  <input name="fullNames"
+                    id="fullNames"
+                    type="text"
+                    onChange={this.onChange} />
+                  <label
+                    data-error="Your full name is required"
+                    className="center-align">Fullnames</label>
+                </div>
+              </div>
+              <div className="row margin">
+                <div className="input-field col s12">
+                  <input name="username"
+                    type="text"
+                    id="username"
+                    onChange={this.onChange} />
+                  <label className="center-align">Username</label>
+                </div>
+              </div>
+              <div className="row margin">
+                <div className="input-field col s12">
+                  <input name="email"
+                    type="email"
+                    id="email"
+                    onChange={this.onChange} />
+                  <label className="center-align">Email</label>
+                </div>
+              </div>
+              <div className="row margin">
+                <div className="input-field col s12">
+                  <input name="password"
+                    type="password"
+                    id="password"
+                    onChange={this.onChange} />
+                  <label>Password</label>
+                </div>
+              </div>
+              <div className="row margin">
+                <div className="input-field col s12">
+                  <input id="passwordAgain" name="passwordAgain"
+                    type="password"
+                    onChange={this.onChange} />
+                  <label>Re-Password</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                  <button
+                    type="submit"
+                    className="btn waves-effect waves-light col s12">
+                    Register
+                 </button>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s6 m6 l6">
+                  <p className="margin medium-small">
+                    <Link to="login">Login</Link>
+                  </p>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-        <div className="row margin">
-          <div className="input-field col s12">
-            <input name="fullNames"
-              id="fullNames"
-               type="text"
-                onChange={this.onChange}/>
-             <label
-               data-error="Your full name is required"
-                className="center-align">Fullnames</label>
-          </div>
-        </div>
-        <div className="row margin">
-          <div className="input-field col s12">
-            <input name="username"
-              type="text"
-              id="username"
-              onChange={this.onChange} />
-            <label className="center-align">Username</label>
-          </div>
-        </div>
-        <div className="row margin">
-          <div className="input-field col s12">
-            <input name="email"
-              type="email"
-              id="email"
-               onChange={this.onChange} />
-            <label className="center-align">Email</label>
-          </div>
-        </div>
-        <div className="row margin">
-          <div className="input-field col s12">
-            <input name="password"
-              type="password"
-              id="password"
-               onChange={this.onChange} />
-            <label>Password</label>
-          </div>
-        </div>
-        <div className="row margin">
-          <div className="input-field col s12">
-            <input id="passwordAgain" name="passwordAgain"
-              type="password"
-              onChange={this.onChange} />
-            <label>Re-Password</label>
-          </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s12">
-            <button type='submit' className="btn
-               waves-effect waves-light col s12">
-              Register
-            </button>
-          </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s6 m6 l6">
-            <p className="margin medium-small">
-              <Link to="login">Login</Link>
-              </p>
-          </div>
-        </div>
-
-      </form>
-    </div>
-  </div>
-</div>
+      </div >
     );
   }
 }
@@ -190,6 +198,11 @@ SignUp.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
+/**
+ * mapStateToProps - copies states to component
+ * @param {object} state - initalState
+ * @return {object} any
+ */
 function mapStateToProps(state) {
   return {
     auth: state.user.auth,
@@ -200,4 +213,5 @@ SignUp.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, { registerUser, isUserExisting })(SignUp);
+export default connect(mapStateToProps,
+  { registerUser, isUserExisting })(SignUp);

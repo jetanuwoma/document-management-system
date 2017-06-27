@@ -12,7 +12,7 @@ export default function adminReducer(state = initialState.adminManagement, actio
   case actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS:
     return {
       ...state,
-      allUsersDocuments: [...state.allUsersDocuments, ...action.documents]
+      allUsersDocuments: [...action.documents]
     };
 
   case actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS:

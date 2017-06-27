@@ -19,4 +19,6 @@ export default keymirror({
   SELECT_USER: null,
   REMOVE_SELECTED_USER: null,
   SET_DOCUMENT_COUNT: null,
+  CLEAR_SEARCH_QUERY: null,
+  USER_RECORD_UPDATED: null,
 });

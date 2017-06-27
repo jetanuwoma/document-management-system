@@ -1,54 +1,89 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ReactScrollPagination from 'react-scroll-pagination';
-import { loadUserDocuments,
-         deleteDocument,
-         undoDelete } from '../../actions/documentsAction';
+import Pagination from 'rc-pagination';
+import { triggerSearch } from '../../actions/pageAction';
+import {
+  loadUserDocuments,
+  deleteDocument,
+  undoDelete
+} from '../../actions/documentsAction';
+import { searchDocuments } from '../../actions/adminActions';
 import PreLoader from '../templates/PreLoader.jsx';
 import DocumentList from './DocumentList.jsx';
 
-class DocumentPage extends React.Component {
+/**
+ * DocumentPage Component - List, and handles pagination of document
+ */
+export class DocumentPage extends React.Component {
+
+  /**
+   * set default state values
+   * @param {Object} props
+   */
   constructor(props) {
     super(props);
 
     this.state = {
       loading: true,
-      requestPagin: false,
       totalPages: 1,
-      activePagination: 0,
+      activePagination: 1,
       totalDocument: 0,
-      documents: []
+      documents: [],
+      isSearching: false,
+      searchQuery: '',
     };
 
     this.nextPage = this.nextPage.bind(this);
     this.loadListDocument = this.loadListDocument.bind(this);
   }
 
+  /**
+   * check if search query has been passed to the route
+   */
   componentDidMount() {
-    this.loadListDocument();
+    if (this.props.location.query.q !== undefined) {
+      this.props.triggerSearch(this.props.location.query.q, 'documents');
+      this.setState({ loading: false });
+    } else {
+      this.loadListDocument();
+    }
   }
 
+  /**
+   * update state with new props
+   * @param {Object} nextProps - new props changes
+   */
   componentWillReceiveProps(nextProps) {
-    const totalPage = nextProps.totalDocument / 6;
-    this.setState({ totalDocument: nextProps.totalDocument,
+    this.setState({
+      totalDocument: nextProps.totalDocument,
       documents: nextProps.myDocuments,
-      totalPages: Math.ceil(totalPage) });
+      isSearching: nextProps.isSearching,
+      searchQuery: nextProps.searchQuery,
+    });
   }
 
-  nextPage() {
-    if (!this.state.requestPagin &&
-        this.state.documents.length <= this.state.totalDocument
-      ) {
-      this.setState({ requestPagin: true });
-      this.setState({ activePagination: this.state.activePagination + 1 });
-      this.props.loadUserDocuments(this.state.activePagination)
+  /**
+   * Handles pagination pages changes
+   * @param {Number} page - current pagination number
+   */
+  nextPage(page) {
+    if (!this.state.isSearching) {
+      this.props.loadUserDocuments(page - 1)
         .then(() => {
-          this.setState({ requestPagin: false });
+          this.setState({ activePagination: page });
+        });
+    } else {
+      this.props.searchDocuments(this.state.searchQuery, '', page - 1)
+        .then(() => {
+          this.setState({ activePagination: page });
         });
     }
   }
 
+  /**
+   * Retrieves all users document from the action
+   */
   loadListDocument() {
     this.props.loadUserDocuments()
       .then(() => {
@@ -56,54 +91,63 @@ class DocumentPage extends React.Component {
       });
   }
 
-
+  /**
+   * Renders users document
+   * @return {any}
+   */
   render() {
     return (
-        <div>
-          {this.state.loading &&
-           <PreLoader />
-          }
-          {!this.state.loading &&
-            <div>
+      <div className="main">
+        {this.state.loading &&
+          <PreLoader />
+        }
+        {!this.state.loading &&
+          <div>
             <DocumentList
-            documents={this.props.myDocuments}
-            user={this.props.user}
-            deleteDocument={this.props.deleteDocument}
-            archived={this.props.archived}
-            undoDelete={this.props.undoDelete}
-            isSearching={this.props.isSearching}
-            searchQuery={this.props.searchQuery}
-            searchCount={this.props.searchCount}
-             />
-             <ReactScrollPagination
-               fetchFunc={this.nextPage}
-               totalPages={this.state.totalPages}
-               paginationShowTime={3000}
-               excludeElement='#nav-bar'
-               excludeHeight={50}
-               triggerAt={300}
-             />
-           </div>
-       }
-    </div>
+              documents={this.props.myDocuments}
+              user={this.props.user}
+              deleteDocument={this.props.deleteDocument}
+              archived={this.props.archived}
+              undoDelete={this.props.undoDelete}
+              isSearching={this.props.isSearching}
+              searchQuery={this.props.searchQuery}
+              searchCount={this.props.searchCount}
+            />
+            <Pagination
+              onChange={this.nextPage}
+              current={this.state.activePagination}
+              total={this.state.totalDocument}
+              pageSize={6}
+            />
+          </div>
+        }
+      </div>
     );
   }
 }
 
 DocumentPage.propTypes = {
-  myDocuments: PropTypes.array.isRequired,
-  loadUserDocuments: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  deleteDocument: PropTypes.func.isRequired,
-  archived: PropTypes.object.isRequired,
-  undoDelete: PropTypes.func.isRequired,
-  documentLoaded: PropTypes.bool.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  searchQuery: PropTypes.string.isRequired,
-  searchCount: PropTypes.number.isRequired,
+  myDocuments: PropTypes.array,
+  loadUserDocuments: PropTypes.func,
+  user: PropTypes.object,
+  deleteDocument: PropTypes.func,
+  archived: PropTypes.object,
+  undoDelete: PropTypes.func,
+  searchDocuments: PropTypes.func,
+  documentLoaded: PropTypes.bool,
+  isSearching: PropTypes.bool,
+  searchQuery: PropTypes.string,
+  searchCount: PropTypes.number,
   totalDocument: PropTypes.number,
+  triggerSearch: PropTypes.func,
+  location: PropTypes.object,
 };
 
+ /**
+ * mapStateToProps - copies states to component
+ * @param {object} state - initalState
+ * @return {object} any
+ */
 function mapStateToProps(state) {
   const currentState = state.manageDocument;
   const myDocuments = currentState.alldocuments;
@@ -120,4 +164,11 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { loadUserDocuments, deleteDocument, undoDelete, })(DocumentPage);
+export default
+  connect(mapStateToProps, {
+    loadUserDocuments,
+    deleteDocument,
+    undoDelete,
+    searchDocuments,
+    triggerSearch,
+  })(DocumentPage);

@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
 import actionTypes from '../constants';
 import initialState from './initialState';
 
@@ -15,7 +14,7 @@ export default function documentReducer(state = initialState.manageDocument, act
     return {
       ...state,
       loaded: true,
-      alldocuments: [...state.alldocuments, ...action.documents]
+      alldocuments: [...action.documents]
     };
 
   case actionTypes.LOAD_DOCUMENT_SUCCESS:

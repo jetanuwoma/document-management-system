@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Header from './templates/Header';
+import 'rc-pagination/assets/index.css';
+import Header from './templates/Header.jsx';
 
+/**
+ * App - Wrapper Component
+ */
 class App extends React.Component {
 
+  /**
+   * renders passed in children
+   */
   render() {
     return (
       <div className="container-fluid">

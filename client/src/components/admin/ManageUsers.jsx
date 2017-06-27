@@ -101,11 +101,6 @@ class ManageUsers extends React.Component {
                  </div>
                </nav>
               <ul id="task-card" className="collection with-header">
-                  <a href="#task-modal"
-                    className="task-add modal-trigger red
-                            btn-floating waves-effect waves-light">
-                    <i className="fa fa-plus" />
-                    </a>
                 {this.state.users.map((user, index) => {
                   return (
                     <li className="collection-item dismissable"

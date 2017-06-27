@@ -1,16 +1,13 @@
 /* global $ */
 import React from 'react';
+import { Link } from 'react-router';
 
-
-class LandingPage extends React.Component {
-
-  componentDidMount() {
-    $('.button-collapse').sideNav();
-  }
-
-  render() {
-    return (
-      <div>
+/**
+ * Landing Page Component
+ */
+const LandingPage = () =>
+  (
+    <div>
       <div className="section no-pad-bot" id="index-banner">
         <div className="container">
           <br /><br />
@@ -21,15 +18,10 @@ class LandingPage extends React.Component {
             </h5>
           </div>
           <div className="row center">
-            <a
-              data-target="modal1"
-              className="
-              btn-large
-               waves-effect
-               waves-light orange
-               ">
+            <Link to="/login"
+              className="btn-large waves-effect waves-light orange">
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -70,20 +62,7 @@ class LandingPage extends React.Component {
 
         <div className="section" />
       </div>
-      <div id="modal1" className="modal modal-fixed-footer">
-    <div className="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div className="modal-footer">
-      <a href="#!"
-        className="modal-action modal-close waves-effect waves-green btn-flat ">
-        Agree</a>
-    </div>
-  </div>
-    </div>
-    );
-  }
-}
+    </div >
+  );
 
 export default LandingPage;

@@ -1,88 +1,114 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ReactScrollPagination from 'react-scroll-pagination';
-import { listAllDocuments } from '../../actions/adminActions';
+import Pagination from 'rc-pagination';
+import { triggerSearch } from '../../actions/pageAction';
+import { listAllDocuments, searchDocuments } from '../../actions/adminActions';
 import { deleteDocument, undoDelete } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader.jsx';
 import DocumentList from '../document/DocumentList.jsx';
 
+/**
+ * Admin Documents Management Component
+ */
 class ManageDocuments extends React.Component {
+
+  /**
+   * set default state
+   * @param {Object} props
+   */
   constructor(props) {
     super(props);
 
     this.state = {
       isFetching: true,
-      requestPagin: false,
       totalPages: 1,
-      activePagination: 0,
-      totalDocument: 0,
-      documents: []
+      activePagination: 1,
+      totalDocuments: 0,
+      documents: [],
+      isSearching: false,
+      searchQuery: '',
     };
     this.nextPage = this.nextPage.bind(this);
   }
 
+  /**
+   * List all users documents check if search is triggered
+   */
   componentDidMount() {
-    this.props.listAllDocuments()
-      .then(() => {
-        this.setState({ isFetching: false });
-      });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // calculate total pages
-    // totalDocument divides by a page limit
-    const totalPage = nextProps.totalDocument / 6;
-    this.setState({ totalDocument: nextProps.totalDocument,
-      documents: nextProps.documents,
-      totalPages: Math.ceil(totalPage) });
-  }
-
-
-  nextPage() {
-    if (!this.state.requestPagin &&
-        this.state.documents.length <= this.state.totalDocument
-      ) {
-      this.setState({ requestPagin: true });
-      this.setState({ activePagination: this.state.activePagination + 1 });
-      this.props.listAllDocuments(this.state.activePagination)
+    if (this.props.location.query.q !== undefined) {
+      this.props.triggerSearch(this.props.location.query.q, 'documents');
+      this.setState({ isFetching: false });
+    } else {
+      this.props.listAllDocuments()
         .then(() => {
-          this.setState({ requestPagin: false });
+          this.setState({ isFetching: false });
         });
     }
   }
 
+  /**
+   * set State to new Props
+   * @param {Object} nextProps - new props 
+   */
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      totalDocuments: nextProps.totalDocuments,
+      documents: nextProps.documents,
+      isSearching: nextProps.isSearching,
+      searchQuery: nextProps.searchQuery,
+    });
+    if (nextProps.isSearching) {
+      this.setState({ totalDocuments: nextProps.searchCount });
+    }
+  }
+
+  /**
+   * Handles pagination
+   * @param {Number} page - current page number 
+   */
+  nextPage(page) {
+    if (!this.state.isSearching) {
+      this.props.listAllDocuments(page - 1)
+        .then(() => {
+          this.setState({ activePagination: page });
+        });
+    } else {
+      this.props.searchDocuments(this.state.searchQuery, '', page - 1)
+        .then(() => {
+          this.setState({ activePagination: page });
+        });
+    }
+  }
+
+  /**
+   * Display all documents
+   */
   render() {
     return (
-      <div>
+      <div className="main">
         {this.state.isFetching &&
           <PreLoader />
         }
         {!this.state.isFetching &&
-          <DocumentList
-            documents={this.props.documents}
-            user={this.props.user}
-            deleteDocument={this.props.deleteDocument}
-            archived={this.props.archived}
-            undoDelete={this.props.undoDelete}
-            isSearching={this.props.isSearching}
-            searchQuery={this.props.searchQuery}
-            searchCount={this.props.searchCount}
+          <div>
+            <DocumentList
+              documents={this.props.documents}
+              user={this.props.user}
+              deleteDocument={this.props.deleteDocument}
+              archived={this.props.archived}
+              undoDelete={this.props.undoDelete}
+              isSearching={this.props.isSearching}
+              searchQuery={this.props.searchQuery}
+              searchCount={this.props.searchCount}
             />
+            <Pagination
+              onChange={this.nextPage}
+              current={this.state.activePagination}
+              total={this.state.totalDocuments}
+              pageSize={6} />
+          </div>
         }
-        {this.state.requestPagin &&
-        <div className="progress">
-          <div className="indeterminate" />
-      </div>
-       }
-        <ReactScrollPagination
-          fetchFunc={this.nextPage}
-          totalPages={this.state.totalPages}
-          paginationShowTime={3000}
-          excludeElement='#nav-bar'
-          excludeHeight={50}
-          triggerAt={500}
-        />
       </div>
     );
   }
@@ -98,9 +124,17 @@ ManageDocuments.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   searchQuery: PropTypes.string.isRequired,
   searchCount: PropTypes.number.isRequired,
-  totalDocument: PropTypes.number.isRequired
+  totalDocuments: PropTypes.number.isRequired,
+  searchDocuments: PropTypes.func.isRequired,
+  triggerSearch: PropTypes.func,
+  location: PropTypes.object,
 };
 
+/**
+ * mapStateToProps - copies states to component
+ * @param {object} state - initalState
+ * @return {object} any
+ */
 function mapStateToProps(state) {
   return {
     user: state.user.user,
@@ -109,8 +143,14 @@ function mapStateToProps(state) {
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
     searchCount: state.pageControls.searchCount,
-    totalDocument: state.pageControls.totalDocument,
+    totalDocuments: state.pageControls.totalDocument,
   };
 }
 
-export default connect(mapStateToProps, { listAllDocuments, deleteDocument, undoDelete })(ManageDocuments);
+export default connect(mapStateToProps, {
+  listAllDocuments,
+  deleteDocument,
+  undoDelete,
+  searchDocuments,
+  triggerSearch,
+})(ManageDocuments);

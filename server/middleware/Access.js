@@ -185,7 +185,14 @@ class Access {
       ] } };
 
       if (access !== undefined && access !== null) {
-        query.where.$and.push({ permission: access });
+         if (access === 'public') {
+           query = { where: { $and: [
+             { title: { $iLike: `%${term}%` } },
+             { permission: 'public' }
+           ] } };
+         } else {
+           query.where.$and.push({ permission: access });
+         }
       }
       req.searchQuery = query;
     }
