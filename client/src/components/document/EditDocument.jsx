@@ -3,14 +3,25 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import TinyMCE from 'react-tinymce';
+import TinyMCEInput from 'react-tinymce-input';
 import toastr from 'toastr';
 import { loadDocument, updateDocument } from '../../actions/documentsAction';
 
+const TINYMCE_CONFIG = {
+  language: 'en',
+  theme: 'modern',
+  toolbar: 'bold italic underline strikethrough hr | bullist numlist | link unlink | undo redo | spellchecker code',
+  menubar: false,
+  statusbar: true,
+  resize: true,
+  plugins: 'link,spellchecker,paste',
+  theme_modern_toolbar_location: 'top',
+  theme_modern_toolbar_align: 'left'
+};
 /**
  * Edit Component - Hanled Documents modifications
  */
-class EditDocument extends React.Component {
+export class EditDocument extends React.Component {
 
   /**
    * set default state
@@ -19,7 +30,7 @@ class EditDocument extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { document: { title: '', content: '', permission: '' } };
+    this.state = { document: { title: this.props.document.title, content: '', permission: '' } };
 
     this.onChange = this.onChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -55,10 +66,9 @@ class EditDocument extends React.Component {
    * handles TinyMCE content changes
    * @param {Object} event - DOM element
    */
-  handleEditorChange(event) {
-    const content = event.target.getContent();
+  handleEditorChange(newValue) {
     const document = this.state.document;
-    document.content = content;
+    document.content = newValue;
     this.setState({ document });
   }
 
@@ -123,12 +133,9 @@ class EditDocument extends React.Component {
                   </div>
                 </div>
 
-                <TinyMCE
-                  content={content}
-                  config={{
-                    plugins: 'link image code',
-                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-                  }}
+                <TinyMCEInput
+                  value={content}
+                  tinymceConfig={TINYMCE_CONFIG}
                   onChange={this.handleEditorChange}
                 />
                 <button className="waves-effect waves-light btn cyan" type="submit">Edit Document</button>

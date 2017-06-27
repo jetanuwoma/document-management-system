@@ -39,7 +39,7 @@ class DashBoard extends React.Component {
         permission: 'public',
         title: ''
       },
-      user: { ...this.props.user },
+      user: {},
       updateProfile: this.props.updateProfile,
       saveDocument: this.props.saveDocument,
     };

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestWrapper from '../helper/TestWrapper';
+import TestWrapper from './TestWrapper';
 import actionTypes from '../../constants';
 import Header from '../../components/templates/Header.jsx';
 

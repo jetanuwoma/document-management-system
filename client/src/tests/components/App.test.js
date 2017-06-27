@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PreLoader from '../../components/templates/PreLoader.jsx';
-import TestWrapper from '../helper/TestWrapper';
+import TestWrapper from './TestWrapper';
 import App from '../../components/App.jsx';
 
 describe('Main Wrapper component', () => {

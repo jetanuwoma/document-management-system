@@ -13,7 +13,7 @@ import DocumentList from './DocumentList.jsx';
 /**
  * PublicDocument Component - Lists all public documents
  */
-class PublicDocuments extends React.Component {
+export class PublicDocuments extends React.Component {
 
   /**
    * set default states
@@ -100,16 +100,16 @@ class PublicDocuments extends React.Component {
 }
 
 PublicDocuments.propTypes = {
-  myDocuments: PropTypes.array.isRequired,
-  loadPublicDocuments: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  deleteDocument: PropTypes.func.isRequired,
-  archived: PropTypes.object.isRequired,
-  undoDelete: PropTypes.func.isRequired,
-  documentLoaded: PropTypes.bool.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  searchQuery: PropTypes.string.isRequired,
-  searchCount: PropTypes.number.isRequired,
+  myDocuments: PropTypes.array,
+  loadPublicDocuments: PropTypes.func,
+  user: PropTypes.object,
+  deleteDocument: PropTypes.func,
+  archived: PropTypes.object,
+  undoDelete: PropTypes.func,
+  documentLoaded: PropTypes.bool,
+  isSearching: PropTypes.bool,
+  searchQuery: PropTypes.string,
+  searchCount: PropTypes.number,
   totalDocument: PropTypes.number,
 };
 
@@ -119,13 +119,11 @@ PublicDocuments.propTypes = {
  * @return {object} any
  */
 function mapStateToProps(state) {
-  const currentState = state.manageDocument;
-  const myDocuments = currentState.alldocuments;
   return {
-    myDocuments,
-    documentLoaded: currentState.loaded,
+    myDocuments: state.manageDocument.alldocuments,
+    documentLoaded: state.manageDocument.loaded,
     user: state.user.user,
-    archived: currentState.archived,
+    archived: state.manageDocument.archived,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
     searchCount: state.pageControls.searchCount,

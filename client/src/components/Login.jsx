@@ -14,7 +14,8 @@ class Login extends React.Component {
     super(props);
 
     this.state = {
-      user: {}
+      user: {},
+      error: {}
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,6 +28,7 @@ class Login extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({ error: {} });
     $('.login-form').validate({
       rules: {
         username: {
@@ -54,6 +56,7 @@ class Login extends React.Component {
         const placement = $(element).data('error');
         if (placement) {
           $(placement).append(error);
+          this.setState({ error });
         } else {
           error.insertAfter(element);
         }

@@ -3,12 +3,12 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loadDocument, updateDocument } from '../../actions/documentsAction';
+import { loadDocument } from '../../actions/documentsAction';
 
 /**
  * DocumentDetail- Displays the content of a document
  */
-class DocumentDetail extends React.Component {
+export class DocumentDetail extends React.Component {
 
   /**
    * set default state values
@@ -17,7 +17,9 @@ class DocumentDetail extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { document: { title: '', content: '', permission: '' } };
+    this.state = {
+      document: { title: '', content: '', permission: '' }
+    };
   }
 
   /**
@@ -37,7 +39,7 @@ class DocumentDetail extends React.Component {
    * @return {any}
    */
   render() {
-    const { content, title } = this.state.document;
+    const { content, title } = this.props.document;
 
     return (
       <div className="main">
@@ -72,10 +74,6 @@ DocumentDetail.propTypes = {
   updateDocument: PropTypes.func.isRequired,
 };
 
-DocumentDetail.contextTypes = {
-  router: PropTypes.object.isRequired
-};
-
 /**
 * mapStateToProps - copies states to component
 * @param {object} state - initalState
@@ -88,6 +86,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  loadDocument,
-  updateDocument
+  loadDocument
 })(DocumentDetail);

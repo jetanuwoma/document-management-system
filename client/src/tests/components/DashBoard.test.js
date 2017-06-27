@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestWrapper from '../helper/TestWrapper';
+import TestWrapper from './TestWrapper';
 import actionTypes from '../../constants';
 import DashBoard from '../../components/DashBoard.jsx';
 
@@ -127,20 +127,19 @@ describe('DashBoard component', () => {
       expect(TestWrapper.call().state.user.email).toBe('etajuder@gmail.com');
     });
 
-   it('Should update user profile when form is submitted', () => {
-
+    it('Should update user profile when form is submitted', () => {
+      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Jude');
+      const updateProfile = () => {
+        TestWrapper.dispatch({
+          type: actionTypes.USER_RECORD_UPDATED,
+          user: { UserId: 1, RoleId: 1, fullNames: 'Eta Change', email: 'chan@aa.s' }
+        });
+        return Promise.resolve(true);
+      };
+      TestWrapper.call().state.updateProfile = updateProfile;
+      TestWrapper.call().handleProfileSubmit({ preventDefault: () => {} });
+      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Change');
+      expect(TestWrapper.call().props.user.email).toBe('chan@aa.s');
    });
-    const updateProfile = (user) => {
-      TestWrapper.dispatch({
-        type: actionTypes.USER_RECORD_UPDATED,
-        user: TestWrapper.call().state.user
-      });
-      return Promise.resolve(true);
-    };
-
-    TestWrapper.call().state.updateProfile = updateProfile;
-    TestWrapper.call().handleProfileSubmit({ preventDefault: () => {} });
   });
-
-
 });

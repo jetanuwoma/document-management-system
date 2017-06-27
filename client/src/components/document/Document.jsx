@@ -81,7 +81,7 @@ class Document extends React.Component {
             <Link
               to={`/doc/${this.props.document.id}`}
               className="btn-floating waves-effect waves-light light-blue">
-              <i className="fa fa-info" />
+              <i className="fa fa-eye" />
             </Link>
           </li>
         </ul>

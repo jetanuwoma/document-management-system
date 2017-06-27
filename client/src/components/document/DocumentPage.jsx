@@ -15,7 +15,7 @@ import DocumentList from './DocumentList.jsx';
 /**
  * DocumentPage Component - List, and handles pagination of document
  */
-class DocumentPage extends React.Component {
+export class DocumentPage extends React.Component {
 
   /**
    * set default state values
@@ -61,9 +61,6 @@ class DocumentPage extends React.Component {
       isSearching: nextProps.isSearching,
       searchQuery: nextProps.searchQuery,
     });
-    if (nextProps.isSearching) {
-      this.setState({ totalDocument: nextProps.searchCount });
-    }
   }
 
   /**
@@ -130,17 +127,17 @@ class DocumentPage extends React.Component {
 }
 
 DocumentPage.propTypes = {
-  myDocuments: PropTypes.array.isRequired,
-  loadUserDocuments: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  deleteDocument: PropTypes.func.isRequired,
-  archived: PropTypes.object.isRequired,
-  undoDelete: PropTypes.func.isRequired,
-  searchDocuments: PropTypes.func.isRequired,
-  documentLoaded: PropTypes.bool.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  searchQuery: PropTypes.string.isRequired,
-  searchCount: PropTypes.number.isRequired,
+  myDocuments: PropTypes.array,
+  loadUserDocuments: PropTypes.func,
+  user: PropTypes.object,
+  deleteDocument: PropTypes.func,
+  archived: PropTypes.object,
+  undoDelete: PropTypes.func,
+  searchDocuments: PropTypes.func,
+  documentLoaded: PropTypes.bool,
+  isSearching: PropTypes.bool,
+  searchQuery: PropTypes.string,
+  searchCount: PropTypes.number,
   totalDocument: PropTypes.number,
   triggerSearch: PropTypes.func,
   location: PropTypes.object,

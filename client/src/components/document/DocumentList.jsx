@@ -49,13 +49,13 @@ class DocumentList extends React.Component {
   }
 }
 DocumentList.propTypes = {
-  documents: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
-  deleteDocument: PropTypes.func.isRequired,
-  archived: PropTypes.object.isRequired,
-  undoDelete: PropTypes.func.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  searchCount: PropTypes.number.isRequired,
+  documents: PropTypes.array,
+  user: PropTypes.object,
+  deleteDocument: PropTypes.func,
+  archived: PropTypes.object,
+  undoDelete: PropTypes.func,
+  isSearching: PropTypes.bool,
+  searchCount: PropTypes.number,
 };
 
 export default DocumentList;

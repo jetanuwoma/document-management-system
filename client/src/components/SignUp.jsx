@@ -21,20 +21,8 @@ class SignUp extends React.Component {
 
     this.processSignUp = this.processSignUp.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.generateRandomTestUsers = this.generateRandomTestUsers.bind(this);
     this.userExisting = this.userExisting.bind(this);
   }
-
-
-  /**
-   * componentDidMount - trigger validator
-   */
-  componentDidMount() {
-    $.validator.addMethod('validateUserEmail', (value) => {
-      return this.userExisting(value);
-    });
-  }
-
 
   /**
    * userExisting - check if users details is alrealy created
@@ -52,6 +40,7 @@ class SignUp extends React.Component {
    */
   processSignUp(event) {
     event.preventDefault();
+    this.setState({ error: {} });
     $('.signup-form').validate({
       rules: {
         fullNames: {
@@ -61,7 +50,7 @@ class SignUp extends React.Component {
         email: {
           email: true,
           required: true,
-          validateUserEmail: false,
+          validateUserEmail: true,
         },
         password: {
           required: true,
@@ -81,6 +70,7 @@ class SignUp extends React.Component {
         const placement = $(element).data('error');
         if (placement) {
           $(placement).append(error);
+          this.setState({ error: { ...this.state.error, error } });
         } else {
           error.insertAfter(element);
         }
@@ -94,6 +84,9 @@ class SignUp extends React.Component {
           .catch(() => {
             toastr.error('Account Exists');
           });
+      },
+      validateUserEmail: (email) => {
+        return this.userExisting(email);
       }
     });
   }

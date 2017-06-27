@@ -40,6 +40,7 @@ class TestWrapper {
     );
   }
 
+
   call() {
     return this.mount.find(this.componentName).nodes[0];
   }

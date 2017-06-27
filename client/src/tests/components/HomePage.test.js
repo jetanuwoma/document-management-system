@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestWrapper from '../helper/TestWrapper';
+import TestWrapper from './TestWrapper';
 import actionTypes from '../../constants';
 import HomePage from '../../components/HomePage.jsx';
 
