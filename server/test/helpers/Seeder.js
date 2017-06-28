@@ -74,6 +74,13 @@ class Seeder {
         password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
         fullNames: 'Small Jude',
         RoleId: 2
+      },
+      {
+        username: 'kingsley',
+        email: 'kigsley@gmail.com',
+        password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
+        fullNames: 'Kigsley Jude',
+        RoleId: 3
       }
     ];
     return Users.bulkCreate(users);
