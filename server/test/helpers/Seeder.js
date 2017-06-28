@@ -93,9 +93,9 @@ class Seeder {
   static seedDocuments() {
     const documents = [
       {
-        title: faker.lorem.words(),
+        title: 'Admin test case',
         content: faker.lorem.paragraph(),
-        permission: 'public',
+        permission: 'private',
         OwnerId: '1'
       },
       {
@@ -105,10 +105,22 @@ class Seeder {
         OwnerId: '1'
       },
       {
-        title: faker.lorem.words(),
+        title: 'The second chance',
         content: faker.lorem.words(),
         permission: 'public',
-        OwnerId: '2'
+        OwnerId: '3'
+      },
+      {
+        title: 'Harry potter gold',
+        content: faker.lorem.words(),
+        permission: 'private',
+        OwnerId: '3'
+      },
+      {
+        title: 'The wake of humanism',
+        content: faker.lorem.words(),
+        permission: 'private',
+        OwnerId: '3'
       }
     ];
     return Documents.bulkCreate(documents);

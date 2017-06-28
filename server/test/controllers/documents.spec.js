@@ -110,26 +110,25 @@ describe('Document', () => {
     });
 
     it('Should get all documents for a specific user', (done) => {
-      request.get(`/api/users/${regularDetails.user.id}/documents`)
-        .set({ 'x-access-token': regularDetails.token })
+      request.get(`/api/users/${adminDetails.user.id}/documents`)
+        .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
           expect(Array.isArray(res.body)).to.equal(true);
-          expect(res.body[0].OwnerId).to.equal(regularDetails.user.id);
+          expect(res.body[0].OwnerId).to.equal(adminDetails.user.id);
           done();
         });
     });
 
     it('Should get all documents and public documents for a specific user',
     (done) => {
-      request.get(`/api/users/${regularDetails.user.id}/documents`)
-        .set({ 'x-access-token': regularDetails.token })
+      request.get(`/api/users/${adminDetails.user.id}/documents`)
+        .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
           expect(Array.isArray(res.body)).to.equal(true);
           expect(res.body.length).to.be.greaterThan(0);
-          expect(res.body[0].permission).to.equal('public');
-          expect(res.body[0].OwnerId).to.equal(regularDetails.user.id);
+          expect(res.body[0].OwnerId).to.equal(adminDetails.user.id);
           done();
         });
     });

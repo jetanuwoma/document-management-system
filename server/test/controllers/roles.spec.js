@@ -81,4 +81,52 @@ describe('Role', () => {
         });
     });
   });
+
+  describe('Update role', () => {
+    it('Should edit and update a role', (done) => {
+      request.put('/api/roles/2')
+        .set({ 'x-access-token': admin.token })
+        .send({ title: 'updated role' })
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body.data.title).to.equal('updated role');
+          expect(res.body.message).to.equal('2 successfully updated');
+          done();
+        });
+    });
+
+    it('Should fail to update a role by a non admin', (done) => {
+      request.put('/api/roles/2')
+        .set({ 'x-access-token': regularUser.token })
+        .send({ title: 'updated role' })
+        .expect(403)
+        .end((err, res) => {
+          expect(res.body.message)
+            .to.equal('Requires an admin access to proceed');
+          done();
+        });
+    });
+
+    it('Should fail if a role does not exist', (done) => {
+      request.put('/api/roles/10')
+        .set({ 'x-access-token': admin.token })
+        .send({ title: 'updated role' })
+        .expect(404)
+        .end((err, res) => {
+          expect(res.body.message)
+            .to.equal('Role does not exists');
+          done();
+        });
+    });
+    it('Should fail if role title already exist', (done) => {
+      request.put('/api/roles/2')
+        .set({ 'x-access-token': admin.token })
+        .send({ title: 'Admin' })
+        .expect(500)
+        .end((err, res) => {
+          expect(res.body.message.includes('Error Updating Role'));
+          done();
+        });
+    });
+  });
 });
