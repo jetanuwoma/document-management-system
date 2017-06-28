@@ -56,7 +56,7 @@ export function registerUser(user) {
       dispatch(setLoggedInUser(jwtDecode(token)));
     })
     .catch((err) => {
-      dispatch(loginError(err));
+      dispatch(loginError(err.response.data.message));
     });
   };
 }
@@ -75,8 +75,8 @@ export function loginUser(user) {
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
       })
-      .catch(() => {
-        dispatch(loginError({ message: 'Invalid credentials supplied' }));
+      .catch((error) => {
+        dispatch(loginError({ message: error.response.data.message }));
       });
   };
 }

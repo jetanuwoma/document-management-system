@@ -99,6 +99,12 @@ class Document extends React.Component {
         < i className="fa fa-lock" />
       </a >
     );
+
+    const isRole = (
+      <a className="btn-floating btn-large btn-permission waves-effect waves-light pink red">
+        < i className="fa fa-building" />
+      </a >
+     );
     const style = {
       display: displayState
     };
@@ -108,7 +114,7 @@ class Document extends React.Component {
         <div className="document-card">
           <div className="card hoverable">
             <div className="card-image waves-effect waves-block waves-light">
-              {permission === 'public' ? isPublic : isPrivate}
+              {permission === 'public' ? isPublic : permission === 'private' ? isPrivate : isRole}
               <img src={sampleDoc} alt="document-img" />
             </div>
             {action}

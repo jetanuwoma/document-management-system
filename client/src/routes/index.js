@@ -19,6 +19,7 @@ export default (
     <IndexRoute component={HomePage} />
     <Route path="doc" component={DocumentPage} />
     <Route path="doc/public" component={PublicDocuments} />
+    <Route path="doc/role" component={PublicDocuments} />
     <Route path="doc/edit/:id" component={EditDocument} />
     <Route path="doc/:id" component={DocumentDetail} />
     <Route path="users" component={ManageUsers} />
