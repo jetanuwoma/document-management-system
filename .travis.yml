@@ -15,7 +15,7 @@ before_script:
   -  npm --prefix ./client install ./client
   - psql -c 'create database travis;' -U postgres
   - dropdb --if-exists travis && createdb travis
-  - NODE_ENV=test npm run db:test:migrate
+  - NODE_ENV=test npm run db:migrate
   - npm run coveralls
 after_success:
 - npm run coveralls
