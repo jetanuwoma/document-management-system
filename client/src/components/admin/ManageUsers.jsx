@@ -141,6 +141,11 @@ ManageUsers.propTypes = {
   removeSelectedUser: PropTypes.func
 };
 
+/**
+ * mapStateToProps - copies states to component
+ * @param {object} state - initalState
+ * @return {object} any
+ */
 function mapStateToProps(state) {
   return {
     users: state.adminManagement.users,
