@@ -49,8 +49,7 @@ class SignUp extends React.Component {
         },
         email: {
           email: true,
-          required: true,
-          validateUserEmail: true,
+          required: true
         },
         password: {
           required: true,
