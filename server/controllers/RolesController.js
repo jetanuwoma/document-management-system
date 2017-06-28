@@ -13,10 +13,10 @@ class RolesController {
    */
   static getAllRoles(req, res) {
     Roles.findAll()
-    .then((role) => {
-      res.status(201)
-      .send(role);
-    });
+      .then((role) => {
+        res.status(201)
+          .send(role);
+      });
   }
 
   /**
@@ -36,14 +36,22 @@ class RolesController {
    * @returns {void} - Returns void
    */
   static updateRole(req, res) {
-    req.body.role.update(req.body)
-    .then(update => res
-    .status(200)
-    .send({ message: `${req.params.id} successfully updated`,
-      data: update }))
+    Roles.findById(req.params.id)
+      .then((role) => {
+        role.update(req.body)
+          .then(update => res
+            .status(200)
+            .send({
+              message: `${req.params.id} successfully updated`,
+              data: update
+            }))
+          .catch(() => {
+            res.status(500)
+              .send({ message: 'An error occurred please try again' });
+          });
+      })
       .catch(() => {
-        res.status(500)
-          .send({ message: 'An error occurred please try again' });
+        res.status(404).send({ message: 'Role does not exists' });
       });
   }
 
@@ -56,23 +64,23 @@ class RolesController {
   static createRole(req, res) {
     // If roles have been created, just alert the user
     Roles.findOne({ where: { title: req.body.title } })
-    .then((role) => {
-      if (role) {
-        return res.status(409)
-          .send({ message: `${req.body.title} Role is already created` });
-      }
+      .then((role) => {
+        if (role) {
+          return res.status(409)
+            .send({ message: `${req.body.title} Role is already created` });
+        }
 
-      // Create Role if is not existing before
-      Roles.create(req.body)
-      .then((newRole) => {
-        res.status(201)
-        .send(newRole);
-      })
-      .catch(() => {
-        res.status(500)
-        .send({ message: 'error occurred' });
+        // Create Role if is not existing before
+        Roles.create(req.body)
+          .then((newRole) => {
+            res.status(201)
+              .send(newRole);
+          })
+          .catch(() => {
+            res.status(500)
+              .send({ message: 'error occurred' });
+          });
       });
-    });
   }
 
   /**
@@ -82,14 +90,17 @@ class RolesController {
    * @returns {void} Returns void
    */
   static deleteRole(req, res) {
-    req
-      .body
-      .role
-      .destroy()
-    .then(() => {
-      res.status(200)
-      .send({ message: `${req.params.id} Role has been deleted!` });
-    });
+    Roles.findById(req.params.id)
+      .then((role) => {
+        role.destroy()
+          .then(() => {
+            res.status(200)
+              .send({ message: `${req.params.id} Role has been deleted!` });
+          });
+      })
+      .catch(() => {
+        res.status(404).send({ message: 'Role does not exists' });
+      });
   }
 }
 

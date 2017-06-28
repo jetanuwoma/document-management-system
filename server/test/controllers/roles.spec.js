@@ -89,9 +89,8 @@ describe('Role', () => {
         .send({ title: 'updated role' })
         .expect(200)
         .end((err, res) => {
-          console.log(res.body);
           expect(res.body.data.title).to.equal('updated role');
-          expect(res.body.message).to.equal('3 updated');
+          expect(res.body.message).to.equal('2 successfully updated');
           done();
         });
     });
@@ -115,7 +114,7 @@ describe('Role', () => {
         .expect(404)
         .end((err, res) => {
           expect(res.body.message)
-            .to.equal('Role with Id:10 does not exist');
+            .to.equal('Role does not exists');
           done();
         });
     });

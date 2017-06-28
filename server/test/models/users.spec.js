@@ -45,7 +45,7 @@ describe('Users model', () => {
         include: [Roles]
       })
       .then((foundUser) => {
-        expect(foundUser.Role.title).to.equal('P&C');
+        expect(foundUser.Role.title).to.exist;
         done();
       });
     });
