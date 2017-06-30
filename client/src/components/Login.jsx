@@ -18,16 +18,7 @@ class Login extends React.Component {
       error: {},
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-  }
-
-  /**
-   * handleSubmit - Performs validating of text fields and submitting details
-   * @param {Object} event - DOM element
-   */
-  handleSubmit(event) {
-   
   }
 
   /**
@@ -56,7 +47,7 @@ class Login extends React.Component {
       submitHandler: () => {
         this.props.loginUser(this.state.user)
           .then(() => {
-            if (!this.props.auth.error) {
+            if (!this.props.auth.error.message) {
               toastr.success('Login Successfull');
               this.context.router.push('/');
             } else {
@@ -164,7 +155,7 @@ Login.contextTypes = {
  */
 function mapStateToProps(state) {
   return {
-    auth: state.user.auth,
+    auth: state.auth,
   };
 }
 

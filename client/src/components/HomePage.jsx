@@ -32,7 +32,7 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 /**
@@ -43,8 +43,8 @@ HomePage.propTypes = {
  */
 function mapStateToProps(state) {
   return {
-    isAuthenticated: state.user.isAuthenticated,
-    user: state.user,
+    isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user,
   };
 }
 

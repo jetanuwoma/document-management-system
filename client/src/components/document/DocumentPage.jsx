@@ -156,7 +156,7 @@ function mapStateToProps(state) {
   return {
     myDocuments,
     documentLoaded: currentState.loaded,
-    user: state.user.user,
+    user: state.auth.user,
     archived: currentState.archived,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,

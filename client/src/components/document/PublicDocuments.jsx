@@ -123,7 +123,7 @@ function mapStateToProps(state) {
   return {
     myDocuments: state.manageDocument.alldocuments,
     documentLoaded: state.manageDocument.loaded,
-    user: state.user.user,
+    user: state.auth.user,
     archived: state.manageDocument.archived,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,

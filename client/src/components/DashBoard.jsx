@@ -35,11 +35,11 @@ class DashBoard extends React.Component {
 
     this.state = {
       document: {
-        content: 'some initial content here',
+        content: 'type your content here',
         permission: 'public',
         title: '',
       },
-      user: {},
+      user: { ...this.props.user },
       updateProfile: this.props.updateProfile,
       saveDocument: this.props.saveDocument,
     };
@@ -91,16 +91,45 @@ class DashBoard extends React.Component {
    * @param {Object} event - DOM element
    */
   onProfileChange(event) {
+    event.preventDefault();
     const name = event.target.name;
     const value = event.target.value;
     const user = this.state.user;
     user[name] = value;
     this.setState({ user });
+    $('.update-form').validate({
+      rules: {
+        password: {
+          required: false,
+          minlength: 6,
+        },
+        passwordAgain: {
+          required: true,
+          equalTo: '#password',
+        },
+      },
+      errorElement: 'div',
+      errorPlacement: (error, element) => {
+        const placement = $(element).data('error');
+        if (placement) {
+          $(placement).append(error);
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      submitHandler: () => {
+        user.UserId = this.props.user.UserId;
+        this.state.updateProfile(user)
+          .then(() => {
+            toastr.success('Profile Updated Successfully');
+          });
+      },
+    });
   }
 
-    /**
-   * Clears form after creating a document
-   */
+  /**
+ * Clears form after creating a document
+ */
   clearForm() {
     this.setState({ document: { content: '', title: '', permission: 'public' } });
   }
@@ -132,10 +161,10 @@ class DashBoard extends React.Component {
       });
   }
 
-   /**
-   * Handles changes on TinyMCE
-   * @param {Object} event - DOM element
-   */
+  /**
+  * Handles changes on TinyMCE
+  * @param {Object} event - DOM element
+  */
   handleEditorChange(newValue) {
     const content = newValue;
     const document = this.state.document;
@@ -148,7 +177,7 @@ class DashBoard extends React.Component {
    * @return {any}
   */
   render() {
-    const { fullNames, RoleId, email } = this.props.user;
+    const { fullNames, RoleId, email } = this.state.user;
     return (
       <div className="main">
         <div className="main-section">
@@ -183,48 +212,64 @@ class DashBoard extends React.Component {
               <div className="col s12">
                 <ul className="tabs tab-profile z-depth-1 cyan" >
                   <li className="tab col s3">
-                    <a className="white-text waves-effect waves-light active"
-                      href="#CreateDocument">
+                    <a
+                      className="white-text waves-effect waves-light active"
+                      href="#CreateDocument"
+                    >
                       <i className="fa fa-plus" />
                       Create A Document
                          </a>
                   </li>
                   <li className="tab col s3">
-                    <a className="white-text waves-effect waves-light"
-                      href="#UpdateProfile">
+                    <a
+                      className="white-text waves-effect waves-light"
+                      href="#UpdateProfile"
+                    >
                       <i className="fa fa-user-o" />
                       Update Profile
                          </a>
                   </li>
                   <div className="indicator" />
                 </ul>
-                <div id="CreateDocument"
-                  className="tab-content col s12  grey lighten-4">
-                  <form className="left-alert" onSubmit={this.handleSubmit} >
+                <div
+                  id="CreateDocument"
+                  className="tab-content col s12  grey lighten-4"
+                >
+                  <form className="left-alert"onSubmit={this.handleSubmit} >
                     <div className="row">
                       <div className="row margin">
                         <div className="input-field col s12">
-                          <input id="title" name="title" className="validate"
+                          <input
+                            id="title"
+                            name="title"
+                            className="validate"
                             type="text"
                             value={this.state.document.title}
                             required="required"
-                            onChange={this.onChange} />
+                            onChange={this.onChange}
+                          />
                           <label className="center-align">Document Title</label>
                         </div>
                       </div>
 
                       <div className="row margin">
                         <div className="input-field col s12">
-                          <select name="permission"
+                          <select
+                            name="permission"
                             required="required"
                             id="selectRole"
-                            onChange={this.onChange}>
+                            onChange={this.onChange}
+                          >
                             <option value="public">Public Access</option>
                             <option value="private">Private Access</option>
                             <option value="role">My Department</option>
                           </select>
-                          <label htmlFor="permission"
-                            className="center-align">Permission</label>
+                          <label
+                            htmlFor="permission"
+                            className="center-align"
+                          >
+                            Permission
+                          </label>
                         </div>
                       </div>
 
@@ -233,45 +278,82 @@ class DashBoard extends React.Component {
                         tinymceConfig={TINYMCE_CONFIG}
                         onChange={this.handleEditorChange}
                       />
-                      <button className="waves-effect waves-light btn cyan"
-                        type="submit">Create Document</button>
+                      <button
+                        className="waves-effect waves-light btn cyan"
+                        type="submit"
+                      >
+                        Create Document
+                      </button>
                     </div>
                   </form>
                 </div>
-                <div id="UpdateProfile"
-                  className="tab-content col s12  grey lighten-4" >
-                  <form className="left-alert" onSubmit={this.handleProfileSubmit} >
+                <div
+                  id="UpdateProfile"
+                  className="tab-content col s12  grey lighten-4"
+                >
+                  <form
+                    className="left-alert update-form"
+                  >
                     <div className="row">
                       <div className="row margin">
                         <div className="input-field col s12">
-                          <input id="title" name="fullNames" className="validate"
-                            type="text" required="required"
+                          <input
+                            id="fullNames"
+                            name="fullNames"
+                            className="validate"
+                            type="text"
+                            required="required"
                             onChange={this.onProfileChange}
                             value={fullNames}
                           />
-                          <label className="center-align">fullNames</label>
+                          <label className="center-align active">fullNames</label>
                         </div>
                       </div>
                       <div className="row margin">
                         <div className="input-field col s12">
-                          <input id="title" name="email" className="validate"
-                            type="text" required="required"
+                          <input
+                            id="email"
+                            name="email"
+                            className="validate"
+                            type="text"
+                            required="required"
                             onChange={this.onProfileChange}
-                            value={email} />
-                          <label className="center-align">email</label>
+                            value={email}
+                          />
+                          <label className="center-align active">email</label>
                         </div>
                       </div>
                       <hr />
                       <div className="row margin">
                         <div className="input-field col s12">
-                          <input id="title" name="title" className="validate"
-                            type="text"
-                            onChange={this.onProfileChange} />
+                          <input
+                            id="password"
+                            name="password"
+                            className="validate"
+                            type="password"
+                            onChange={this.onProfileChange}
+                          />
                           <label className="center-align">Update Password</label>
                         </div>
                       </div>
-                      <button className="waves-effect waves-light btn cyan"
-                        type="submit">Update Profile</button>
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <input
+                            id="passwordAgain"
+                            name="passwordAgain"
+                            className="validate"
+                            type="password"
+                            onChange={this.onProfileChange}
+                          />
+                          <label className="center-align">Confirm Password</label>
+                        </div>
+                      </div>
+                      <button
+                        className="waves-effect waves-light btn cyan"
+                        type="submit"
+                      >
+                        Update Profile
+                        </button>
                     </div>
                   </form>
                 </div>
@@ -298,8 +380,8 @@ DashBoard.propTypes = {
  */
 function mapStateToProps(state) {
   return {
-    user: state.user.user,
-    alldocuments: state.manageDocument
+    user: state.auth.user,
+    alldocuments: state.manageDocument,
   };
 }
 

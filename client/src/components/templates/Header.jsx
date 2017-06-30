@@ -97,7 +97,9 @@ class Header extends React.Component {
         <Link id="logo-container" to="/" className="brand-logo">We Doc</Link>
         <div className="header-search-wrapper hide-on-med-and-down">
           <i className="fa fa-search" />
-          <input type="text" name="Search"
+          <input
+            type="text"
+            name="Search"
             className="header-search-input z-depth-2"
             placeholder={`Search for ${this.state.searchSource}`}
             onFocus={this.onFocus}
@@ -142,16 +144,16 @@ Header.contextTypes = {
 */
 function mapStateToProps(state) {
   return {
-    isAuthenticated: state.user.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
     searchSource: state.pageControls.searchSource,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
-    user: state.user.user,
+    user: state.auth.user,
   };
 }
 
 export default connect(mapStateToProps, {
   changeSearchSource,
   triggerSearch,
-  clearSearch
+  clearSearch,
 })(Header);

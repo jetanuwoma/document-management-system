@@ -72,7 +72,6 @@ class SignUp extends React.Component {
             this.context.router.push('/');
           })
           .catch((error) => {
-            console.log(error.response);
             this.setState({ error: error.response.data.message });
           })
           .catch(() => {
@@ -92,7 +91,8 @@ class SignUp extends React.Component {
       <div className="login-page-wrapper">
         <div id="login-page" className="row">
           <div className="col s12 z-depth-4 card-panel">
-            <form className="signup-form left-alert"
+            <form
+              className="signup-form left-alert"
               onSubmit={this.processSignUp}
             >
               <div className="row">
@@ -119,7 +119,8 @@ class SignUp extends React.Component {
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input name="username"
+                  <input
+                    name="username"
                     type="text"
                     id="username"
                     onChange={this.onChange}
@@ -131,29 +132,36 @@ class SignUp extends React.Component {
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input name="email"
+                  <input
+                    name="email"
                     type="email"
                     id="email"
-                    onChange={this.onChange} />
+                    onChange={this.onChange}
+                  />
                   <label className="center-align">Email</label>
                 </div>
                 <label className="email-error"> {this.state.error} </label>
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input name="password"
+                  <input
+                    name="password"
                     type="password"
                     id="password"
-                    onChange={this.onChange} />
+                    onChange={this.onChange}
+                  />
                   <label>Password</label>
                 </div>
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input id="passwordAgain" name="passwordAgain"
+                  <input
+                    id="passwordAgain"
+                    name="passwordAgain"
                     type="password"
-                    onChange={this.onChange} />
-                  <label>Re-Password</label>
+                    onChange={this.onChange}
+                  />
+                  <label>Confirm Password</label>
                 </div>
               </div>
               <div className="row">
@@ -183,7 +191,7 @@ class SignUp extends React.Component {
 SignUp.propTypes = {
   registerUser: PropTypes.func.isRequired,
   isUserExisting: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
 /**
