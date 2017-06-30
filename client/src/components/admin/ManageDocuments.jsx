@@ -138,7 +138,7 @@ ManageDocuments.propTypes = {
  */
 function mapStateToProps(state) {
   return {
-    user: state.user.user,
+    user: state.auth.user,
     documents: state.adminManagement.allUsersDocuments,
     archived: state.manageDocument.archived,
     isSearching: state.pageControls.isSearching,

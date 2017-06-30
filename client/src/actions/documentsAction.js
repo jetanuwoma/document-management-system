@@ -94,7 +94,7 @@ export function getDocumentCounts(access = null) {
 */
 export function loadUserDocuments(offset = 0) {
   return (dispatch, getState) => {
-    return axios.get(`/api/users/${getState().user.user.UserId}/documents?offset=${offset}`) //eslint-disable-line
+    return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`) //eslint-disable-line
        .then((res) => {
          getDocumentCounts()
           .then((response) => {

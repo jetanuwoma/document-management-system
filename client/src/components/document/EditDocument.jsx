@@ -113,18 +113,25 @@ export class EditDocument extends React.Component {
               <div className="row">
                 <div className="row margin">
                   <div className="input-field col s12">
-                    <input id="title" name="title"
-                      type="text" value={title} onChange={this.onChange} />
-                    <label className="center-align">Document Title</label>
+                    <input
+                      id="title"
+                      name="title"
+                      type="text"
+                      value={title}
+                      onChange={this.onChange}
+                    />
+                    <label className="center-align active">Document Title</label>
                   </div>
                 </div>
 
                 <div className="row margin">
                   <div className="input-field col s12">
-                    <select name="permission"
+                    <select
+                      name="permission"
                       required="required"
                       id="selectRole"
-                      onChange={this.onChange}>
+                      onChange={this.onChange}
+                    >
                       <option value="public">Public Access</option>
                       <option value="private">Private Access</option>
                       <option value="role">My Department</option>

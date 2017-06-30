@@ -5,7 +5,11 @@ export default {
     allUsersDocuments: [],
     selectedUsers: [],
   },
-  auth: {},
+  auth: {
+    user: {},
+    isAuthenticated: false,
+    error: {},
+  },
   pageControls: {
     searchSource: 'document',
     isSearching: false,
