@@ -1,4 +1,3 @@
-/* global $ */
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -18,7 +17,8 @@ const LandingPage = () =>
             </h5>
           </div>
           <div className="row center">
-            <Link to="/login"
+            <Link
+              to="/login"
               className="btn-large waves-effect waves-light orange">
               Get Started
             </Link>

@@ -37,7 +37,7 @@ class DashBoard extends React.Component {
       document: {
         content: 'some initial content here',
         permission: 'public',
-        title: ''
+        title: '',
       },
       user: {},
       updateProfile: this.props.updateProfile,
@@ -73,25 +73,6 @@ class DashBoard extends React.Component {
       this.setState({ updateProfile: nextProps.updateProfile });
     }
   }
-  /**
-   * handleSubmit - creates a new document
-   * @param {Object} event - DOM element
-   */
-  handleSubmit(event) {
-    event.preventDefault();
-    this.state.saveDocument(this.state.document)
-      .then(() => {
-        toastr.success('document Created');
-        this.clearForm();
-      });
-  }
-
-  /**
-   * Clears form after creating a document
-   */
-  clearForm() {
-    this.setState({ document: { content: '', title: '', permission: 'public' } });
-  }
 
   /**
    * Handles changes on input fields
@@ -106,17 +87,6 @@ class DashBoard extends React.Component {
   }
 
   /**
-   * Handles changes on TinyMCE
-   * @param {Object} event - DOM element
-   */
-  handleEditorChange(newValue) {
-    const content = newValue;
-    const document = this.state.document;
-    document.content = content;
-    this.setState({ document });
-  }
-
-  /**
    * Handles profile input field updates
    * @param {Object} event - DOM element
    */
@@ -126,6 +96,26 @@ class DashBoard extends React.Component {
     const user = this.state.user;
     user[name] = value;
     this.setState({ user });
+  }
+
+    /**
+   * Clears form after creating a document
+   */
+  clearForm() {
+    this.setState({ document: { content: '', title: '', permission: 'public' } });
+  }
+
+  /**
+   * handleSubmit - creates a new document
+   * @param {Object} event - DOM element
+   */
+  handleSubmit(event) {
+    event.preventDefault();
+    this.state.saveDocument(this.state.document)
+      .then(() => {
+        toastr.success('document Created');
+        this.clearForm();
+      });
   }
 
   /**
@@ -142,6 +132,17 @@ class DashBoard extends React.Component {
       });
   }
 
+   /**
+   * Handles changes on TinyMCE
+   * @param {Object} event - DOM element
+   */
+  handleEditorChange(newValue) {
+    const content = newValue;
+    const document = this.state.document;
+    document.content = content;
+    this.setState({ document });
+  }
+
   /**
    *Displays the login page
    * @return {any}
@@ -154,10 +155,10 @@ class DashBoard extends React.Component {
           <div className="section">
             <div id="profile-page-header" className="card hide-on-small-only">
               <div className="card-image waves-effect waves-block waves-light">
-                <img className="activator" src={backgroundImage} />
+                <img className="activator" src={backgroundImage} alt="backgound" />
               </div>
               <figure className="card-profile-image">
-                <img src={profilePic} className="circle z-depth-2 responsive-img activator" />
+                <img src={profilePic} className="circle z-depth-2 responsive-img activator" alt="profile" />
               </figure>
               <div className="card-content">
                 <div className="row">

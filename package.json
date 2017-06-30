@@ -88,6 +88,7 @@
     "npm-run-all": "1.8.0",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
+    "react-router": "^4.1.1",
     "react-scroll-pagination": "^0.1.9",
     "rimraf": "2.5.2",
     "sequelize": "^3.29.0",

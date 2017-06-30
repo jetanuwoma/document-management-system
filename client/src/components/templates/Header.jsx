@@ -86,7 +86,7 @@ class Header extends React.Component {
           <li><Link to="login">Login</Link></li>
           <li><Link to="signup">Sign Up</Link></li>
         </ul>
-        <a href="#" data-activates="nav-mobile" className="button-collapse">
+        <a data-activates="nav-mobile" className="button-collapse">
           <i className="material-icons">menu</i>
         </a>
       </div>

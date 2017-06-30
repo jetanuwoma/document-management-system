@@ -15,7 +15,7 @@ class Login extends React.Component {
 
     this.state = {
       user: {},
-      error: {}
+      error: {},
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,18 +27,31 @@ class Login extends React.Component {
    * @param {Object} event - DOM element
    */
   handleSubmit(event) {
+   
+  }
+
+  /**
+   * onChange - listens to changes of input fields
+   * @param {Object} event -  DOM element
+   */
+  onChange(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    const user = this.state.user;
+    user[name] = value;
+    this.setState({ user });
     event.preventDefault();
     this.setState({ error: {} });
     $('.login-form').validate({
       rules: {
         username: {
           required: true,
-          email: true
+          email: true,
         },
         password: {
           required: true,
-          minlength: 5
-        }
+          minlength: 5,
+        },
       },
       submitHandler: () => {
         this.props.loginUser(this.state.user)
@@ -60,20 +73,8 @@ class Login extends React.Component {
         } else {
           error.insertAfter(element);
         }
-      }
+      },
     });
-  }
-
-  /**
-   * onChange - listens to changes of input fields
-   * @param {Object} event -  DOM element
-   */
-  onChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-    const user = this.state.user;
-    user[name] = value;
-    this.setState({ user });
   }
 
   /**
@@ -85,8 +86,10 @@ class Login extends React.Component {
       <div className="login-page-wrapper">
         <div id="login-page" className="row">
           <div className="col s12 z-depth-4 card-panel">
-            <form className="login-form left-alert"
-              onSubmit={this.handleSubmit} >
+            <form
+              className="login-form left-alert"
+              onSubmit={this.handleSubmit}
+            >
               <div className="row">
                 <div className="input-field col s12 center">
                   <h5><Link to="/" className="app-name"> We Doc</Link></h5>
@@ -95,24 +98,38 @@ class Login extends React.Component {
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input id="username" name="username" className="validate"
-                    type="email" onChange={this.onChange} />
-                  <label className="center-align"
-                    data-error="email is required" >email</label>
+                  <input
+                    id="username"
+                    name="username"
+                    className="validate"
+                    type="email"
+                    onChange={this.onChange}
+                  />
+                  <label
+                    className="center-align"
+                    data-error="email is required"
+                  >
+                    email
+                  </label>
                 </div>
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input name="password" type="password"
-                    onChange={this.onChange} />
+                  <input
+                    name="password"
+                    type="password"
+                    onChange={this.onChange}
+                  />
                   <label data-error="enter your password">Password</label>
                 </div>
               </div>
               <div className="row">
                 <div className="input-field col s12">
-                  <input type="submit"
+                  <input
+                    type="submit"
                     className="btn waves-effect waves-light col s12"
-                    value="Login" />
+                    value="Login"
+                  />
                 </div>
               </div>
               <div className="row">
@@ -137,7 +154,7 @@ Login.propTypes = {
 };
 
 Login.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
 };
 
 /**
