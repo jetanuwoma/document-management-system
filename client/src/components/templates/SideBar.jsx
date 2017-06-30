@@ -48,16 +48,21 @@ class SideBar extends React.Component {
 
     return (
       <aside id="left-sidebar-nav">
-        <ul id="slide-out"
-          className="side-nav fixed leftside-navigation ps-container ps-active-y " >
+        <ul
+          id="slide-out"
+          className="side-nav fixed leftside-navigation ps-container ps-active-y "
+        >
           <li className="user-details cyan">
             <div className="row">
               <div className="col col s4 m4 l4">
-                <img src={profile} alt=""
-                  className="circle responsive-img valign profile-image" />
+                <img
+                  src={profile}
+                  alt=""
+                  className="circle responsive-img valign profile-image"
+                />
               </div>
               <div className="col col s8 m8 l8">
-                <a className="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#">
+                <a className="btn-flat dropdown-button waves-effect waves-light white-text profile-btn">
                   {fullNames}
                 </a>
 
@@ -96,16 +101,17 @@ class SideBar extends React.Component {
           }
 
           <li className="">
-            <a href=""
+            <a
               className="waves-effect waves-cyan"
               onClick={this.logOut}
             >
               <i className="fa fa-power-off" /> Logout</a>
           </li>
         </ul >
-        <a href="#"
+        <a
           data-activates="slide-out"
-          className="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan">
+          className="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"
+        >
           <i className="large material-icons"> menu</i >
         </a >
       </aside >
@@ -115,7 +121,7 @@ class SideBar extends React.Component {
 }
 
 SideBar.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 SideBar.propTypes = {
@@ -130,7 +136,7 @@ SideBar.propTypes = {
  */
 function mapStateToProps(state) {
   return {
-    user: state.user.user
+    user: state.user.user,
   };
 }
 

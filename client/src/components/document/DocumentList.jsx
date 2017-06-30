@@ -6,48 +6,45 @@ import Document from './Document.jsx';
 /**
  * DocumentList Component - Lists documents
  */
-class DocumentList extends React.Component {
-
-  render() {
-    return (
-      <div className="main-section">
-        {!this.props.isSearching &&
-          <div id="breadcrumbs-wrapper">
-            <div className="">
-              <div className="row">
-                <div className="col s12 m12 l12">
-                  <h5 className="breadcrumbs-title">Documents</h5>
-                  <ol className="breadcrumbs">
-                    <li><Link to="/">Dashboard</Link>
-                    </li>
-                    <li className="active">Documents</li>
-                  </ol>
-                </div>
+const DocumentList = (props) =>
+  (
+    <div className="main-section">
+      {!props.isSearching &&
+        <div id="breadcrumbs-wrapper">
+          <div className="">
+            <div className="row">
+              <div className="col s12 m12 l12">
+                <h5 className="breadcrumbs-title">Documents</h5>
+                <ol className="breadcrumbs">
+                  <li><Link to="/">Dashboard</Link>
+                  </li>
+                  <li className="active">Documents</li>
+                </ol>
               </div>
             </div>
           </div>
-        }
-        {this.props.isSearching &&
-          <div>
-            <h4>{this.props.searchCount} Search Result</h4>
-          </div>
-        }
-        <div className="row">
-          {this.props.documents.map((document, index) => {
-            return (<Document
-              key={index}
-              document={document}
-              user={this.props.user}
-              deleteDocument={this.props.deleteDocument}
-              archived={this.props.archived}
-              undoDelete={this.props.undoDelete}
-            />);
-          })}
         </div>
+      }
+      {props.isSearching &&
+        <div>
+          <h4>{props.searchCount} Search Result</h4>
+        </div>
+      }
+      <div className="row">
+        {props.documents.map((document, index) => {
+          return (<Document
+            key={`${index}_document`}
+            document={document}
+            user={props.user}
+            deleteDocument={props.deleteDocument}
+            archived={props.archived}
+            undoDelete={props.undoDelete}
+          />);
+        })}
       </div>
-    );
-  }
-}
+    </div>
+  );
+
 DocumentList.propTypes = {
   documents: PropTypes.array,
   user: PropTypes.object,

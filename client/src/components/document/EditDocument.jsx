@@ -89,7 +89,7 @@ export class EditDocument extends React.Component {
    * @return {any}
    */
   render() {
-    const { content, title, permission } = this.state.document;
+    const { content, title } = this.state.document;
 
     return (
       <div className="main">

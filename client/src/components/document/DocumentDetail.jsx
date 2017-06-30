@@ -26,6 +26,7 @@ export class DocumentDetail extends React.Component {
    * get a single document from the api
    */
   componentDidMount() {
+    $('.sidebar-collapse').sideNav();
     this.props.loadDocument(this.props.params.id)
       .then(() => {
         const { id, title, content, permission } = this.props.document;

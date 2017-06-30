@@ -1,3 +1,4 @@
+/* global $ */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -42,6 +43,7 @@ export class DocumentPage extends React.Component {
    * check if search query has been passed to the route
    */
   componentDidMount() {
+    $('.sidebar-collapse').sideNav();
     if (this.props.location.query.q !== undefined) {
       this.props.triggerSearch(this.props.location.query.q, 'documents');
       this.setState({ loading: false });
