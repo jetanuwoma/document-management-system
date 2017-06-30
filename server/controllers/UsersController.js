@@ -30,7 +30,7 @@ class UsersController {
     Users.findOne({
       where: {
         $or: [
-          { email: req.body.username },
+          { email: req.body.email },
           { username: req.body.username }]
       }
     }).then((user) => {
