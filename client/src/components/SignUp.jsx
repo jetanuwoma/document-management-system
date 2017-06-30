@@ -16,80 +16,11 @@ class SignUp extends React.Component {
 
     this.state = {
       user: {},
-      error: null,
+      error: '',
     };
 
-    this.processSignUp = this.processSignUp.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.userExisting = this.userExisting.bind(this);
   }
-
-  /**
-   * userExisting - check if users details is alrealy created
-   * @param {String} value - user email
-   */
-  userExisting(value) {
-    this.props.isUserExisting(value);
-  }
-
-
-  /**
-   * processSignUp - perform user Sign Up action
-   *
-   * @param  {Object} event DOM element of sign up form
-   */
-  processSignUp(event) {
-    event.preventDefault();
-    this.setState({ error: {} });
-    $('.signup-form').validate({
-      rules: {
-        fullNames: {
-          required: true,
-          minlength: 6
-        },
-        email: {
-          email: true,
-          required: true
-        },
-        password: {
-          required: true,
-          minlength: 6
-        },
-        username: {
-          required: true,
-          minlength: 4
-        },
-        passwordAgain: {
-          required: true,
-          equalTo: '#password'
-        }
-      },
-      errorElement: 'div',
-      errorPlacement: (error, element) => {
-        const placement = $(element).data('error');
-        if (placement) {
-          $(placement).append(error);
-          this.setState({ error: { ...this.state.error, error } });
-        } else {
-          error.insertAfter(element);
-        }
-      },
-      submitHandler: () => {
-        this.props.registerUser(this.state.user)
-          .then(() => {
-            toastr.success('Account Created Successfully');
-            this.context.router.push('/');
-          })
-          .catch(() => {
-            toastr.error('Account Exists');
-          });
-      },
-      validateUserEmail: (email) => {
-        return this.userExisting(email);
-      }
-    });
-  }
-
 
   /**
    * onChange - handles input field change event
@@ -101,6 +32,54 @@ class SignUp extends React.Component {
     const user = this.state.user;
     user[name] = value;
     this.setState({ user });
+    event.preventDefault();
+    $('.signup-form').validate({
+      rules: {
+        fullNames: {
+          required: true,
+          minlength: 6,
+        },
+        email: {
+          email: true,
+          required: true,
+        },
+        password: {
+          required: true,
+          minlength: 6,
+        },
+        username: {
+          required: true,
+          minlength: 4,
+        },
+        passwordAgain: {
+          required: true,
+          equalTo: '#password',
+        },
+      },
+      errorElement: 'div',
+      errorPlacement: (error, element) => {
+        const placement = $(element).data('error');
+        if (placement) {
+          $(placement).append(error);
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      submitHandler: () => {
+        this.props.registerUser(this.state.user)
+          .then(() => {
+            toastr.success('Account Created Successfully');
+            this.context.router.push('/');
+          })
+          .catch((error) => {
+            console.log(error.response);
+            this.setState({ error: error.response.data.message });
+          })
+          .catch(() => {
+            toastr.error('Account Exists');
+          });
+      },
+    });
   }
 
 
@@ -114,7 +93,8 @@ class SignUp extends React.Component {
         <div id="login-page" className="row">
           <div className="col s12 z-depth-4 card-panel">
             <form className="signup-form left-alert"
-              onSubmit={this.processSignUp}>
+              onSubmit={this.processSignUp}
+            >
               <div className="row">
                 <div className="input-field col s12 center">
                   <h4><Link to="/" className="app-name"> We Doc</Link></h4>
@@ -123,13 +103,18 @@ class SignUp extends React.Component {
               </div>
               <div className="row margin">
                 <div className="input-field col s12">
-                  <input name="fullNames"
+                  <input
+                    name="fullNames"
                     id="fullNames"
                     type="text"
-                    onChange={this.onChange} />
+                    onChange={this.onChange}
+                  />
                   <label
                     data-error="Your full name is required"
-                    className="center-align">Fullnames</label>
+                    className="center-align"
+                  >
+                    Fullnames
+                  </label>
                 </div>
               </div>
               <div className="row margin">
@@ -137,8 +122,11 @@ class SignUp extends React.Component {
                   <input name="username"
                     type="text"
                     id="username"
-                    onChange={this.onChange} />
-                  <label className="center-align">Username</label>
+                    onChange={this.onChange}
+                  />
+                  <label className="center-align">
+                    Username
+                  </label>
                 </div>
               </div>
               <div className="row margin">
@@ -149,6 +137,7 @@ class SignUp extends React.Component {
                     onChange={this.onChange} />
                   <label className="center-align">Email</label>
                 </div>
+                <label className="email-error"> {this.state.error} </label>
               </div>
               <div className="row margin">
                 <div className="input-field col s12">

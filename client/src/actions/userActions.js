@@ -10,7 +10,7 @@ import actionTypes from '../constants';
 export function loginError(error) {
   return {
     type: actionTypes.LOGIN_USER_ERROR,
-    error
+    error,
   };
 }
 
@@ -24,7 +24,7 @@ export function loginError(error) {
 export function setLoggedInUser(user) {
   return {
     type: actionTypes.LOGIN_USER,
-    user
+    user,
   };
 }
 
@@ -54,9 +54,6 @@ export function registerUser(user) {
       localStorage.setItem('tokenize', token);
       axios.defaults.headers = { 'x-access-token': result.data.token };
       dispatch(setLoggedInUser(jwtDecode(token)));
-    })
-    .catch((err) => {
-      dispatch(loginError(err.response.data.message));
     });
   };
 }
@@ -108,7 +105,7 @@ export function updateProfile(user) {
       .then((res) => {
         dispatch({
           type: actionTypes.USER_RECORD_UPDATED,
-          user: res.data.user
+          user: res.data.user,
         });
       });
   };

@@ -12,7 +12,7 @@ export function changeSearchSource(source) {
   return (dispatch) => {
     dispatch({
       type: actionTypes.CHANGE_SEARCH_LOCATION,
-      source
+      source,
     });
   };
 }
@@ -28,7 +28,7 @@ export function changeSearchQuery(query) {
   return (dispatch) => {
     dispatch({
       type: actionTypes.CHANGE_SEARCH_QUERY,
-      query
+      query,
     });
   };
 }
@@ -57,7 +57,7 @@ export function triggerSearch(query, source) {
 export function clearSearch() {
   return (dispatch) => {
     dispatch({
-      type: actionTypes.CLEAR_SEARCH_QUERY
+      type: actionTypes.CLEAR_SEARCH_QUERY,
     });
   };
 }

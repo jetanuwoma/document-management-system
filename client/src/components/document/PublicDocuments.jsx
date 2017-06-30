@@ -91,7 +91,8 @@ export class PublicDocuments extends React.Component {
               onChange={this.nextPage}
               current={this.state.activePagination}
               total={this.state.totalDocument}
-              pageSize={6} />
+              pageSize={6}
+            />
           </div>
         }
       </div>

@@ -5,10 +5,10 @@ const DocumentsRoutes = (router) => {
   // Document Schema definition
   /**
    * @swagger
-   * definitions:
+   * definition:
    *   Documents:
    *     properties:
-   *       UserId:
+   *       OwnerId:
    *         type: integer
    *       title:
    *         type: string
@@ -56,9 +56,7 @@ const DocumentsRoutes = (router) => {
    *         description: An array of all documents
    *         schema:
    *           $ref: '#/definitions/Documents'
-   *       404:
-   *         description: Documents not found
-   *       412:
+   *       500:
    *         description: Exception Error
    */
     .get(Access.isAdmin, DocumentsController.getAllDocuments)
@@ -82,13 +80,13 @@ const DocumentsRoutes = (router) => {
      *     responses:
      *       200:
      *         description: Successfully created
-     *       412:
-     *         description: Document cannot be created
+     *       500:
+     *         description: Error creating document
      */
     .post(DocumentsController.createDocument);
     /**
    * @swagger
-   * /documents/search:
+   * /search/document:
    *   get:
    *     tags:
    *       - Documents
@@ -105,12 +103,34 @@ const DocumentsRoutes = (router) => {
    *     responses:
    *       200:
    *         description: An array of all documents
-   *       404:
-   *         description: No document found
+   *       500:
+   *         description: Error fetching documents with that term
    */
   router.route('/search/document')
     .get(Access.setSearchCriterial, DocumentsController.searchDocuments);
-
+   
+    /**
+   * @swagger
+   * /count/document:
+   *   get:
+   *     tags:
+   *       - Documents
+   *     description: Returns the total number of documents, count all if access is not specified
+   *     summary: Get documents count
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: access
+   *         description: document access to count public, private, or role
+   *         in: path
+   *         required: true
+   *         type: string
+   *     responses:
+   *       200:
+   *         description: total number of documents
+   *       500:
+   *         description: Error fetching documents with that term
+   */
 
   router.route('/count/document')
     .get(Access.setSearchCriterial, DocumentsController.getDocumentCounts);
@@ -202,17 +222,23 @@ const DocumentsRoutes = (router) => {
   // Get all documents based on the access levels Public, Private or Roles
   /**
    * @swagger
-   * /documents/public:
+   * /documents/access/{access}:
    *   get:
    *     tags:
    *       - Documents
-   *     description: Returns all public documents
-   *     summary: Get All Public Documents
+   *     description: Returns all documents based on permission
+   *     summary: Get all specified permission Documents
    *     produces:
    *       - application/json
+   *     parameters:
+   *       - name: id
+   *         description: User id 
+   *         in: path
+   *         required: true
+   *         type: integer
    *     responses:
    *       200:
-   *         description: An array of all public documents
+   *         description: An array of all specified permission documents
    *         schema:
    *           $ref: '#/definitions/Documents'
    *       404:
@@ -250,18 +276,18 @@ const DocumentsRoutes = (router) => {
    *     tags:
    *       - Documents
    *     description: Returns an array of documents
-   *     summary: Search for Document
+   *     summary: Retrieves a single user documents
    *     produces:
    *       - application/json
    *     parameters:
-   *       - name: q
-   *         description: The search term to search for
+   *       - name: id
+   *         description: User id 
    *         in: path
    *         required: true
-   *         type: string
+   *         type: integer
    *     responses:
    *       200:
-   *         description: An array of all documents
+   *         description: An array of all users documents
    *       404:
    *         description: No document found
    */

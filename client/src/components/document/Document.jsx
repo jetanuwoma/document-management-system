@@ -53,13 +53,16 @@ class Document extends React.Component {
           <li>
             <Link
               to={`/doc/${this.props.document.id}`}
-              className="btn-floating waves-effect waves-light light-blue">
+              className="btn-floating waves-effect waves-light light-blue"
+            >
               <i className="fa fa-eye" />
             </Link>
           </li>
           <li>
-            <Link to={`/doc/edit/${this.props.document.id}`}
-              className="btn-floating waves-effect waves-light green">
+            <Link
+              to={`/doc/edit/${this.props.document.id}`}
+              className="btn-floating waves-effect waves-light green"
+            >
               <i className="fa fa-edit" />
             </Link>
           </li>
@@ -80,7 +83,8 @@ class Document extends React.Component {
           <li>
             <Link
               to={`/doc/${this.props.document.id}`}
-              className="btn-floating waves-effect waves-light light-blue">
+              className="btn-floating waves-effect waves-light light-blue"
+            >
               <i className="fa fa-eye" />
             </Link>
           </li>
@@ -90,23 +94,23 @@ class Document extends React.Component {
 
     const isPublic = (
       <a className="btn-floating btn-large btn-permission waves-effect waves-light green">
-        < i className="fa fa-unlock" />
+        <i className="fa fa-unlock" />
       </a >
     );
 
     const isPrivate = (
       <a className="btn-floating btn-large btn-permission waves-effect waves-light pink red">
-        < i className="fa fa-lock" />
+        <i className="fa fa-lock" />
       </a >
     );
 
     const isRole = (
       <a className="btn-floating btn-large btn-permission waves-effect waves-light pink red">
-        < i className="fa fa-building" />
+        <i className="fa fa-building" />
       </a >
      );
     const style = {
-      display: displayState
+      display: displayState,
     };
 
     return (
@@ -121,7 +125,7 @@ class Document extends React.Component {
             <div className="card-content">
               <div className="row">
                 <p className="card-title grey-text text-darken-4">
-                  <a href="#" className="grey-text text-darken-4">
+                  <a className="grey-text text-darken-4">
                     {this.props.document.title}
                   </a>
                 </p>

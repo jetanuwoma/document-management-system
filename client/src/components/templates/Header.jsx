@@ -31,14 +31,6 @@ class Header extends React.Component {
     this.onSearch = this.onSearch.bind(this);
   }
 
-
-  /**
-   * Update states when they changed
-   */
-  componentWillReceiveProps() {
-    this.props.clearSearch();
-  }
-
   componentDidMount() {
     if (this.context.router === undefined) {
       this.context.router = history;
