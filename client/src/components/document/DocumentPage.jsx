@@ -6,7 +6,7 @@ import { triggerSearch } from '../../actions/pageAction';
 import {
   loadUserDocuments,
   deleteDocument,
-  undoDelete
+  undoDelete,
 } from '../../actions/documentsAction';
 import { searchDocuments } from '../../actions/adminActions';
 import PreLoader from '../templates/PreLoader.jsx';

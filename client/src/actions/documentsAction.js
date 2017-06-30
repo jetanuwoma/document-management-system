@@ -11,7 +11,7 @@ import actionTypes from '../constants';
 export function createDocumentSuccess(document) {
   return {
     type: actionTypes.CREATE_DOCUMENT_SUCCESS,
-    document
+    document,
   };
 }
 
@@ -25,7 +25,7 @@ export function createDocumentSuccess(document) {
 export function loadDocumentsSuccess(documents) {
   return {
     type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
-    documents
+    documents,
   };
 }
 
@@ -39,7 +39,7 @@ export function loadDocumentsSuccess(documents) {
 export function loadDocumentSuccess(document) {
   return {
     type: actionTypes.LOAD_DOCUMENT_SUCCESS,
-    document
+    document,
   };
 }
 
@@ -53,7 +53,7 @@ export function loadDocumentSuccess(document) {
 export function documentDeletedSuccessfully(document) {
   return {
     type: actionTypes.DOCUMENT_DELETED_SUCCESSFULLY,
-    document
+    document,
   };
 }
 
@@ -100,7 +100,7 @@ export function loadUserDocuments(offset = 0) {
           .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.count
+              count: response.data.count,
             });
           });
          dispatch(loadDocumentsSuccess(res.data));
@@ -178,7 +178,7 @@ export function loadPublicDocuments(offset = 0) {
           .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.count
+              count: response.data.count,
             });
           });
         dispatch(loadDocumentsSuccess(res.data));

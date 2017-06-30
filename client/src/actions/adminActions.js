@@ -12,7 +12,7 @@ import { getDocumentCounts } from './documentsAction';
 export function loadDocumentsSucess(documents) {
   return {
     type: actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS,
-    documents
+    documents,
   };
 }
 /**
@@ -24,7 +24,7 @@ export function loadDocumentsSucess(documents) {
 export function loadDocumentsSearchSucess(result) {
   return {
     type: actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS,
-    result
+    result,
   };
 }
 
@@ -37,7 +37,7 @@ export function loadDocumentsSearchSucess(result) {
 export function loadUsersSuccessful(users) {
   return {
     type: actionTypes.LOAD_USERS_SUCCESSFUL,
-    users
+    users,
   };
 }
 
@@ -83,7 +83,7 @@ export function selectUser(id) {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SELECT_USER,
-      id
+      id,
     });
   };
 }
@@ -101,7 +101,7 @@ export function deleteUsers(allUsers) {
     });
     dispatch({
       type: actionTypes.REMOVE_SELECTED_USER,
-      users: []
+      users: [],
     });
     return Promise.all(actionCall);
   };
@@ -122,7 +122,7 @@ export function listAllDocuments(offset = 0) {
           .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.count
+              count: response.data.count,
             });
           });
         dispatch(loadDocumentsSucess(documents.data));
