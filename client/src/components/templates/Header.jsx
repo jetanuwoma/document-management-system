@@ -1,12 +1,14 @@
 import React from 'react';
 import createHistory from 'history/createBrowserHistory';
+import Notifications from 'react-notification-system-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { searchUsers } from '../../actions/adminActions';
+import { searchDocuments } from '../../actions/documentsAction';
 import {
   changeSearchSource,
   triggerSearch,
-  clearSearch
 } from '../../actions/pageAction';
 import SideBar from './SideBar.jsx';
 
@@ -27,32 +29,24 @@ class Header extends React.Component {
 
     this.context = this.context ? this.context : history;
     this.state = { searchSource: 'allDocuments', searchValue: '' };
-    this.onFocus = this.onFocus.bind(this);
     this.onSearch = this.onSearch.bind(this);
   }
 
+  /**
+   * Set default router
+   */
   componentDidMount() {
     if (this.context.router === undefined) {
       this.context.router = history;
     }
   }
+
   /**
-   * Set search location when search field is active
+   *
+   * @param {Object} nextProps changed state
    */
-  onFocus() {
-    if (this.props.location.pathname === '/') {
-      if (this.props.user.RoleId !== 1) {
-        this.setState({ searchSource: 'userDocument' });
-        this.context.router.push('/doc');
-      } else {
-        this.setState({ searchSource: 'allDocuments' });
-        this.context.router.push('/documents');
-      }
-    } else if (this.props.location.pathname === '/doc') {
-      this.setState({ searchSource: 'userDocument' });
-    } else if (this.props.location.pathname === '/users') {
-      this.setState({ searchSource: 'users' });
-    }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ searchSource: nextProps.searchSource });
   }
 
   /**
@@ -60,21 +54,34 @@ class Header extends React.Component {
    * @param {Object} event  - DOM element
    */
   onSearch(event) {
+    this.setState({ searchValue: event.target.value });
     if (event.keyCode === 13) {
       this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`); // eslint-disable-line
-      this.props.triggerSearch(event.target.value, this.state.searchSource);
-    } else {
-      this.setState({ searchValue: event.target.value });
+      if (this.state.searchSource === 'publicDocuments') {
+        this.props.searchDocuments(event.target.value, 'public');
+      } else if (this.state.searchSource === 'users') {
+        this.props.searchUsers(event.target.value);
+      } else {
+        this.props.searchDocuments(event.target.value);
+      }
     }
-    //
   }
 
   /**
    * Display site header
    */
   render() {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, notifications } = this.props;
     const { searchValue } = this.state;
+
+    const style = {
+      NotificationItem: { // Override the notification item
+        DefaultStyle: { // Applied to every notification, regardless of the notification level
+          margin: '10px 5px 2px 1px',
+        },
+      },
+    };
+
     const isGuestLink = (
       <div className="nav-wrapper container">
         <Link id="logo-container" to="/" className="brand-logo">WeDoc</Link>
@@ -113,6 +120,10 @@ class Header extends React.Component {
     );
     return (
       <div className="navbar-fixed">
+        <Notifications
+          notifications={notifications}
+          style={style}
+        />
         <nav className="cyan lighten-1 navbar-fixed" role="navigation">
           {isAuthenticated ? isAuthLink : isGuestLink}
         </nav>
@@ -123,18 +134,19 @@ class Header extends React.Component {
 
 Header.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  searchUsers: PropTypes.func,
   searchSource: PropTypes.string.isRequired,
   location: PropTypes.object.isRequired,
   changeSearchSource: PropTypes.func.isRequired,
   triggerSearch: PropTypes.func.isRequired,
-  searchQuery: PropTypes.string.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  clearSearch: PropTypes.func.isRequired,
   user: PropTypes.object,
+  searchDocuments: PropTypes.func,
+  notifications: PropTypes.array,
 };
 
 Header.contextTypes = {
   router: PropTypes.object,
+  store: PropTypes.object,
 };
 
 /**
@@ -149,11 +161,13 @@ function mapStateToProps(state) {
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
     user: state.auth.user,
+    notifications: state.notifications,
   };
 }
 
 export default connect(mapStateToProps, {
   changeSearchSource,
   triggerSearch,
-  clearSearch,
+  searchDocuments,
+  searchUsers,
 })(Header);

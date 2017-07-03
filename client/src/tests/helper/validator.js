@@ -24,5 +24,6 @@ export default global.window.$ = jest.fn((details) => {
       addMethod: () => {}
     },
     on: jest.fn(),
+    sideNav: jest.fn(),
   };
 });

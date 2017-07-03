@@ -26,6 +26,7 @@ export default function documentReducer(state = initialState.manageDocument, act
     case actionTypes.DOCUMENT_DELETED_SUCCESSFULLY:
       return {
         ...state,
+        alldocuments: state.alldocuments.filter(({ id }) => id !== action.document.id),
         archived: action.document,
       };
 

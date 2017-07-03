@@ -8,14 +8,30 @@ import Routes from '../routes/index';
 
 const routesPath = path.join(__dirname, '../routes/*.js');
 const app = express();
+const hostUrl = process.env.NODE_ENV === 'production'
+  ? 'wedoc-staging.herokuapp.com'
+  : 'localhost:3000';
 const swaggerDefinition = {
   info: {
     title: 'Document Management System',
     version: '1.0.0',
     description: 'The system manages documents, users and user roles. Each document defines access rights; the document defines which roles can access it. Also, each document specifies the date it was published.', // eslint-disable-line
   },
-  host: 'https://wedoc-staging.herokuapp.com/',
+  host: hostUrl,
   basePath: '/',
+  "securityDefinitions": {
+    "x-access-token": {
+      "type": "x-access-token",
+      "name": "x-access-token",
+      "in": "header"
+    },
+  },
+  "security": [
+    {
+      "x-access-token": [
+      ],
+    }
+  ]
 };
 
 // options for the swagger docs
@@ -40,7 +56,10 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
+  res.setHeader('Content-Type', 'application/json');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // eslint-disable-line
+  res.header('Access-Control-Allow-Headers', 'Cache-Control', 'Pragma, Origin, Authorization, Content-Type, X-Requested-with');  //eslint-disable-line
+  res.header('Access-Control-Allow-Headers', 'GET, PUT, POST, OPTIONS');
   next();
 });
 

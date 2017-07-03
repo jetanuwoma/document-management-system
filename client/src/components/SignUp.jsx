@@ -31,8 +31,8 @@ class SignUp extends React.Component {
     const value = event.target.value;
     const user = this.state.user;
     user[name] = value;
-    this.setState({ user });
     event.preventDefault();
+    this.setState({ user });
     $('.signup-form').validate({
       rules: {
         fullNames: {
@@ -201,7 +201,7 @@ SignUp.propTypes = {
  */
 function mapStateToProps(state) {
   return {
-    auth: state.user.auth,
+    auth: state.auth.user,
   };
 }
 

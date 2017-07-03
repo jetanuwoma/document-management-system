@@ -173,7 +173,7 @@ class Access {
 
     // if it's admin, perform global search
     if (req.decoded.RoleId === 1) {
-      if (access !== undefined && access !== null) {
+      if (access !== undefined && access !== null && access !== '') {
         query.where.permission = access;
       }
       req.searchQuery = query;
@@ -184,7 +184,7 @@ class Access {
         { OwnerId: req.decoded.UserId }
       ] } };
 
-      if (access !== undefined && access !== null) {
+      if (access !== undefined && access !== null && access !== '') {
          if (access === 'public') {
            query = { where: { $and: [
              { title: { $iLike: `%${term}%` } },

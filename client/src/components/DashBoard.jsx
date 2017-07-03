@@ -104,7 +104,7 @@ class DashBoard extends React.Component {
           minlength: 6,
         },
         passwordAgain: {
-          required: true,
+          required: false,
           equalTo: '#password',
         },
       },
@@ -293,6 +293,7 @@ class DashBoard extends React.Component {
                 >
                   <form
                     className="left-alert update-form"
+                    onSubmit={this.onProfileChange}
                   >
                     <div className="row">
                       <div className="row margin">

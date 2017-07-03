@@ -11,7 +11,7 @@ describe('SignUp component', () => {
     { location: { pathname: '/' } });
 
   const rendered = TestWrapper.renders(SignUp,
-   { location: { pathname: '/' } }).html();
+    { location: { pathname: '/' } }).html();
 
   it('should load form field', () => {
     expect(rendered.includes('<input type="text" name="fullNames" id="fullNames">')).toBe(true);
@@ -21,7 +21,7 @@ describe('SignUp component', () => {
     const event = { target: { name: 'fullNames', value: 'Chioma Jude' } };
     TestWrapper.call().onChange(event);
     expect(TestWrapper.call().state.user.fullNames).toBe('Chioma Jude');
-    const eventn = { target: { name: 'email', value: 'wapjude@gmail.com' } };
+    const eventn = { target: { name: 'email', value: 'wapjude@gmail.com' }, preventDefault: () => {} };
     TestWrapper.call().onChange(eventn);
     expect(TestWrapper.call().state.user.email).toBe('wapjude@gmail.com');
   });

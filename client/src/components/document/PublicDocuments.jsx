@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Notifications from 'react-notification-system-redux';
 import Pagination from 'rc-pagination';
+import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import {
   loadPublicDocuments,
   deleteDocument,
-  undoDelete
+  undoDelete,
+  searchDocuments,
 } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader.jsx';
 import DocumentList from './DocumentList.jsx';
@@ -27,20 +30,33 @@ export class PublicDocuments extends React.Component {
       totalPages: 1,
       activePagination: 1,
       totalDocument: 0,
-      documents: []
+      documents: [],
+      searchCount: 0,
+      isSearching: false,
+      searchQuery: '',
     };
 
     this.nextPage = this.nextPage.bind(this);
+    this.deleteDocument = this.deleteDocument.bind(this);
   }
 
   /**
    * Loads all public document
    */
   componentDidMount() {
-    this.props.loadPublicDocuments()
+    this.props.triggerSearch('publicDocuments');
+    if (this.props.location.query.q !== undefined) {
+      this.props.searchDocuments(this.props.location.query.q, 'public')
+        .then(() => {
+          this.setState({ loading: false });
+        });
+    } else {
+      this.props.clearSearch();
+      this.props.loadPublicDocuments()
       .then(() => {
         this.setState({ loading: false });
       });
+    }
   }
 
   /**
@@ -51,7 +67,32 @@ export class PublicDocuments extends React.Component {
     this.setState({
       totalDocument: nextProps.totalDocument,
       documents: nextProps.myDocuments,
+      isSearching: nextProps.isSearching,
+      searchQuery: nextProps.searchQuery,
+      searchCount: nextProps.isSearching ? nextProps.myDocuments.length : 0,
     });
+  }
+
+  /**
+   * delete documents user document
+   * @param {Object} document the document to be deleted
+   */
+  deleteDocument(document) {
+    const notificationOpts = {
+      // uid: 'once-please', // you can specify your own uid if required
+      title: `${document.title}`,
+      message: 'has been deleted!',
+      position: 'tr',
+      autoDismiss: 0,
+      action: {
+        label: 'Undo!',
+        callback: () => this.props.undoDelete(document),
+      },
+    };
+    this.props.deleteDocument(document)
+      .then(() => {
+        this.context.store.dispatch(Notifications.success(notificationOpts));
+      });
   }
 
   /**
@@ -59,7 +100,7 @@ export class PublicDocuments extends React.Component {
    * @param {Number} page - current page number
    */
   nextPage(page) {
-    this.props.loadPublicDocuments(page)
+    this.props.loadPublicDocuments(page - 1)
       .then(() => {
         this.setState({ activePagination: page });
       });
@@ -80,19 +121,21 @@ export class PublicDocuments extends React.Component {
             <DocumentList
               documents={this.props.myDocuments}
               user={this.props.user}
-              deleteDocument={this.props.deleteDocument}
+              deleteDocument={this.deleteDocument}
               archived={this.props.archived}
               undoDelete={this.props.undoDelete}
-              isSearching={this.props.isSearching}
-              searchQuery={this.props.searchQuery}
-              searchCount={this.props.searchCount}
+              isSearching={this.state.isSearching}
+              searchQuery={this.state.searchQuery}
+              searchCount={this.state.searchCount}
             />
+            {!this.state.isSearching &&
             <Pagination
               onChange={this.nextPage}
               current={this.state.activePagination}
               total={this.state.totalDocument}
               pageSize={6}
             />
+            }
           </div>
         }
       </div>
@@ -112,8 +155,16 @@ PublicDocuments.propTypes = {
   searchQuery: PropTypes.string,
   searchCount: PropTypes.number,
   totalDocument: PropTypes.number,
+  triggerSearch: PropTypes.func,
+  location: PropTypes.object,
+  clearSearch: PropTypes.func,
+  searchDocuments: PropTypes.func,
 };
 
+PublicDocuments.contextTypes = {
+  store: PropTypes.object,
+
+};
 /**
  * mapStateToProps - copies states to component
  * @param {object} state - initalState
@@ -137,4 +188,7 @@ export default connect(mapStateToProps, {
   loadPublicDocuments,
   deleteDocument,
   undoDelete,
+  triggerSearch,
+  clearSearch,
+  searchDocuments,
 })(PublicDocuments);
