@@ -37,8 +37,6 @@ const DocumentList = (props) =>
             document={document}
             user={props.user}
             deleteDocument={props.deleteDocument}
-            archived={props.archived}
-            undoDelete={props.undoDelete}
           />);
         })}
       </div>
@@ -49,8 +47,6 @@ DocumentList.propTypes = {
   documents: PropTypes.array,
   user: PropTypes.object,
   deleteDocument: PropTypes.func,
-  archived: PropTypes.object,
-  undoDelete: PropTypes.func,
   isSearching: PropTypes.bool,
   searchCount: PropTypes.number,
 };

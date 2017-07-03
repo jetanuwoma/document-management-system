@@ -15,6 +15,12 @@ export default function adminReducer(state = initialState.adminManagement, actio
         allUsersDocuments: [...action.documents],
       };
 
+    case actionTypes.LOAD_DOCUMENTS_SUCCESS:
+      return {
+        ...state,
+        allUsersDocuments: [...action.documents],
+      };
+
     case actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS:
       return {
         ...state,
@@ -33,6 +39,17 @@ export default function adminReducer(state = initialState.adminManagement, actio
         selectedUsers: [...action.users],
       };
 
+    case actionTypes.DOCUMENT_DELETED_SUCCESSFULLY:
+      return {
+        ...state,
+        allUsersDocuments: state.allUsersDocuments.filter(({ id }) => id !== action.document.id),
+      };
+
+    case actionTypes.CREATE_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        allUsersDocuments: [...state.allUsersDocuments, action.document],
+      };
     default:
       return state;
   }

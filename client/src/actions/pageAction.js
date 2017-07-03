@@ -1,6 +1,4 @@
 import actionTypes from '../constants';
-import { searchDocuments } from './adminActions';
-
 
 /**
  * changeSearchSource - set search scope
@@ -35,19 +33,16 @@ export function changeSearchQuery(query) {
 
 
 /**
- * triggerSearch - dispatches search alert
+ * triggerSearch - dispatches search source
  *
- * @param  {String} query  - Search terms
  * @param  {type} source - search scope, where to search from
  * @return {func}        dispatch callback
 */
-export function triggerSearch(query, source) {
+export function triggerSearch(source) {
   return (dispatch) => {
-    dispatch(changeSearchQuery(query));
-    dispatch(searchDocuments(query, source));
+    dispatch(changeSearchSource(source));
   };
 }
-
 
 /**
  * clearSearch - clear search query

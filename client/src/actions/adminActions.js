@@ -130,24 +130,18 @@ export function listAllDocuments(offset = 0) {
   };
 }
 
-
 /**
- * searchDocuments - Search for document
- * api/search/document?q
- * @param  {String} query     -  search term
- * @param  {String} source = '' - search scope either users or document
- * @param  {Number} offset = 0  - offset for Pagination
- * @return {Promise}            - axios promise
+ * search for users
+ * GET /search/users
+ * @export searchUsers
+ * @param {string} q - Search query
+ * @returns {Promise} - axios promise
  */
-export function searchDocuments(query, source = '', offset = 0) {
+export function searchUsers(q) {
   return (dispatch) => {
-    return axios.get(`api/search/document?q=${query}&offset=${offset}`)
-      .then((documents) => {
-        dispatch(loadDocumentsSearchSucess(documents.data));
-        dispatch({
-          type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
-          documents: documents.data.rows,
-        });
+    return axios.get(`/api/search/users?q=${q}`)
+      .then((res) => {
+        dispatch(loadUsersSuccessful(res.data.result));
       });
   };
 }

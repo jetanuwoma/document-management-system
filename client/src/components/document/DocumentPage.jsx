@@ -3,13 +3,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Pagination from 'rc-pagination';
-import { triggerSearch } from '../../actions/pageAction';
+import Notifications from 'react-notification-system-redux';
+import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import {
   loadUserDocuments,
   deleteDocument,
   undoDelete,
 } from '../../actions/documentsAction';
-import { searchDocuments } from '../../actions/adminActions';
+import { searchDocuments } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader.jsx';
 import DocumentList from './DocumentList.jsx';
 
@@ -33,10 +34,12 @@ export class DocumentPage extends React.Component {
       documents: [],
       isSearching: false,
       searchQuery: '',
+      searchCount: 0,
     };
 
     this.nextPage = this.nextPage.bind(this);
     this.loadListDocument = this.loadListDocument.bind(this);
+    this.deleteDocument = this.deleteDocument.bind(this);
   }
 
   /**
@@ -44,10 +47,14 @@ export class DocumentPage extends React.Component {
    */
   componentDidMount() {
     $('.sidebar-collapse').sideNav();
+    this.props.triggerSearch('userDocuments');
     if (this.props.location.query.q !== undefined) {
-      this.props.triggerSearch(this.props.location.query.q, 'documents');
-      this.setState({ loading: false });
+      this.props.searchDocuments(this.props.location.query.q)
+        .then(() => {
+          this.setState({ loading: false });
+        });
     } else {
+      this.props.clearSearch();
       this.loadListDocument();
     }
   }
@@ -62,7 +69,30 @@ export class DocumentPage extends React.Component {
       documents: nextProps.myDocuments,
       isSearching: nextProps.isSearching,
       searchQuery: nextProps.searchQuery,
+      searchCount: nextProps.isSearching ? nextProps.myDocuments.length : 0,
     });
+  }
+
+  /**
+   * delete documents user document
+   * @param {Object} document the document to be deleted
+   */
+  deleteDocument(document) {
+    const notificationOpts = {
+      // uid: 'once-please', // you can specify your own uid if required
+      title: `${document.title}`,
+      message: 'has been deleted!',
+      position: 'tr',
+      autoDismiss: 0,
+      action: {
+        label: 'Undo!',
+        callback: () => this.props.undoDelete(document),
+      },
+    };
+    this.props.deleteDocument(document)
+      .then(() => {
+        this.context.store.dispatch(Notifications.success(notificationOpts));
+      });
   }
 
   /**
@@ -106,21 +136,21 @@ export class DocumentPage extends React.Component {
         {!this.state.loading &&
           <div>
             <DocumentList
-              documents={this.props.myDocuments}
+              documents={this.state.documents}
               user={this.props.user}
-              deleteDocument={this.props.deleteDocument}
-              archived={this.props.archived}
-              undoDelete={this.props.undoDelete}
-              isSearching={this.props.isSearching}
-              searchQuery={this.props.searchQuery}
-              searchCount={this.props.searchCount}
+              deleteDocument={this.deleteDocument}
+              isSearching={this.state.isSearching}
+              searchQuery={this.state.searchQuery}
+              searchCount={this.state.searchCount}
             />
-            <Pagination
-              onChange={this.nextPage}
-              current={this.state.activePagination}
-              total={this.state.totalDocument}
-              pageSize={6}
-            />
+            {!this.state.isSearching &&
+              <Pagination
+                onChange={this.nextPage}
+                current={this.state.activePagination}
+                total={this.state.totalDocument}
+                pageSize={6}
+              />
+            }
           </div>
         }
       </div>
@@ -133,31 +163,30 @@ DocumentPage.propTypes = {
   loadUserDocuments: PropTypes.func,
   user: PropTypes.object,
   deleteDocument: PropTypes.func,
-  archived: PropTypes.object,
   undoDelete: PropTypes.func,
   searchDocuments: PropTypes.func,
-  documentLoaded: PropTypes.bool,
   isSearching: PropTypes.bool,
   searchQuery: PropTypes.string,
   searchCount: PropTypes.number,
   totalDocument: PropTypes.number,
   triggerSearch: PropTypes.func,
   location: PropTypes.object,
+  clearSearch: PropTypes.func,
 };
 
- /**
- * mapStateToProps - copies states to component
- * @param {object} state - initalState
- * @return {object} any
- */
+DocumentPage.contextTypes = {
+  store: PropTypes.object
+};
+
+/**
+* mapStateToProps - copies states to component
+* @param {object} state - initalState
+* @return {object} any
+*/
 function mapStateToProps(state) {
-  const currentState = state.manageDocument;
-  const myDocuments = currentState.alldocuments;
   return {
-    myDocuments,
-    documentLoaded: currentState.loaded,
+    myDocuments: state.manageDocument.alldocuments,
     user: state.auth.user,
-    archived: currentState.archived,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,
     searchCount: state.pageControls.searchCount,
@@ -173,4 +202,5 @@ export default
     undoDelete,
     searchDocuments,
     triggerSearch,
+    clearSearch,
   })(DocumentPage);

@@ -125,8 +125,6 @@ class DocumentsController {
 
     Documents.findAndCountAll({
       order: '"createdAt" DESC',
-      limit: req.query.limit || 6,
-      offset: req.query.offset * (req.query.limit || 6) || 0,
       where: searchQuery
     })
       .then((results) => {

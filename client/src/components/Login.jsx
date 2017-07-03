@@ -90,8 +90,8 @@ class Login extends React.Component {
               <div className="row margin">
                 <div className="input-field col s12">
                   <input
-                    id="username"
-                    name="username"
+                    id="email"
+                    name="email"
                     className="validate"
                     type="email"
                     onChange={this.onChange}

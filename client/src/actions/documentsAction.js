@@ -95,32 +95,32 @@ export function getDocumentCounts(access = null) {
 export function loadUserDocuments(offset = 0) {
   return (dispatch, getState) => {
     return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`) //eslint-disable-line
-       .then((res) => {
-         getDocumentCounts()
+      .then((res) => {
+        getDocumentCounts()
           .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.count,
             });
           });
-         dispatch(loadDocumentsSuccess(res.data));
-       });
+        dispatch(loadDocumentsSuccess(res.data));
+      });
   };
 }
 
 
- /**
-  * deleteDocument - Deletes a document
-  *
-  * @param  {Object} document - document to be deleted
-  * @return {Promise}         - axios promise
-  */
+/**
+ * deleteDocument - Deletes a document
+ *
+ * @param  {Object} document - document to be deleted
+ * @return {Promise}         - axios promise
+ */
 export function deleteDocument(document) {
   return (dispatch) => {
     return axios.delete(`/api/documents/${document.id}`)
-       .then(() => {
-         dispatch(documentDeletedSuccessfully(document));
-       });
+      .then(() => {
+        dispatch(documentDeletedSuccessfully(document));
+      });
   };
 }
 
@@ -130,9 +130,9 @@ export function deleteDocument(document) {
  *
  * @return {callback}  dispatched undoDelete event
  */
-export function undoDelete() {
-  return (dispatch, getState) => {
-    dispatch(saveDocument(getState().manageDocument.archived));
+export function undoDelete(document) {
+  return (dispatch) => {
+    dispatch(saveDocument(document));
   };
 }
 
@@ -146,9 +146,9 @@ export function undoDelete() {
 export function loadDocument(id) {
   return (dispatch) => {
     return axios.get(`/api/documents/${id}`)
-     .then((result) => {
-       dispatch(loadDocumentSuccess(result.data));
-     });
+      .then((result) => {
+        dispatch(loadDocumentSuccess(result.data));
+      });
   };
 }
 
@@ -160,7 +160,9 @@ export function loadDocument(id) {
  * @return {Promise}          - axios promise call
  */
 export function updateDocument(document) {
-  return axios.put(`/api/documents/${document.id}`, document);
+  return (dispatch) => {
+    return axios.put(`/api/documents/${document.id}`, document);
+  };
 }
 
 
@@ -182,6 +184,31 @@ export function loadPublicDocuments(offset = 0) {
             });
           });
         dispatch(loadDocumentsSuccess(res.data));
+      });
+  };
+}
+
+/**
+ * searchDocuments - Search for document
+ * api/search/document?q
+ * @param  {String} query     -  search term
+ * @param  {String} source = '' - search scope either users or document
+ * @param  {Number} offset = 0  - offset for Pagination
+ * @return {Promise}            - axios promise
+ */
+export function searchDocuments(query, source = '') {
+  return (dispatch) => {
+    return axios.get(`/api/search/document?q=${query}&access=${source}`)
+      .then((result) => {
+        console.log(result);
+        dispatch(loadDocumentsSuccess(result.data.rows));
+        dispatch({
+          type: actionTypes.CHANGE_SEARCH_QUERY,
+          query,
+        });
+      })
+      .catch((error) => {
+        console.log(error.response);
       });
   };
 }

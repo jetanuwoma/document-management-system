@@ -54,7 +54,7 @@ describe('DashBoard component', () => {
 
   describe('When user add document', () => {
     it('Should have default document details', () => {
-      expect(TestWrapper.call().state.document.content).toBe('some initial content here');
+      expect(TestWrapper.call().state.document.content).toBe('type your content here');
       expect(TestWrapper.call().state.document.title).toBe('');
       expect(TestWrapper.call().state.document.permission).toBe('public');
     });

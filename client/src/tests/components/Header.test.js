@@ -77,7 +77,6 @@ describe('Header component', () => {
       TestWrapper.call().props.location.pathname = '/doc';
       TestWrapper.call().onFocus();
       expect(TestWrapper.call().state.searchSource).toBe('userDocument');
-      TestWrapper.call().componentWillReceiveProps();
     });
   });
 

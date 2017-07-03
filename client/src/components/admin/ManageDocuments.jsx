@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Notifications from 'react-notification-system-redux';
 import Pagination from 'rc-pagination';
-import { triggerSearch } from '../../actions/pageAction';
-import { listAllDocuments, searchDocuments } from '../../actions/adminActions';
-import { deleteDocument, undoDelete } from '../../actions/documentsAction';
+import { triggerSearch, clearSearch } from '../../actions/pageAction';
+import { listAllDocuments } from '../../actions/adminActions';
+import { deleteDocument, undoDelete, searchDocuments } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader.jsx';
 import DocumentList from '../document/DocumentList.jsx';
 
@@ -28,18 +29,24 @@ class ManageDocuments extends React.Component {
       documents: [],
       isSearching: false,
       searchQuery: '',
+      searchCount: 0,
     };
     this.nextPage = this.nextPage.bind(this);
+    this.deleteDocument = this.deleteDocument.bind(this);
   }
 
   /**
    * List all users documents check if search is triggered
    */
   componentDidMount() {
+    this.props.triggerSearch('allDocuments');
     if (this.props.location.query.q !== undefined) {
-      this.props.triggerSearch(this.props.location.query.q, 'documents');
-      this.setState({ isFetching: false });
+      this.props.searchDocuments(this.props.location.query.q)
+        .then(() => {
+          this.setState({ loading: false });
+        });
     } else {
+      this.props.clearSearch();
       this.props.listAllDocuments()
         .then(() => {
           this.setState({ isFetching: false });
@@ -49,7 +56,7 @@ class ManageDocuments extends React.Component {
 
   /**
    * set State to new Props
-   * @param {Object} nextProps - new props 
+   * @param {Object} nextProps - new props
    */
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -57,6 +64,7 @@ class ManageDocuments extends React.Component {
       documents: nextProps.documents,
       isSearching: nextProps.isSearching,
       searchQuery: nextProps.searchQuery,
+      searchCount: nextProps.isSearching ? nextProps.documents.length : 0,
     });
     if (nextProps.isSearching) {
       this.setState({ totalDocuments: nextProps.searchCount });
@@ -64,17 +72,33 @@ class ManageDocuments extends React.Component {
   }
 
   /**
+   * delete documents user document
+   * @param {Object} document the document to be deleted
+   */
+  deleteDocument(document) {
+    const notificationOpts = {
+      title: `${document.title}`,
+      message: 'has been deleted!',
+      position: 'tr',
+      autoDismiss: 0,
+      action: {
+        label: 'Undo!',
+        callback: () => this.props.undoDelete(document),
+      },
+    };
+    this.props.deleteDocument(document)
+      .then(() => {
+        this.context.store.dispatch(Notifications.success(notificationOpts));
+      });
+  }
+
+  /**
    * Handles pagination
-   * @param {Number} page - current page number 
+   * @param {Number} page - current page number
    */
   nextPage(page) {
     if (!this.state.isSearching) {
       this.props.listAllDocuments(page - 1)
-        .then(() => {
-          this.setState({ activePagination: page });
-        });
-    } else {
-      this.props.searchDocuments(this.state.searchQuery, '', page - 1)
         .then(() => {
           this.setState({ activePagination: page });
         });
@@ -93,21 +117,21 @@ class ManageDocuments extends React.Component {
         {!this.state.isFetching &&
           <div>
             <DocumentList
-              documents={this.props.documents}
+              documents={this.state.documents}
               user={this.props.user}
-              deleteDocument={this.props.deleteDocument}
-              archived={this.props.archived}
-              undoDelete={this.props.undoDelete}
-              isSearching={this.props.isSearching}
-              searchQuery={this.props.searchQuery}
-              searchCount={this.props.searchCount}
+              deleteDocument={this.deleteDocument}
+              isSearching={this.state.isSearching}
+              searchQuery={this.state.searchQuery}
+              searchCount={this.state.searchCount}
             />
-            <Pagination
-              onChange={this.nextPage}
-              current={this.state.activePagination}
-              total={this.state.totalDocuments}
-              pageSize={6}
-            />
+            {!this.state.isSearching &&
+              <Pagination
+                onChange={this.nextPage}
+                current={this.state.activePagination}
+                total={this.state.totalDocuments}
+                pageSize={6}
+              />
+            }
           </div>
         }
       </div>
@@ -129,8 +153,12 @@ ManageDocuments.propTypes = {
   searchDocuments: PropTypes.func.isRequired,
   triggerSearch: PropTypes.func,
   location: PropTypes.object,
+  clearSearch: PropTypes.func,
 };
 
+ManageDocuments.contextTypes = {
+  store: PropTypes.object,
+};
 /**
  * mapStateToProps - copies states to component
  * @param {object} state - initalState
@@ -152,6 +180,7 @@ export default connect(mapStateToProps, {
   listAllDocuments,
   deleteDocument,
   undoDelete,
+  clearSearch,
   searchDocuments,
   triggerSearch,
 })(ManageDocuments);
