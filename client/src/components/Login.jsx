@@ -1,11 +1,15 @@
 /* global $ */
 import React from 'react';
+import createHistory from 'history/createBrowserHistory';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { loginUser } from '../actions/userActions';
 
+const history = createHistory({
+  forceRefresh: false,
+});
 /**
  * Login Component - handles authentications
  */
@@ -20,7 +24,14 @@ class Login extends React.Component {
 
     this.onChange = this.onChange.bind(this);
   }
-
+  /**
+   * Set default router
+   */
+  componentDidMount() {
+    if (this.context.router === undefined) {
+      this.context.router = history;
+    }
+  }
   /**
    * onChange - listens to changes of input fields
    * @param {Object} event -  DOM element
@@ -47,12 +58,15 @@ class Login extends React.Component {
       submitHandler: () => {
         this.props.loginUser(this.state.user)
           .then(() => {
-            if (!this.props.auth.error.message) {
-              toastr.success('Login Successfull');
-              this.context.router.push('/');
+            toastr.success('Login Successfull');
+            if (this.context.router === undefined) {
+              history.push('/');
             } else {
-              toastr.error(this.props.auth.error.message);
+              this.context.router.push('/');
             }
+          })
+          .catch(() => {
+            toastr.error(this.props.auth.error.message);
           });
       },
       errorElement: 'div',

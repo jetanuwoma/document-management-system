@@ -1,3 +1,4 @@
+/* global it, expect  describe*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestWrapper from './TestWrapper';
@@ -12,7 +13,7 @@ const mockLocalStorage = {
   },
   removeItem: (key) => {
     return key;
-  }
+  },
 };
 
 global.window.localStorage = mockLocalStorage;
@@ -48,7 +49,7 @@ describe('SideBar component', () => {
   describe('When user is an admin', () => {
     TestWrapper.dispatch({
       type: actionTypes.LOGIN_USER,
-      user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' }
+      user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' },
     });
     const rendered = TestWrapper.renders(SideBar,
         { location: { pathname: '/' } }).html();
@@ -59,7 +60,6 @@ describe('SideBar component', () => {
     });
 
     it('Should display all admin and regular accessible link', () => {
-      expect(rendered.includes('My Documents')).toBe(true);
       expect(rendered.includes('Manage Users')).toBe(true);
       expect(rendered.includes('Public Documents')).toBe(true);
       expect(rendered.includes('Manage Documents')).toBe(true);
@@ -69,7 +69,7 @@ describe('SideBar component', () => {
 
   describe('When logout button is clicked', () => {
     const event = {
-      preventDefault: () => { return null; }
+      preventDefault: () => { return null; },
     };
     TestWrapper.call().logOut(event);
     const rendered = TestWrapper.renders(SideBar,

@@ -1,3 +1,4 @@
+/* global it, expect  describe*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestWrapper from './TestWrapper';
@@ -15,7 +16,7 @@ describe('Header component', () => {
       { location: { pathname: '/' } }).html();
 
     it('Should contain a wrapper `div`', () => {
-      expect(wrapper.find('div').length).toBe(6);
+      expect(wrapper.find('div').length).toBe(7);
     });
 
     it('Should render the site title', () => {
@@ -49,9 +50,9 @@ describe('Header component', () => {
     };
     const props = {
       location: {
-        pathname: '/', query: {}
+        pathname: '/', query: {},
       },
-      triggerSearch
+      triggerSearch,
     };
 
     const wrapper = TestWrapper.mounts(Header, props);
@@ -68,15 +69,6 @@ describe('Header component', () => {
 
     it('Should set default search zone to allDocument', () => {
       expect(TestWrapper.call().state.searchSource).toBe('allDocuments');
-    });
-
-    it('Should change search zone when route changes', () => {
-      TestWrapper.call().props.location.pathname = '/users';
-      TestWrapper.call().onFocus();
-      expect(TestWrapper.call().state.searchSource).toBe('users');
-      TestWrapper.call().props.location.pathname = '/doc';
-      TestWrapper.call().onFocus();
-      expect(TestWrapper.call().state.searchSource).toBe('userDocument');
     });
   });
 

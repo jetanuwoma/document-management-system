@@ -6,8 +6,8 @@ import Document from './Document.jsx';
 /**
  * DocumentList Component - Lists documents
  */
-const DocumentList = (props) =>
-  (
+const DocumentList = (props) => {
+  return (
     <div className="main-section">
       {!props.isSearching &&
         <div id="breadcrumbs-wrapper">
@@ -42,6 +42,7 @@ const DocumentList = (props) =>
       </div>
     </div>
   );
+}
 
 DocumentList.propTypes = {
   documents: PropTypes.array,

@@ -1,8 +1,10 @@
+/* global it, expect, jest  describe*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
 import $ from '../../helper/validator';
 import TestWrapper from '../TestWrapper';
+import actionType from '../../../constants';
 import { PublicDocuments } from '../../../components/document/PublicDocuments.jsx';
 
 TestWrapper.componentName = 'PublicDocuments';
@@ -19,12 +21,12 @@ const documents = [{
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
-}
+},
 ];
 const userDetail = {
   UserId: 1,
   fullNames: 'Jude Admin',
-  RoleId: 1
+  RoleId: 1,
 };
 
 const loadPublicDocuments = () => { return Promise.resolve(true); };
@@ -33,8 +35,11 @@ describe('PublicDocuments Component', () => {
   const wrapper = TestWrapper.mounts(PublicDocuments, {
     myDocuments: documents,
     user: userDetail,
-    location: { query: { } },
+    location: { query: {} },
     loadPublicDocuments,
+    triggerSearch: () => { return true; },
+    clearSearch: jest.fn(),
+    searchDocuments: (some) => { return Promise.resolve(true); }
   });
 
   it('Should find document List', () => {
@@ -51,7 +56,7 @@ describe('PublicDocuments Component', () => {
       title: 'this is andela',
       content: 'some content here',
       OwnerId: 1,
-      permission: 'public'
+      permission: 'public',
     });
 
     TestWrapper.call().componentWillReceiveProps({ myDocuments: document });
