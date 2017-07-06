@@ -56,10 +56,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.setHeader('Content-Type', 'application/json');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // eslint-disable-line
-  res.header('Access-Control-Allow-Headers', 'Cache-Control', 'Pragma, Origin, Authorization, Content-Type, X-Requested-with');  //eslint-disable-line
-  res.header('Access-Control-Allow-Headers', 'GET, PUT, POST, OPTIONS');
   next();
 });
 
