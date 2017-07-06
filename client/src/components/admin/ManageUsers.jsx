@@ -12,21 +12,29 @@ import {
   searchUsers,
 } from '../../actions/adminActions';
 
-class ManageUsers extends React.Component {
-
+/**
+ * ManageUsers - Displays the list of users and also controls user deletion
+ */
+export class ManageUsers extends React.Component {
+  /**
+   * set default state values
+   * @param {Object} props 
+   */
   constructor(props) {
     super(props);
 
-    this.state = { users: [] };
+    this.state = { users: this.props.users, selectedUsers: this.props.selectedUsers };
 
     this.selectUser = this.selectUser.bind(this);
     this.deleteUsers = this.deleteUsers.bind(this);
   }
-
+  
+  /**
+   * list users from the api, or search users if search query is defined
+   */
   componentDidMount() {
-    $('.modal').modal();
-    $('.dropdown-button').dropdown();
     this.props.triggerSearch('users');
+
     if (this.props.location.query.q !== undefined) {
       this.props.searchUsers(this.props.location.query.q);
     } else {
@@ -35,31 +43,46 @@ class ManageUsers extends React.Component {
         });
     }
   }
-
+  
+  /**
+   * 
+   * @param {Object} nextProps - New props received
+   */
   componentWillReceiveProps(nextProps) {
-    this.setState({ users: nextProps.users });
+    this.setState({ users: nextProps.users, selectedUsers: nextProps.selectedUsers });
   }
+  
 
+  /**
+   * Add Selected users to list of users to delete, or remove them
+   * @param {any} event  checkbox dom element
+   */
   selectUser(event) {
     const id = event.target.id;
-    const selectedUsers = this.props.selectedUsers;
+    const selectedUsers = this.state.selectedUsers;
     const index = selectedUsers.findIndex(element => element === id);
 
-    // Add to selected users
     if (index !== -1) {
       this.props.removeSelectedUser(id, index);
+      const selected = this.state.selectedUsers;
+      selected.splice(index, 1);
+      this.setState({ selectedUsers: selected });
     } else {
       this.props.selectUser(id);
+      this.setState({ selectedUsers: [...this.state.selectedUsers, id] });
     }
   }
-
+  /**
+   * deleteUsers - deletes all selected users
+   *  @param {any} event - Button dom element
+   */
   async deleteUsers(event) {
     event.preventDefault();
-    if (this.props.selectedUsers.length === 0) {
+    if (this.state.selectedUsers.length === 0) {
       toastr.error('No user selected');
     } else {
       // create a copy
-      const allUsers = this.props.selectedUsers.slice();
+      const allUsers = this.state.selectedUsers.slice();
       await this.props.deleteUsers(allUsers).then(() => {
         this.props.listAllUsers().then(() => {
           toastr.success('User(s) deleted!');
@@ -69,6 +92,9 @@ class ManageUsers extends React.Component {
     }
   }
 
+  /**
+   * Displays the list of all registered user
+   */
   render() {
     return (
       <div className="main">

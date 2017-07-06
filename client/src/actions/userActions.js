@@ -72,8 +72,8 @@ export function loginUser(user) {
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
       })
-      .catch((error) => {
-        dispatch(loginError({ message: error.response.data.message }));
+      .catch(() => {
+        dispatch(loginError({ message: 'Invalid credentials supplied' }));
       });
   };
 }
@@ -103,11 +103,13 @@ export function updateProfile(user) {
   return (dispatch) => {
     return axios.put(`/api/users/${user.UserId}`, user)
       .then((res) => {
-        console.log({ ...user, ...res.data.data });
         dispatch({
           type: actionTypes.USER_RECORD_UPDATED,
           user: { ...user, ...res.data.data },
         });
+      })
+      .catch((err) => {
+        dispatch(loginError({ message: 'error occurred please try again' }));
       });
   };
 }

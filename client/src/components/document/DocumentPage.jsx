@@ -31,10 +31,11 @@ export class DocumentPage extends React.Component {
       totalPages: 1,
       activePagination: 1,
       totalDocument: 0,
-      documents: [],
-      isSearching: false,
+      documents: this.props.myDocuments,
+      isSearching: this.props.isSearching,
       searchQuery: '',
       searchCount: 0,
+      location: this.props.location,
     };
 
     this.nextPage = this.nextPage.bind(this);
@@ -48,7 +49,7 @@ export class DocumentPage extends React.Component {
   componentDidMount() {
     $('.sidebar-collapse').sideNav();
     this.props.triggerSearch('userDocuments');
-    if (this.props.location.query.q !== undefined) {
+    if (this.state.location.query.q !== undefined) {
       this.props.searchDocuments(this.props.location.query.q)
         .then(() => {
           this.setState({ loading: false });
@@ -67,6 +68,7 @@ export class DocumentPage extends React.Component {
     this.setState({
       totalDocument: nextProps.totalDocument,
       documents: nextProps.myDocuments,
+      loading: nextProps.loading,
       isSearching: nextProps.isSearching,
       searchQuery: nextProps.searchQuery,
       searchCount: nextProps.isSearching ? nextProps.myDocuments.length : 0,
@@ -100,17 +102,10 @@ export class DocumentPage extends React.Component {
    * @param {Number} page - current pagination number
    */
   nextPage(page) {
-    if (!this.state.isSearching) {
-      this.props.loadUserDocuments(page - 1)
-        .then(() => {
-          this.setState({ activePagination: page });
-        });
-    } else {
-      this.props.searchDocuments(this.state.searchQuery, '', page - 1)
-        .then(() => {
-          this.setState({ activePagination: page });
-        });
-    }
+    this.props.loadUserDocuments(page - 1)
+      .then(() => {
+        this.setState({ activePagination: page });
+      });
   }
 
   /**

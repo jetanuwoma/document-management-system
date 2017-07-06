@@ -7,7 +7,7 @@
     "start": "node dist/server.js",
     "open:client": "babel-node start-client.js",
     "open:server": "nodemon server.js --exec babel-node",
-    "test": "npm run db:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test _mocha --compilers js:babel-core/register server/test/middleware/*.spec.js server/test/models/*.spec.js server/test/controllers/*.spec.js ",
+    "test": "npm run db:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test _mocha --compilers js:babel-core/register server/test/middleware/*.spec.js server/test/models/*.spec.js server/test/controllers/*.spec.js && npm run test:client",
     "test:watch": "npm run test -- -w",
     "test:client": "babel-node start-client-test.js",
     "db:migrate": "NODE_ENV=test sequelize db:migrate",

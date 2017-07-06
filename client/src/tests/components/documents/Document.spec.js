@@ -52,11 +52,6 @@ describe('Document Component', () => {
     it('Should show the delete button', () => {
       expect(rendered.includes('i class="fa fa-trash"></i>')).toBe(true);
     });
-
-    it('Should delete by the admin', () => {
-      TestWrapper.call().deleteDocument();
-      expect(TestWrapper.call().state.displayState).toBe('none');
-    });
   });
 
   describe('When user is the owner', () => {
@@ -75,11 +70,6 @@ describe('Document Component', () => {
 
     it('Should show the delete button', () => {
       expect(rendered.includes('i class="fa fa-trash"></i>')).toBe(true);
-    });
-
-    it('Should delete by the owner', () => {
-      TestWrapper.call().deleteDocument();
-      expect(TestWrapper.call().state.displayState).toBe('none');
     });
   });
 

@@ -12,7 +12,7 @@ describe('Main Wrapper component', () => {
    { children: <PreLoader />, location: { pathname: '/' } }).html();
 
   it('should contain a wrapper `div`', () => {
-    expect(wrapper.find('div').length).toBe(11);
+    expect(wrapper.find('div').length).toBe(12);
   });
 
   it('Should mount the header component', () => {

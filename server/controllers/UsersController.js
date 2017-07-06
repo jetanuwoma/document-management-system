@@ -164,7 +164,6 @@ class UsersController {
     Users.find({ where: {
       id: req.params.id } })
         .then((user) => {
-          console.log(user);
           user.update(req.body)
             .then(updatedUser => res
               .status(200).send({ message: `${req.params.id} updated`,

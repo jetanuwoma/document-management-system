@@ -4,17 +4,8 @@ import TestWrapper from '../components/TestWrapper';
 export default global.window.$ = jest.fn((details) => {
   return {
     validate: (context) => {
-      const error = {};
-      Object.keys(context.rules).forEach((key) => {
-        if (context.rules[key].required) {
-          if (TestWrapper.call().state.user[key].length > 0) {
-            return Promise.resolve(context.submitHandler());
-          } else {
-            error[key] = 'must not be empty';
-            context.errorPlacement(error);
-          }
-        }
-      });
+      context.errorPlacement('');
+      return Promise.resolve(context.submitHandler());
     },
     data: () => true,
     append: (error) => {
@@ -25,5 +16,7 @@ export default global.window.$ = jest.fn((details) => {
     },
     on: jest.fn(),
     sideNav: jest.fn(),
+    tabs: jest.fn(),
+    material_select: jest.fn(),
   };
 });

@@ -67,32 +67,50 @@ const DocumentsRoutes = (router) => {
      */
     .get(Access.isAdmin, DocumentsController.getAllDocuments)
     /**
-     * @swagger
-     * /documents:
-     *   post:
-     *     tags:
-     *       - Documents
-     *     description: Create a New Document
-     *     summary: Create a New Document
-     *     produces:
-     *       - application/json
-     *     parameters:
-     *       - name: document
-     *         description: Document object
-     *         in: body
-     *         required: true
-     *         schema:
-     *           $ref: '#/definitions/Documents'
-     *     responses:
-     *       200:
-     *         description: Successfully created
-     *       500:
-     *         description: Error creating document
-     */
+ * @swagger
+ * /api/documents:
+ *   post:
+ *     tags:
+ *       - Documents
+ *     description: Creates a document
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-access-token
+ *         description: request x-access-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: title
+ *         description: document title
+ *         in: form
+ *         required: true
+ *         type: string
+ *       - name: content
+ *         description: document content
+ *         in: form
+ *         required: true
+ *         type: string
+ *       - name: permission
+ *         description: document access role
+ *         in: form
+ *         required: true
+ *         type: string
+ *       - name: OwnerId
+ *         description: document creator ID
+ *         in: form
+ *         required: true
+ *         type: number
+ *     responses:
+ *       201:
+ *         description: Document Object created
+ *         schema:
+ *           $ref: '#/definitions/Documents'
+ */
     .post(DocumentsController.createDocument);
   /**
  * @swagger
- * /search/document:
+ * /api/search/documents:
  *   get:
  *     tags:
  *       - Documents
@@ -101,6 +119,11 @@ const DocumentsRoutes = (router) => {
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: x-access-token
+ *         description: request x-access-token
+ *         in: header
+ *         required: true
+ *         type: string
  *       - name: q
  *         description: The search term to search for
  *         in: path
@@ -117,7 +140,7 @@ const DocumentsRoutes = (router) => {
 
   /**
  * @swagger
- * /count/document:
+ * /api/count/document:
  *   get:
  *     tags:
  *       - Documents
@@ -126,6 +149,11 @@ const DocumentsRoutes = (router) => {
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: x-access-token
+ *         description: request x-access-token
+ *         in: header
+ *         required: true
+ *         type: string
  *       - name: access
  *         description: document access to count public, private, or role
  *         in: path
@@ -144,7 +172,7 @@ const DocumentsRoutes = (router) => {
   router.route('/documents/:id')
     /**
      * @swagger
-     * documents/{id}:
+     * /api/documents/{id}:
      *   get:
      *     tags:
      *       - Documents

@@ -28,7 +28,12 @@ class Header extends React.Component {
     super(props);
 
     this.context = this.context ? this.context : history;
-    this.state = { searchSource: 'allDocuments', searchValue: '' };
+    this.state = {
+      searchSource: 'allDocuments',
+      searchValue: '',
+      searchDocuments: this.props.searchDocuments,
+      searchUsers: this.props.searchUsers,
+    };
     this.onSearch = this.onSearch.bind(this);
   }
 
@@ -58,11 +63,11 @@ class Header extends React.Component {
     if (event.keyCode === 13) {
       this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`); // eslint-disable-line
       if (this.state.searchSource === 'publicDocuments') {
-        this.props.searchDocuments(event.target.value, 'public');
+        this.state.searchDocuments(event.target.value, 'public');
       } else if (this.state.searchSource === 'users') {
-        this.props.searchUsers(event.target.value);
+        this.state.searchUsers(event.target.value);
       } else {
-        this.props.searchDocuments(event.target.value);
+        this.state.searchDocuments(event.target.value);
       }
     }
   }

@@ -12,7 +12,7 @@ import DocumentList from '../document/DocumentList.jsx';
 /**
  * Admin Documents Management Component
  */
-class ManageDocuments extends React.Component {
+export class ManageDocuments extends React.Component {
 
   /**
    * set default state
@@ -26,7 +26,7 @@ class ManageDocuments extends React.Component {
       totalPages: 1,
       activePagination: 1,
       totalDocuments: 0,
-      documents: [],
+      documents: this.props.documents,
       isSearching: false,
       searchQuery: '',
       searchCount: 0,
@@ -43,7 +43,7 @@ class ManageDocuments extends React.Component {
     if (this.props.location.query.q !== undefined) {
       this.props.searchDocuments(this.props.location.query.q)
         .then(() => {
-          this.setState({ loading: false });
+          this.setState({ loading: false, isSearching: true });
         });
     } else {
       this.props.clearSearch();

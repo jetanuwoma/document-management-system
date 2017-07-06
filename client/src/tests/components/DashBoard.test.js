@@ -1,6 +1,8 @@
+/* global jest, it, expect  describe*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestWrapper from './TestWrapper';
+import $ from '../helper/validator';
 import actionTypes from '../../constants';
 import DashBoard from '../../components/DashBoard.jsx';
 
@@ -11,22 +13,21 @@ global.window.tinymce = {
   get: jest.fn(),
 };
 
-// mock jquery call
-global.window.$ = jest.fn(() => {
-  return {
-    sideNav: jest.fn(),
-    tabs: jest.fn(),
-    material_select: jest.fn(),
-    on: jest.fn(),
-  };
-});
+
+const event = {
+  target: {
+    name: '',
+    value: '',
+  },
+  preventDefault: jest.fn(),
+};
 
 describe('DashBoard component', () => {
   const wrapper = TestWrapper.mounts(DashBoard,
     { location: { pathname: '/' } });
   TestWrapper.dispatch({
     type: actionTypes.LOGIN_USER,
-    user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' }
+    user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' },
   });
   const rendered = TestWrapper.renders(DashBoard,
     { location: { pathname: '/' } }).html();
@@ -60,23 +61,15 @@ describe('DashBoard component', () => {
     });
 
     it('Should update permission when it changes', () => {
-      const event = {
-        target: {
-          name: 'permission',
-          value: 'Private'
-        }
-      };
+      event.target.name = 'permission';
+      event.target.value = 'Private';
       TestWrapper.call().onChange(event);
       expect(TestWrapper.call().state.document.permission).toBe('Private');
     });
 
     it('Should change title when user add title', () => {
-      const event = {
-        target: {
-          name: 'title',
-          value: 'This is my private document'
-        }
-      };
+      event.target.name = 'title';
+      event.target.value = 'This is my private document';
       TestWrapper.call().onChange(event);
       expect(TestWrapper.call().state.document.title).toBe('This is my private document');
     });
@@ -93,36 +86,29 @@ describe('DashBoard component', () => {
       const saveDocument = (document) => {
         TestWrapper.dispatch({
           type: actionTypes.CREATE_DOCUMENT_SUCCESS,
-          document
+          document,
         });
         return Promise.resolve(() => true);
       };
 
       TestWrapper.call().state.saveDocument = saveDocument;
-      TestWrapper.call().handleSubmit({ preventDefault: () => {} });
+      TestWrapper.call().handleSubmit({ preventDefault: () => { } });
       expect(TestWrapper.call().props.alldocuments.alldocuments.length).toBe(1);
     });
   });
 
   describe('When user update profile', () => {
-      const event = {
-        target: {
-          name: 'fullNames',
-          value: 'Etanuwoma Jude'
-        }
-      };
-    it('Should chang users Fullnames state', () => {
+
+    it('Should change users Fullnames state', () => {
+      event.target.name = 'fullNames';
+      event.target.value = 'Etanuwoma Jude';
       TestWrapper.call().onProfileChange(event);
       expect(TestWrapper.call().state.user.fullNames).toBe('Etanuwoma Jude');
     });
 
     it('Should change users email address', () => {
-      const event = {
-        target: {
-          name: 'email',
-          value: 'etajuder@gmail.com'
-        }
-      };
+      event.target.name = 'email';
+      event.target.value = 'etajuder@gmail.com';
       TestWrapper.call().onProfileChange(event);
       expect(TestWrapper.call().state.user.email).toBe('etajuder@gmail.com');
     });
@@ -137,9 +123,9 @@ describe('DashBoard component', () => {
         return Promise.resolve(true);
       };
       TestWrapper.call().state.updateProfile = updateProfile;
-      TestWrapper.call().handleProfileSubmit({ preventDefault: () => {} });
+      TestWrapper.call().handleProfileSubmit({ preventDefault: () => { } });
       expect(TestWrapper.call().props.user.fullNames).toBe('Eta Change');
       expect(TestWrapper.call().props.user.email).toBe('chan@aa.s');
-   });
+    });
   });
 });

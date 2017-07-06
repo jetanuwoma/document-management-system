@@ -1,3 +1,4 @@
+/* global it, expect  describe, jest*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestWrapper from './TestWrapper';
@@ -15,7 +16,7 @@ describe('Header component', () => {
       { location: { pathname: '/' } }).html();
 
     it('Should contain a wrapper `div`', () => {
-      expect(wrapper.find('div').length).toBe(6);
+      expect(wrapper.find('div').length).toBe(7);
     });
 
     it('Should render the site title', () => {
@@ -49,9 +50,9 @@ describe('Header component', () => {
     };
     const props = {
       location: {
-        pathname: '/', query: {}
+        pathname: '/', query: {},
       },
-      triggerSearch
+      triggerSearch,
     };
 
     const wrapper = TestWrapper.mounts(Header, props);
@@ -69,23 +70,38 @@ describe('Header component', () => {
     it('Should set default search zone to allDocument', () => {
       expect(TestWrapper.call().state.searchSource).toBe('allDocuments');
     });
-
-    it('Should change search zone when route changes', () => {
-      TestWrapper.call().props.location.pathname = '/users';
-      TestWrapper.call().onFocus();
-      expect(TestWrapper.call().state.searchSource).toBe('users');
-      TestWrapper.call().props.location.pathname = '/doc';
-      TestWrapper.call().onFocus();
-      expect(TestWrapper.call().state.searchSource).toBe('userDocument');
-    });
   });
 
   describe('When user is searching', () => {
+    TestWrapper.call().state.searchDocuments = jest.fn(() => { return Promise.resolve(true); });
+    TestWrapper.call().state.searchUsers = jest.fn(() => { return Promise.resolve(true); });
     const fakeOnChageEvent = { target: { value: 'abc' }, keyCode: 2 };
     it('Should change search query', () => {
       expect(TestWrapper.call().state.searchValue).toBe('');
       TestWrapper.call().onSearch(fakeOnChageEvent);
       expect(TestWrapper.call().state.searchValue).toBe('abc');
+    });
+
+    it('Should search based on current search source', () => {
+      fakeOnChageEvent.keyCode = 13;
+      TestWrapper.call().onSearch(fakeOnChageEvent);
+      expect(TestWrapper.call().state.searchDocuments).toHaveBeenCalled();
+    });
+
+    it('Should search documents when search source is publicDocument', () => {
+      TestWrapper.call().componentWillReceiveProps({ searchSource: 'publicDocuments' });
+      expect(TestWrapper.call().state.searchSource).toBe('publicDocuments');
+      fakeOnChageEvent.keyCode = 13;
+      TestWrapper.call().onSearch(fakeOnChageEvent);
+      expect(TestWrapper.call().state.searchDocuments).toHaveBeenCalled();
+    });
+
+    it('Should search for users when search source is users', () => {
+      TestWrapper.call().componentWillReceiveProps({ searchSource: 'users' });
+      expect(TestWrapper.call().state.searchSource).toBe('users');
+      fakeOnChageEvent.keyCode = 13;
+      TestWrapper.call().onSearch(fakeOnChageEvent);
+      expect(TestWrapper.call().state.searchUsers).toHaveBeenCalled();
     });
   });
 });
