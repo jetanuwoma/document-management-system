@@ -34,6 +34,7 @@ export class PublicDocuments extends React.Component {
       searchCount: 0,
       isSearching: false,
       searchQuery: '',
+      location: props.location,
     };
 
     this.nextPage = this.nextPage.bind(this);
@@ -45,7 +46,7 @@ export class PublicDocuments extends React.Component {
    */
   componentDidMount() {
     this.props.triggerSearch('publicDocuments');
-    if (this.props.location.query.q !== undefined) {
+    if (this.state.location.query.q !== undefined) {
       this.props.searchDocuments(this.props.location.query.q, 'public')
         .then(() => {
           this.setState({ loading: false });

@@ -1,3 +1,4 @@
+/* global it, expect  describe, jest*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
@@ -19,7 +20,7 @@ const documents = [{
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
-}
+},
 ];
 const userDetail = {
   UserId: 1,
@@ -37,7 +38,8 @@ describe('DocumentPage Component', () => {
     loadUserDocuments,
     triggerSearch: jest.fn(),
     clearSearch: jest.fn(),
-    searchDocuments: () => Promise.resolve(true),
+    searchDocuments: jest.fn(() => { return Promise.resolve(true); }),
+    deleteDocument: jest.fn(() => { return Promise.resolve(true); }),
   });
 
   it('Should find document List', () => {
@@ -54,7 +56,7 @@ describe('DocumentPage Component', () => {
       title: 'this is andela',
       content: 'some content here',
       OwnerId: 1,
-      permission: 'public'
+      permission: 'public',
     });
 
     TestWrapper.call().componentWillReceiveProps({ myDocuments: documents });
@@ -70,5 +72,16 @@ describe('DocumentPage Component', () => {
   it('Should update active pagination when user navigates', () => {
     TestWrapper.call().nextPage(3);
     expect(TestWrapper.call().state.activePagination).toBe(1);
+  });
+
+  it('Should search for documents when url location contains search query', () => {
+    TestWrapper.call().state.location.query.q = 'somesearchterms';
+    TestWrapper.call().componentDidMount();
+    expect(TestWrapper.call().props.searchDocuments).toHaveBeenCalled();
+  });
+
+  it('Should call the delete function when user delete document', () => {
+    TestWrapper.call().deleteDocument({});
+    expect(TestWrapper.call().props.deleteDocument).toHaveBeenCalled();
   });
 });

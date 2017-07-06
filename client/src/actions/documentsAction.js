@@ -200,15 +200,11 @@ export function searchDocuments(query, source = '') {
   return (dispatch) => {
     return axios.get(`/api/search/document?q=${query}&access=${source}`)
       .then((result) => {
-        console.log(result);
         dispatch(loadDocumentsSuccess(result.data.rows));
         dispatch({
           type: actionTypes.CHANGE_SEARCH_QUERY,
           query,
         });
-      })
-      .catch((error) => {
-        console.log(error.response);
       });
   };
 }

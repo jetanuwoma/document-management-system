@@ -39,7 +39,8 @@ describe('PublicDocuments Component', () => {
     loadPublicDocuments,
     triggerSearch: () => { return true; },
     clearSearch: jest.fn(),
-    searchDocuments: (some) => { return Promise.resolve(true); }
+    searchDocuments: jest.fn(() => { return Promise.resolve(true); }),
+    deleteDocument: jest.fn(() => { return Promise.resolve(true); }),
   });
 
   it('Should find document List', () => {
@@ -67,5 +68,16 @@ describe('PublicDocuments Component', () => {
   it('Should update active pagination when user navigates', () => {
     TestWrapper.call().nextPage(1);
     expect(TestWrapper.call().state.activePagination).toBe(1);
+  });
+
+  it('Should call the delete function when user delete document', () => {
+    TestWrapper.call().deleteDocument({});
+    expect(TestWrapper.call().props.deleteDocument).toHaveBeenCalled();
+  });
+
+  it('Should search for documents when url location contains search query', () => {
+    TestWrapper.call().state.location.query.q = 'somesearchterms';
+    TestWrapper.call().componentDidMount();
+    expect(TestWrapper.call().props.searchDocuments).toHaveBeenCalled();
   });
 });

@@ -93,7 +93,7 @@ describe('ManageDocuments Component', () => {
 
     it('Should get search result count', () => {
       TestWrapper.call().componentWillReceiveProps({ ...TestWrapper.call().state, isSearching: true });
-      console.log(TestWrapper.call().state);
+      expect(TestWrapper.call().state.isSearching).toBe(true);
     });
   });
 

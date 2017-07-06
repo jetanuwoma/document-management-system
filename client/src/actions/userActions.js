@@ -103,7 +103,6 @@ export function updateProfile(user) {
   return (dispatch) => {
     return axios.put(`/api/users/${user.UserId}`, user)
       .then((res) => {
-        console.log({ ...user, ...res.data.data });
         dispatch({
           type: actionTypes.USER_RECORD_UPDATED,
           user: { ...user, ...res.data.data },

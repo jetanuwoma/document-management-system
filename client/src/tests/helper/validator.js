@@ -4,6 +4,7 @@ import TestWrapper from '../components/TestWrapper';
 export default global.window.$ = jest.fn((details) => {
   return {
     validate: (context) => {
+      context.errorPlacement('');
       return Promise.resolve(context.submitHandler());
     },
     data: () => true,

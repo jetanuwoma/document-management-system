@@ -35,6 +35,7 @@ export class DocumentPage extends React.Component {
       isSearching: this.props.isSearching,
       searchQuery: '',
       searchCount: 0,
+      location: this.props.location,
     };
 
     this.nextPage = this.nextPage.bind(this);
@@ -48,7 +49,7 @@ export class DocumentPage extends React.Component {
   componentDidMount() {
     $('.sidebar-collapse').sideNav();
     this.props.triggerSearch('userDocuments');
-    if (this.props.location.query.q !== undefined) {
+    if (this.state.location.query.q !== undefined) {
       this.props.searchDocuments(this.props.location.query.q)
         .then(() => {
           this.setState({ loading: false });
@@ -56,7 +57,6 @@ export class DocumentPage extends React.Component {
     } else {
       this.props.clearSearch();
       this.loadListDocument();
-
     }
   }
 
