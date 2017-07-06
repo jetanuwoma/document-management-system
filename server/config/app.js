@@ -70,12 +70,6 @@ Routes(router);
 // route every call to the api through the router
 app.use('/api', router);
 
-// serve swagger
-app.get('/swagger.json', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpec);
-});
-
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
