@@ -132,7 +132,7 @@ export function deleteDocument(document) {
  */
 export function undoDelete(document) {
   return (dispatch) => {
-    dispatch(saveDocument(document));
+    return dispatch(saveDocument(document));
   };
 }
 

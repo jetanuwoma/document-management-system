@@ -71,9 +71,6 @@ export function loginUser(user) {
         localStorage.setItem('tokenize', result.data.token);
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
-      })
-      .catch(() => {
-        dispatch(loginError({ message: 'Invalid credentials supplied' }));
       });
   };
 }
