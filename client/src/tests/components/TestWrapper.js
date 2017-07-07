@@ -1,16 +1,12 @@
 import React from 'react';
-import { createMemoryHistory } from 'react-router';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
 import { mount, render } from 'enzyme';
 import configureStore from '../../stores/configureStore';
 import initialState from '../../reducers/initialState';
 
-const browserHistory = createMemoryHistory('/');
-
 const store = configureStore();
-const history = syncHistoryWithStore(browserHistory, store);
+
 
 class TestWrapper {
   constructor() {
@@ -24,7 +20,7 @@ class TestWrapper {
   mounts(Component, props = {}) {
     this.child = Component;
     this.mount = mount(
-       <Provider router={history} store={store}>
+       <Provider store={store}>
          <Component {...props} />
       </Provider>
       );

@@ -14,7 +14,7 @@
     "db:seed": "./node_modules/.bin/babel-node server/test/helpers/Seeder.js",
     "build": "rm -rf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./tests,./coverage --copy-files",
     "cover": "NODE_ENV=test npm run db:seed && NODE_ENV=test istanbul cover _mocha -- ./server/test/controllers/*.spec.js server/test/models/*.spec.js server/test/middleware/*.spec.js --compilers js:babel-core/register && npm run test:client",
-    "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "npm run cover && cat ./client/coverage/lcov.info | coveralls"
   },
   "author": "Etanuwoma Jude",
   "license": "ISC",

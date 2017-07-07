@@ -66,7 +66,7 @@ class Login extends React.Component {
             }
           })
           .catch(() => {
-            toastr.error(this.props.auth.error.message);
+            toastr.error('Invalid credentials supplied');
           });
       },
       errorElement: 'div',
