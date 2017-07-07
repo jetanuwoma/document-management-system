@@ -1,4 +1,4 @@
-https://coveralls.io/repos/github/andela-jetanuwoma/document-management-system/badge.svg?branch=develop(Coverage Status)!:https://coveralls.io/github/andela-jetanuwoma/document-management-system?branch=develop
+[![Coverage Status](https://coveralls.io/repos/github/andela-jetanuwoma/document-management-system/badge.svg?branch=develop)](https://coveralls.io/github/andela-jetanuwoma/document-management-system?branch=develop)
 
 [![Build Status](https://travis-ci.org/andela-jetanuwoma/document-management-system.svg?branch=develop)](https://travis-ci.org/andela-jetanuwoma/document-management-system)
 # document-management-system
