@@ -212,10 +212,10 @@ class UsersController {
    * @returns {void} Returns void
    */
   static getAllUsers(req, res) {
-    Users.findAll({ fields: [
+    Users.findAll({ attributes: [
       'id',
       'username',
-      'fullName',
+      'fullNames',
       'email',
       'RoleId',
       'createdAt',
