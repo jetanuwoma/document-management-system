@@ -10,7 +10,7 @@ const mockStore = configureMockStore(middlewares);
 
 
 describe('Document Action', () => {
-  
+
   it('Should return searched result', () => {
     const store = mockStore();
     return store.dispatch(documentsAction.searchDocuments('searchQuery'))

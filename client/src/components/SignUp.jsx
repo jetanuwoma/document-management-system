@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
-import { registerUser, isUserExisting } from '../actions/userActions';
+import { registerUser } from '../actions/userActions';
 
 
 /**
@@ -190,8 +190,6 @@ class SignUp extends React.Component {
 
 SignUp.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  isUserExisting: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
 };
 
 /**
@@ -206,8 +204,8 @@ function mapStateToProps(state) {
 }
 
 SignUp.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps,
-  { registerUser, isUserExisting })(SignUp);
+  { registerUser })(SignUp);

@@ -15,7 +15,7 @@ class Access {
    * @param {callback} next - callback to the next middleware or function
    */
   static init(req, res, next) {
-    req.secret = process.env.SECRET || 'thisissupposetobeasecret';
+    req.secret = process.env.SECRET;
     next();
   }
 
