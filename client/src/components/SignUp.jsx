@@ -190,7 +190,6 @@ class SignUp extends React.Component {
 
 SignUp.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
 };
 
 /**
@@ -205,7 +204,7 @@ function mapStateToProps(state) {
 }
 
 SignUp.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps,
