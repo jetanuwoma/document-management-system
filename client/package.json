@@ -52,7 +52,7 @@
     "start": "npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "testcover": "CI=true react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*.js --collectCoverageFrom=src/**/*.jsx --collectCoverageFrom=!src/*.js --collectCoverageFrom=!src/routes/*.js",
+    "testcover": "CI=true react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*.js --collectCoverageFrom=src/**/*.jsx --collectCoverageFrom=!src/*.js --collectCoverageFrom=!src/tests/*/*.js --collectCoverageFrom=!src/routes/*.js",
     "eject": "react-scripts eject",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install"
   }

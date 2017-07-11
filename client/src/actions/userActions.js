@@ -28,17 +28,6 @@ export function setLoggedInUser(user) {
   };
 }
 
-/**
- * isUserExisting - check if a user has been existing
- * @export
- * @param {Sring} identifier - users email or address
- * @returns {Promise} - axios promise call
- */
-export function isUserExisting(identifier) {
-  return () => {
-    return axios.get(`/api/users/${identifier}`);
-  };
-}
 
 /**
  * Creates a new user details
