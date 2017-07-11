@@ -42,7 +42,7 @@ GET /roles/ | List all roles.
 ### Features
   - Admin user management.
   - Create and manage Documents. 
-  - Decided who views your document
+  - Decides who views your document
   - Edit document
   - Formatted documents
 
