@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
 
-    content: DataTypes.TEXT,
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
 
     permission: {
       type: DataTypes.TEXT,

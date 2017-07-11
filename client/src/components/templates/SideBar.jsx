@@ -79,12 +79,12 @@ class SideBar extends React.Component {
           {
             RoleId !== 1 &&
             <li className="">
-              <Link to="/doc" className="waves-effect waves-cyan">
+              <Link to="/doc" className="waves-effect waves-cyan my-doc">
                 <i className="fa fa-file-o" /> My Documents</Link>
             </li>
           }
           <li className="">
-            <Link to="/doc/public" className="waves-effect waves-cyan">
+            <Link to="/doc/public" className="waves-effect waves-cyan public-doc">
               <i className="fa fa-file-o" /> Public Documents</Link>
           </li>
 

@@ -41,7 +41,9 @@
   "devDependencies": {
     "node-sass-chokidar": "0.0.2",
     "npm-run-all": "^4.0.2",
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.7",
+    "selenium-download": "^2.0.10",
+    "selenium-standalone": "^6.5.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src/assets/styles/c --include-path ./node_modules src/assets/styles/ -o src/assets/styles/",
@@ -51,6 +53,7 @@
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "testcover": "CI=true react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*.js --collectCoverageFrom=src/**/*.jsx --collectCoverageFrom=!src/*.js --collectCoverageFrom=!src/routes/*.js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install"
   }
 }

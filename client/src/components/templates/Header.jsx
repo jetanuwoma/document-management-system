@@ -60,7 +60,8 @@ class Header extends React.Component {
    */
   onSearch(event) {
     this.setState({ searchValue: event.target.value });
-    if (event.keyCode === 13) {
+    console.log(event.key);
+    if (event.key === 'ENTER') {
       this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`); // eslint-disable-line
       if (this.state.searchSource === 'publicDocuments') {
         this.state.searchDocuments(event.target.value, 'public');
@@ -114,9 +115,8 @@ class Header extends React.Component {
             name="Search"
             className="header-search-input z-depth-2"
             placeholder={`Search for ${this.state.searchSource}`}
-            onFocus={this.onFocus}
-            onKeyUp={this.onSearch}
             value={searchValue}
+            onKeyUp={this.onSearch}
             onChange={this.onSearch}
           />
         </div>
