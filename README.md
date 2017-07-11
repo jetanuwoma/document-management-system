@@ -68,3 +68,29 @@ npm run db:migrate
 
 # Run your migrations
 npm run db:seed
+```
+
+## Testing
+-   set you NODE_ENV to `test`
+-   Run DB migrate command with `npm run db:migrate`.
+-   Run Test `npm test` to run client and server side tests.
+-   Run e2e test with `nightwatch` (ensure application is running)
+
+
+
+### Contributing
+
+If you are interested in contributing to development of document-management-system,
+
+Follow the instructions below to contribute.
+
+- Fork the repository
+
+- Make your change
+
+- Commit your change to your forked repository 
+
+- Provide a detailed commit description 
+
+- Create a pull request
+
