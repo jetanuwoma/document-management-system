@@ -64,6 +64,11 @@ app.use((req, res, next) => {
 Routes(router);
 
 
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 // route every call to the api through the router
 app.use('/api', router);
 

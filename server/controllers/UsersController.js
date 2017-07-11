@@ -45,7 +45,7 @@ class UsersController {
         res.status(200)
          .send({ user: userRecordDetail(user), token, expiresIn: '3 days' });
       } else {
-        res.status(409)
+        res.status(400)
           .send({ message: 'Invalid credentials supplied!' });
       }
     });
@@ -119,9 +119,9 @@ class UsersController {
                    });
                })
                .catch((err) => {
-                 res.status(500)
+                 res.status(400)
                  .send({
-                   message: err
+                   message: 'Username exists please choose a new one'
                  });
                });
          }
