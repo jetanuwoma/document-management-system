@@ -110,7 +110,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.iCanAccessDocument(req, res, next.callNext);
+      Access.documentAccess(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         done();
@@ -129,7 +129,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.iCanAccessDocument(req, res, next.callNext);
+      Access.documentAccess(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         done();
@@ -209,7 +209,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.setSearchCriterial(req, res, next.callNext);
+      Access.setSearchCriteria(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
@@ -230,7 +230,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.setSearchCriterial(req, res, next.callNext);
+      Access.setSearchCriteria(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
@@ -251,7 +251,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.setSearchCriterial(req, res, next.callNext);
+      Access.setSearchCriteria(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
@@ -273,7 +273,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.setSearchCriterial(req, res, next.callNext);
+      Access.setSearchCriteria(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
@@ -296,7 +296,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.setSearchCriterial(req, res, next.callNext);
+      Access.setSearchCriteria(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
