@@ -63,9 +63,9 @@ describe('Document', () => {
         .send(testDocuments)
         .expect(201)
         .end((err, res) => {
-          expect(res.body).to.have.property('title');
-          expect(res.body).to.have.property('content');
-          expect(res.body).to.have.property('OwnerId');
+          expect(res.body.title).to.equal(testDocuments.title);
+          expect(res.body.content).to.equal(testDocuments.content);
+          expect(res.body.OwnerId).to.equal(testDocuments.OwnerId);
           done();
         });
     });
@@ -101,7 +101,6 @@ describe('Document', () => {
       request.get(`/api/documents/${document.id}`)
         .set({ 'x-access-token': testDetails.token })
         .expect(403).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.message)
           .to.equal('Unauthorized Access to this Document');
           done();
@@ -114,20 +113,19 @@ describe('Document', () => {
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(Array.isArray(res.body)).to.equal(true);
+          expect(res.body.length).to.equal(3);
           expect(res.body[0].OwnerId).to.equal(adminDetails.user.id);
+          expect(res.body[2].OwnerId).to.equal(adminDetails.user.id);
           done();
         });
     });
 
-    it('Should get all documents and public documents for a specific user',
+    it('Should get all documents of a specific user',
     (done) => {
       request.get(`/api/users/${adminDetails.user.id}/documents`)
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(Array.isArray(res.body)).to.equal(true);
-          expect(res.body.length).to.be.greaterThan(0);
           expect(res.body[0].OwnerId).to.equal(adminDetails.user.id);
           done();
         });
@@ -138,8 +136,7 @@ describe('Document', () => {
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(Array.isArray(res.body)).to.equal(true);
-          expect(res.body.length).to.be.greaterThan(3);
+          expect(res.body.length).to.equal(6);
           done();
         });
     });
@@ -157,7 +154,6 @@ describe('Document', () => {
       request.get(`/api/documents/${document.id}`)
         .set({ 'x-access-token': adminDetails.token })
         .expect(200).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal(document.title);
           expect(res.body.permission).to.equal('Private');
           done();
@@ -169,8 +165,6 @@ describe('Document', () => {
       request.get('/api/documents/1000')
         .set({ 'x-access-token': adminDetails.token })
         .expect(404).end((err, res) => {
-          expect(typeof res.body).to.equal('object');
-          expect(res.body).to.have.property('message');
           expect(res.body.message)
             .to.equal('That documents does not exists!');
           done();
@@ -196,11 +190,11 @@ describe('Document', () => {
     it('Should edit and update a document by the owner', (done) => {
       request.put(`/api/documents/${document.id}`)
         .set({ 'x-access-token': regularDetails.token })
-        .send({ title: 'New title' })
+        .send({ title: 'New title', content: 'some changed content' })
         .expect(200)
         .end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.title).to.equal('New title');
+          expect(res.body.content).to.equal('some changed content');
           done();
         });
     });
@@ -211,7 +205,6 @@ describe('Document', () => {
         .send({ title: 'doc title updated' })
         .expect(403)
         .end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.message)
             .to.equal('You are forbidden to access this document');
           done();
@@ -224,7 +217,6 @@ describe('Document', () => {
         .send({ title: 'doc title updated' })
         .expect(404)
         .end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.message)
             .to.equal('That documents does not exists!');
           done();
@@ -252,7 +244,6 @@ describe('Document', () => {
         .set({ 'x-access-token': testDetails.token })
         .expect(403)
         .end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.message)
             .to.equal('You are forbidden to access this document');
           done();
@@ -264,7 +255,6 @@ describe('Document', () => {
         .set({ 'x-access-token': regularDetails.token })
         .expect(404)
         .end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.message)
             .to.equal('That documents does not exists!');
           done();
@@ -276,7 +266,6 @@ describe('Document', () => {
         .set({ 'x-access-token': regularDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(typeof res.body).to.equal('object');
           expect(res.body.message)
           .to.equal(`${document.title} has been deleted`);
           done();
