@@ -136,7 +136,7 @@ const DocumentsRoutes = (router) => {
  *         description: Error fetching documents with that term
  */
   router.route('/search/document')
-    .get(Access.setSearchCriterial, DocumentsController.searchDocuments);
+    .get(Access.setSearchCriteria, DocumentsController.searchDocuments);
 
   /**
  * @swagger
@@ -167,7 +167,7 @@ const DocumentsRoutes = (router) => {
  */
 
   router.route('/count/document')
-    .get(Access.setSearchCriterial, DocumentsController.getDocumentCounts);
+    .get(Access.setSearchCriteria, DocumentsController.getDocumentCounts);
 
   router.route('/documents/:id')
     /**
@@ -195,7 +195,7 @@ const DocumentsRoutes = (router) => {
      *         description: Document not found
      */
     .get(Access.documentExists,
-    Access.iCanAccessDocument,
+    Access.documentAccess,
     DocumentsController.getDocumentById
     )
     /**
@@ -221,7 +221,7 @@ const DocumentsRoutes = (router) => {
 *         description: Document cannot be found
 */
     .put(Access.documentExists,
-    Access.iCanAccessDocument,
+    Access.documentAccess,
     DocumentsController.updateDocument
     )
     /**
@@ -247,7 +247,7 @@ const DocumentsRoutes = (router) => {
   *         description: Document cannot be found
   */
     .delete(Access.documentExists,
-    Access.iCanAccessDocument,
+    Access.documentAccess,
     DocumentsController.deleteDocument
     );
 
