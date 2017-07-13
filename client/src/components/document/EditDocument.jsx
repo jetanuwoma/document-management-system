@@ -3,21 +3,10 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import TinyMCEInput from 'react-tinymce-input';
 import toastr from 'toastr';
+import DocumentForm from '../templates/DocumentForm';
 import { loadDocument, updateDocument } from '../../actions/documentsAction';
 
-const TINYMCE_CONFIG = {
-  language: 'en',
-  theme: 'modern',
-  toolbar: 'bold italic underline strikethrough hr | bullist numlist | link unlink | undo redo | spellchecker code',
-  menubar: false,
-  statusbar: true,
-  resize: true,
-  plugins: 'link,spellchecker,paste',
-  theme_modern_toolbar_location: 'top',
-  theme_modern_toolbar_align: 'left'
-};
 /**
  * Edit Component - Hanled Documents modifications
  */
@@ -52,7 +41,7 @@ export class EditDocument extends React.Component {
 
   /**
    * Handles input field changes
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   onChange(event) {
     const name = event.target.name;
@@ -64,7 +53,7 @@ export class EditDocument extends React.Component {
 
   /**
    * handles TinyMCE content changes
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   handleEditorChange(newValue) {
     const document = this.state.document;
@@ -74,7 +63,7 @@ export class EditDocument extends React.Component {
 
   /**
    * Send updated document to the action
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   handleSubmit(event) {
     event.preventDefault();
@@ -86,10 +75,10 @@ export class EditDocument extends React.Component {
 
   /**
    * Displays the document form
-   * @return {any}
+   * @return Object
    */
   render() {
-    const { content, title } = this.state.document;
+    const { title } = this.state.document;
 
     return (
       <div className="main">
@@ -109,45 +98,13 @@ export class EditDocument extends React.Component {
             </div>
           </div>
           <div className="row">
-            <form className="left-alert" onSubmit={this.handleSubmit} >
-              <div className="row">
-                <div className="row margin">
-                  <div className="input-field col s12">
-                    <input
-                      id="title"
-                      name="title"
-                      type="text"
-                      value={title}
-                      onChange={this.onChange}
-                    />
-                    <label className="center-align active">Document Title</label>
-                  </div>
-                </div>
-
-                <div className="row margin">
-                  <div className="input-field col s12">
-                    <select
-                      name="permission"
-                      required="required"
-                      id="selectRole"
-                      onChange={this.onChange}
-                    >
-                      <option value="public">Public Access</option>
-                      <option value="private">Private Access</option>
-                      <option value="role">My Department</option>
-                    </select>
-                    <label htmlFor="permission" className="center-align">Permission</label>
-                  </div>
-                </div>
-
-                <TinyMCEInput
-                  value={content}
-                  tinymceConfig={TINYMCE_CONFIG}
-                  onChange={this.handleEditorChange}
-                />
-                <button className="waves-effect waves-light btn cyan" type="submit">Edit Document</button>
-              </div>
-            </form>
+            <DocumentForm
+              onChange={this.onChange}
+              handleEditorChange={this.handleEditorChange}
+              title={this.state.document.title}
+              content={this.state.document.content}
+              onSubmit={this.handleSubmit}
+            />
           </div>
         </div>
       </div>
@@ -178,5 +135,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   loadDocument,
-  updateDocument
+  updateDocument,
 })(EditDocument);

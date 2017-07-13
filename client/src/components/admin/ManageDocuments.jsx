@@ -6,8 +6,8 @@ import Pagination from 'rc-pagination';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import { listAllDocuments } from '../../actions/adminActions';
 import { deleteDocument, undoDelete, searchDocuments } from '../../actions/documentsAction';
-import PreLoader from '../templates/PreLoader.jsx';
-import DocumentList from '../document/DocumentList.jsx';
+import PreLoader from '../templates/PreLoader';
+import DocumentList from '../document/DocumentList';
 
 /**
  * Admin Documents Management Component

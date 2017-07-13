@@ -3,24 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
-import TinyMCEInput from 'react-tinymce-input';
 import profilePic from '../assets/images/user-profile.png';
 import backgroundImage from '../assets/images/user-profile-bg.jpg';
+import DocumentForm from './templates/DocumentForm';
 import { updateProfile } from '../actions/userActions';
 import { saveDocument } from '../actions/documentsAction';
 
 
-const TINYMCE_CONFIG = {
-  language: 'en',
-  theme: 'modern',
-  toolbar: 'bold italic underline strikethrough hr | bullist numlist | link unlink | undo redo | spellchecker code',
-  menubar: false,
-  statusbar: true,
-  resize: true,
-  plugins: 'link,spellchecker,paste',
-  theme_modern_toolbar_location: 'top',
-  theme_modern_toolbar_align: 'left'
-};
 /**
  * Dashboard - Dashboard component
  */
@@ -76,7 +65,7 @@ class DashBoard extends React.Component {
 
   /**
    * Handles changes on input fields
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   onChange(event) {
     const name = event.target.name;
@@ -88,7 +77,7 @@ class DashBoard extends React.Component {
 
   /**
    * Handles profile input field updates
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   onProfileChange(event) {
     event.preventDefault();
@@ -136,7 +125,7 @@ class DashBoard extends React.Component {
 
   /**
    * handleSubmit - creates a new document
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   handleSubmit(event) {
     event.preventDefault();
@@ -149,7 +138,7 @@ class DashBoard extends React.Component {
 
   /**
    * Processes profile form update
-   * @param {Object} event - DOM element
+   * @param {Object} event - Object
    */
   handleProfileSubmit(event) {
     event.preventDefault();
@@ -163,7 +152,7 @@ class DashBoard extends React.Component {
 
   /**
   * Handles changes on TinyMCE
-  * @param {Object} event - DOM element
+  * @param {Object} event - Object
   */
   handleEditorChange(newValue) {
     const content = newValue;
@@ -174,7 +163,7 @@ class DashBoard extends React.Component {
 
   /**
    *Displays the login page
-   * @return {any}
+   * @return Object
   */
   render() {
     const { fullNames, RoleId, email } = this.state.user;
@@ -235,57 +224,13 @@ class DashBoard extends React.Component {
                   id="CreateDocument"
                   className="tab-content col s12  grey lighten-4"
                 >
-                  <form className="left-alert"onSubmit={this.handleSubmit} >
-                    <div className="row">
-                      <div className="row margin">
-                        <div className="input-field col s12">
-                          <input
-                            id="title"
-                            name="title"
-                            className="validate"
-                            type="text"
-                            value={this.state.document.title}
-                            required="required"
-                            onChange={this.onChange}
-                          />
-                          <label className="center-align">Document Title</label>
-                        </div>
-                      </div>
-
-                      <div className="row margin">
-                        <div className="input-field col s12">
-                          <select
-                            name="permission"
-                            required="required"
-                            id="selectRole"
-                            onChange={this.onChange}
-                          >
-                            <option value="public">Public Access</option>
-                            <option value="private">Private Access</option>
-                            <option value="role">My Department</option>
-                          </select>
-                          <label
-                            htmlFor="permission"
-                            className="center-align"
-                          >
-                            Permission
-                          </label>
-                        </div>
-                      </div>
-
-                      <TinyMCEInput
-                        value={this.state.document.content}
-                        tinymceConfig={TINYMCE_CONFIG}
-                        onChange={this.handleEditorChange}
-                      />
-                      <button
-                        className="waves-effect waves-light btn cyan"
-                        type="submit"
-                      >
-                        Create Document
-                      </button>
-                    </div>
-                  </form>
+                  <DocumentForm
+                    title={this.state.document.title}
+                    content={this.state.document.content}
+                    onChange={this.onChange}
+                    handleEditorChange={this.handleEditorChange}
+                    onSubmit={this.handleSubmit}
+                  />
                 </div>
                 <div
                   id="UpdateProfile"
