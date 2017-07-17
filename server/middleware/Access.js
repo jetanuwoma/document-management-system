@@ -175,14 +175,10 @@ class Access {
       ] } };
 
       if (access !== undefined && access !== null && access !== '') {
-         if (access === 'public') {
            query = { where: { $and: [
              { title: { $iLike: `%${term}%` } },
-             { permission: 'public' }
+             { permission: access }
            ] } };
-         } else {
-           query.where.$and.push({ permission: access });
-         }
       }
       req.searchQuery = query;
     }

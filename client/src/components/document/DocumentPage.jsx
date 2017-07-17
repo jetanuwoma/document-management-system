@@ -120,7 +120,7 @@ export class DocumentPage extends React.Component {
 
   /**
    * Renders users document
-   * @return {any}
+   * @return {Object}
    */
   render() {
     return (

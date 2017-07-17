@@ -55,7 +55,7 @@ export class ManageUsers extends React.Component {
 
   /**
    * Add Selected users to list of users to delete, or remove them
-   * @param {any} event  checkbox dom element
+   * @param {Object} event  checkbox event object
    */
   selectUser(event) {
     const id = event.target.id;
@@ -74,7 +74,7 @@ export class ManageUsers extends React.Component {
   }
   /**
    * deleteUsers - deletes all selected users
-   *  @param {any} event - Button dom element
+   *  @param {Object} event - Button event object
    */
   async deleteUsers(event) {
     event.preventDefault();

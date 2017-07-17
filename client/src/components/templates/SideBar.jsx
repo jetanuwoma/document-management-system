@@ -28,7 +28,7 @@ class SideBar extends React.Component {
 
   /**
    * performs user logout function
-   * @param {Object} event - DOM element
+   * @param {Object} event - event object
    */
   logOut(event) {
     event.preventDefault();
@@ -41,7 +41,7 @@ class SideBar extends React.Component {
 
   /**
    * Displays the logout view
-   * @return {any}
+   * @return {Object}
    */
   render() {
     const { fullNames, RoleId } = this.props.user;

@@ -56,7 +56,7 @@ class Header extends React.Component {
 
   /**
    * Handles search operation
-   * @param {Object} event  - DOM element
+   * @param {Object} event  - event object
    */
   onSearch(event) {
     this.setState({ searchValue: event.target.value });

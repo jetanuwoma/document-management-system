@@ -109,7 +109,7 @@ export class PublicDocuments extends React.Component {
 
   /**
    * Renders views
-   * @return {any}
+   * @return {Object}
    */
   render() {
     return (
