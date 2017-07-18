@@ -39,6 +39,8 @@ EndPoint | Functionality
 -------- | -------------
 GET /roles/ | List all roles.
 
+View full API documentation [here !](https://wedoc-staging.herokuapp.com/api-docs/)
+
 ### Features
   - Admin user management.
   - Create and manage Documents. 
