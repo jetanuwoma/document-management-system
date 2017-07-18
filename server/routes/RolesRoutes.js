@@ -91,8 +91,96 @@ const RoleRoutes = (router) => {
     .post(Access.isAdmin, RolesController.createRole);
 
   router.route('/roles/:id')
+    /**
+   * @swagger
+   * /api/roles/{id}:
+   *   get:
+   *     tags:
+   *       - Roles
+   *     description: Returns a single roles
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: x-access-token
+   *         description: request x-access-token
+   *         in: header
+   *         required: true
+   *         type: string
+   *       - name: id
+   *         description: role id
+   *         in: path
+   *         required: true
+   *         type: number
+   *     responses:
+   *       200:
+   *         description: An array of roles
+   *         schema:
+   *           $ref: '#/definitions/Roles'
+   */
     .get(Access.isAdmin, RolesController.getRole)
+     /**
+   * @swagger
+   * /api/roles/{id}:
+   *   put:
+   *     tags:
+   *       - Roles
+   *     description: Update role details
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: x-access-token
+   *         description: request x-access-token
+   *         in: header
+   *         required: true
+   *         type: string
+   *       - name: id
+   *         description: role id
+   *         in: path
+   *         required: true
+   *         type: number
+   *       - name: title
+   *         description: role title
+   *         in: form
+   *         required: true
+   *         type: string
+   *       - name: write
+   *         description: write access
+   *         in: form
+   *         required: false
+   *         type: boolean
+   *     responses:
+   *       200:
+   *         description: Updated role details
+   *         schema:
+   *           $ref: '#/definitions/Roles'
+   */
     .put(Access.isAdmin, RolesController.updateRole)
+    /**
+   * @swagger
+   * /api/roles/{id}:
+   *   delete:
+   *     tags:
+   *       - Roles
+   *     description: Delete a single role
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: x-access-token
+   *         description: request x-access-token
+   *         in: header
+   *         required: true
+   *         type: string
+   *       - name: id
+   *         description: role id
+   *         in: path
+   *         required: true
+   *         type: number
+   *     responses:
+   *       200:
+   *         description: success message
+   *         schema:
+   *           $ref: '#/definitions/Roles'
+   */
     .delete(Access.isAdmin, RolesController.deleteRole);
 };
 
