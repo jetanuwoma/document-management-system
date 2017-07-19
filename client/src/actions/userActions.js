@@ -68,7 +68,7 @@ export function loginUser(user) {
  *
  * log user out and delete details from localStorage
  * @export
- * @returns {any}
+ * @returns {Object}
  */
 export function logout() {
   return (dispatch) => {

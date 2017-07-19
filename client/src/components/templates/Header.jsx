@@ -56,11 +56,10 @@ class Header extends React.Component {
 
   /**
    * Handles search operation
-   * @param {Object} event  - DOM element
+   * @param {Object} event  - event object
    */
   onSearch(event) {
     this.setState({ searchValue: event.target.value });
-    console.log(event.key);
     if (event.keyCode === 13) {
       this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`); // eslint-disable-line
       if (this.state.searchSource === 'publicDocuments') {

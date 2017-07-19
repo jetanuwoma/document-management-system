@@ -27,13 +27,10 @@ class Access {
    */
   static verifyToken(req, res, next) {
     const token = req.headers.authorization || req.headers['x-access-token'];
-    // If no token is supplied
     if (!token) {
       res.status(401)
          .send({ message: 'Unauthorized Access' });
     } else {
-    // Check if token has expired
-      // Decode token and allow access if valid
       jwt.verify(token, req.secret, (err, decoded) => {
         if (err) {
           return res.status(401)
@@ -81,25 +78,21 @@ class Access {
   }
 
   /**
-   * iCanAccessDocument - check if i can access the document
+   * documentAccess - check if i can access the document
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
    */
-  static iCanAccessDocument(req, res, next) {
+  static documentAccess(req, res, next) {
     Documents.findById(req.params.id)
       .then((document) => {
         if (req.decoded.UserId === document.OwnerId) {
-            // is mine
           next();
         } else if (req.decoded.RoleId === 1) {
-          // i am the admin/superAdmin
           next();
         } else if (document.permission === 'public') {
-          // is opened for everybody to edit
           next();
         } else {
-          // you are forbidden
           res.status(404)
             .send({ message: 'You are forbidden to access this document' });
         }
@@ -166,33 +159,26 @@ class Access {
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
    */
-  static setSearchCriterial(req, res, next) {
+  static setSearchCriteria(req, res, next) {
     const access = req.query.access;
     const term = req.query.q || '';
     let query = { where: { title: { $iLike: `%${term}%` } } };
-
-    // if it's admin, perform global search
     if (req.decoded.RoleId === 1) {
       if (access !== undefined && access !== null && access !== '') {
         query.where.permission = access;
       }
       req.searchQuery = query;
     } else {
-      // Search only users documents
       query = { where: { $and: [
         { title: { $iLike: `%${term}%` } },
         { OwnerId: req.decoded.UserId }
       ] } };
 
       if (access !== undefined && access !== null && access !== '') {
-         if (access === 'public') {
            query = { where: { $and: [
              { title: { $iLike: `%${term}%` } },
-             { permission: 'public' }
+             { permission: access }
            ] } };
-         } else {
-           query.where.$and.push({ permission: access });
-         }
       }
       req.searchQuery = query;
     }
@@ -210,7 +196,6 @@ class Access {
   static canDeleteUser(req, res, next) {
     Users.findById(req.params.id)
       .then((user) => {
-        // The user is an admin or himself
         if (user.id === req.decoded.UserId &&
           req.decoded.RoleId === user.RoleId) {
           res.status(401)

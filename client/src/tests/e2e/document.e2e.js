@@ -7,7 +7,6 @@ const titlechunk = doctTitle.split(' ')[1];
 
 module.exports = { // adapted from: https://git.io/vodU0
   'Document Test': (browser) => {
-    console.log(browser.Keys);
     browser.resizeWindow(1280, 800)
       .url('http://localhost:3000/login')
       .waitForElementVisible('body')

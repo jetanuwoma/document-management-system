@@ -24,7 +24,7 @@ class SignUp extends React.Component {
 
   /**
    * onChange - handles input field change event
-   * @param  {Object} event DOM element
+   * @param  {Object} event - event object
    */
   onChange(event) {
     const name = event.target.name;
@@ -84,7 +84,7 @@ class SignUp extends React.Component {
 
   /**
    * render - Renders Signup Page
-   * @return {any}
+   * @return {Object}
    */
   render() {
     return (

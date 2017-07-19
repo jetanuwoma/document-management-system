@@ -34,7 +34,7 @@ class Login extends React.Component {
   }
   /**
    * onChange - listens to changes of input fields
-   * @param {Object} event -  DOM element
+   * @param {Object} event -  event object
    */
   onChange(event) {
     const name = event.target.name;
@@ -84,7 +84,7 @@ class Login extends React.Component {
 
   /**
    * renders the login page
-   * @return {any}
+   * @return {Object}
    */
   render() {
     return (

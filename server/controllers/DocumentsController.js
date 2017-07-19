@@ -131,7 +131,7 @@ class DocumentsController {
         res.status(200).send(results);
       })
       .catch(() => {
-        res.status(500).send({
+        res.status(404).send({
           message: 'Error fetching documents with that term'
         });
       });

@@ -97,7 +97,7 @@ describe('ManageDocuments Component', () => {
     });
   });
 
-  describe('When admin delete document', () => {
+  describe('When admin search document', () => {
     it('Should call the search document props', () => {
       TestWrapper.call().deleteDocument({ id: 1, title: 'some document', content: 'some content' });
       expect(TestWrapper.call().props.deleteDocument).toHaveBeenCalled();

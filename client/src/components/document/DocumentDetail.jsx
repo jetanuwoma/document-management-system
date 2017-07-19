@@ -37,7 +37,7 @@ export class DocumentDetail extends React.Component {
   /**
    *
    * display the content of a document
-   * @return {any}
+   * @return {Object}
    */
   render() {
     const { content, title } = this.props.document;

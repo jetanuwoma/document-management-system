@@ -30,16 +30,16 @@ describe('Users', () => {
       password: 'password'
     };
 
-    it('should create a new user for passed valid credentials', (done) => {
+    it('Should create a new user for passed valid credentials', (done) => {
       request.post('/api/users')
       .type('form')
       .send(testUser)
       .end((err, res) => {
         expect(res.statusCode).to.equal(201);
-        expect(typeof res.body.user.fullNames).to.equal('string');
-        expect(typeof res.body.user.username).to.equal('string');
-        expect(typeof res.body.user.email).to.equal('string');
-        expect(typeof res.body.user.RoleId).to.equal('number');
+        expect(res.body.user.fullNames).to.equal(testUser.fullNames);
+        expect(res.body.user.username).to.equal(testUser.username);
+        expect(res.body.user.email).to.equal(testUser.email);
+        expect(res.body.user.RoleId).to.equal(2);
         done();
       });
     });
@@ -72,9 +72,8 @@ describe('Users', () => {
        testUser.email = faker.internet.email();
        request.post('/api/users')
       .send(testUser)
-      .expect(201) // created
+      .expect(201)
       .end((err, res) => {
-        expect(typeof res.body.user.RoleId).to.equal('number');
         expect(res.body.user.RoleId).to.equal(2);
         done();
       });
@@ -85,7 +84,7 @@ describe('Users', () => {
       .send(existingUser)
       .expect(200)
       .end((err, res) => {
-        expect(res.body.user.username).not.to.equal(null);
+        expect(res.body.user.username).to.equal(existingUser.username);
         done();
       });
     });
@@ -96,11 +95,12 @@ describe('Users', () => {
       .expect(200)
       .end((err, res) => {
         expect(typeof res.body.token).equal('string');
+        
         done();
       });
     });
 
-    it('should deny access for invalid login details ', (done) => {
+    it('Should deny access for invalid login details ', (done) => {
       request.post('/api/users/login')
     .send({
       username: faker.internet.userName(),
@@ -157,11 +157,11 @@ describe('Users', () => {
         });
     });
 
-    it('Should allow admin users access all users list', (done) => {
+    it('Should allow admin users to access all users list', (done) => {
       request.get('/api/users')
     .set({ 'x-access-token': adminDetails.token })
       .end((err, res) => {
-        expect(res.body).to.be.instanceOf(Object);
+        expect(res.body.length).to.equal(7);
         done();
       });
     });
@@ -177,7 +177,7 @@ describe('Users', () => {
           });
      });
 
-    it('Should not allow regular users to view all registere', (done) => {
+    it('Should not allow regular users to view all registered users', (done) => {
       request.get('/api/users')
         .set({ 'x-access-token': regularDetails.token })
           .end((err, res) => {
@@ -188,7 +188,7 @@ describe('Users', () => {
           });
     });
 
-    it('should not allow un-authenticated users access user by email',
+    it('Should not allow un-authenticated users access user by email',
      (done) => {
        request.get(`/api/users/${regularDetails.user.email}`)
           .end((err, res) => {
@@ -220,7 +220,7 @@ describe('Users', () => {
         });
     });
 
-    it('should fail for un-authenticated users ',
+    it('Should fail for un-authenticated users ',
      (done) => {
        request.put(`/api/users/${regularDetails.user.id}`)
        .send({
@@ -234,30 +234,32 @@ describe('Users', () => {
           });
      });
 
-    it('should allow admin users update a user', (done) => {
+    it('Should allow admin users update a user', (done) => {
       request.put(`/api/users/${regularDetails.user.id}`)
     .set({ 'x-access-token': adminDetails.token })
     .send({
-      fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`
+      fullNames: `Teddy bear`
     })
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message)
         .to.be.equal(`${regularDetails.user.id} updated`);
+        expect(res.body.data.fullNames).to.equal('Teddy bear');
         done();
       });
     });
 
-    it('should allow a user update his details', (done) => {
+    it('Should allow a user update his details', (done) => {
       request.put(`/api/users/${regularDetails.user.id}`)
     .set({ 'x-access-token': regularDetails.token })
     .send({
-      fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`
+      fullNames: `Creche baby`
     })
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message)
         .to.be.equal(`${regularDetails.user.id} updated`);
+        expect(res.body.data.fullNames).to.equal('Creche baby')
         done();
       });
     });
@@ -292,7 +294,7 @@ describe('Users', () => {
         });
     });
 
-    it('should fail for un-authenticated users ',
+    it('Should fail for un-authenticated users ',
      (done) => {
        request.delete(`/api/users/${regularDetails.user.id}`)
           .end((err, res) => {
@@ -303,7 +305,7 @@ describe('Users', () => {
           });
      });
 
-    it('should allow admin users delete a user', (done) => {
+    it('Should allow admin users delete a user', (done) => {
       request.delete(`/api/users/${regularDetails.user.id}`)
     .set({ 'x-access-token': adminDetails.token })
       .end((err, res) => {
@@ -315,7 +317,7 @@ describe('Users', () => {
     });
 
 
-    it('should deny NON admin users delete a user', (done) => {
+    it('Should deny NON admin users delete a user', (done) => {
       request.delete(`/api/users/${testDetails.user.id}`)
     .set({ 'x-access-token': regularDetails.token })
       .end((err, res) => {
@@ -326,7 +328,7 @@ describe('Users', () => {
       });
     });
 
-    it('should deny a user from deleting himself', (done) => {
+    it('Should deny a user from deleting himself', (done) => {
       request.delete(`/api/users/${regularDetails.user.id}`)
     .set({ 'x-access-token': regularDetails.token })
       .end((err, res) => {
@@ -337,7 +339,7 @@ describe('Users', () => {
       });
     });
 
-    it('should deny deleting the admin', (done) => {
+    it('Should deny deleting the admin', (done) => {
       request.delete(`/api/users/${adminDetails.user.id}`)
     .set({ 'x-access-token': adminDetails.token })
       .end((err, res) => {

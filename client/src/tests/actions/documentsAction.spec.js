@@ -79,4 +79,14 @@ describe('Document Action', () => {
         expect(expectedActions[0].documents.length).toBe(2);
       });
   });
+
+  it('Should update document', () => {
+    const store = mockStore();
+    return store.dispatch(documentsAction.updateDocument({ id: 1, title: 'some' }))
+      .then(() => {
+        const expectedActions = store.getActions();
+        expect(expectedActions.length).toBe(1);
+        expect(expectedActions[0].type).toEqual(actionTypes.DOCUMENT_UPDATE_SUCCESS);
+      });
+  });
 });
