@@ -1,11 +1,9 @@
 /* global it, expect, jest  describe*/
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mount } from 'enzyme';
 import $ from '../../helper/validator';
 import TestWrapper from '../TestWrapper';
-import actionType from '../../../constants';
-import { PublicDocuments } from '../../../components/document/PublicDocuments.jsx';
+import { PublicDocuments } from '../../../components/document/PublicDocuments';
 
 TestWrapper.componentName = 'PublicDocuments';
 const documents = [{
@@ -37,10 +35,10 @@ describe('PublicDocuments Component', () => {
     user: userDetail,
     location: { query: {} },
     loadPublicDocuments,
-    triggerSearch: () => { return true; },
+    triggerSearch: () => true,
     clearSearch: jest.fn(),
-    searchDocuments: jest.fn(() => { return Promise.resolve(true); }),
-    deleteDocument: jest.fn(() => { return Promise.resolve(true); }),
+    searchDocuments: jest.fn(() => Promise.resolve(true)),
+    deleteDocument: jest.fn(() => Promise.resolve(true)),
   });
 
   it('Should find document List', () => {

@@ -161,7 +161,12 @@ export function loadDocument(id) {
  */
 export function updateDocument(document) {
   return (dispatch) => {
-    return axios.put(`/api/documents/${document.id}`, document);
+    return axios.put(`/api/documents/${document.id}`, document)
+      .then(() => {
+        dispatch({
+          type: actionTypes.DOCUMENT_UPDATE_SUCCESS,
+        });
+      });
   };
 }
 

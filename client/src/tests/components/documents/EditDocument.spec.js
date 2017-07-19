@@ -1,9 +1,9 @@
+/* global describe jest expect it */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mount } from 'enzyme';
 import $ from '../../helper/validator';
 import TestWrapper from '../TestWrapper';
-import { EditDocument } from '../../../components/document/EditDocument.jsx';
+import { EditDocument } from '../../../components/document/EditDocument';
 
 global.window.tinymce = {
   init: jest.fn(),
@@ -24,28 +24,28 @@ const documents = [{
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
-}
+},
 ];
 const userDetail = {
   UserId: 1,
   fullNames: 'Jude Admin',
-  RoleId: 1
+  RoleId: 1,
 };
 
-const loadDocument = () => { return Promise.resolve(true); };
+const loadDocument = () => Promise.resolve(true);
 
 describe('EditDocument Component', () => {
   const wrapper = TestWrapper.mounts(EditDocument, {
     document: documents[0],
     user: userDetail,
     params: { id: 1 },
-    updateDocument: () => { return Promise.resolve(true); },
+    updateDocument: () => Promise.resolve(true),
     loadDocument,
   });
   const rendered = wrapper.render().html();
 
   it('Should render the title input', () => {
-    expect(rendered.includes('<input type="text" id="title" name="title" value="The book of mistery">')).toBe(true);
+    expect(rendered.includes('input type="text" id="title" name="title" class="validate" value="The book of mistery" required>')).toBe(true);
   });
 
   it('Should update state when user typed', () => {

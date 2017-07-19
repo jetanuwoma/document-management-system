@@ -66,4 +66,9 @@ describe('Admin actions', () => {
         expect(expectedAction[0].type).toEqual(actionTypes.REMOVE_SELECTED_USER);
       });
   });
+
+  it('Should return document search result', () => {
+    const result = adminActions.loadDocumentsSearchSucess({});
+    expect(result.type).toEqual(actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS);
+  });
 });

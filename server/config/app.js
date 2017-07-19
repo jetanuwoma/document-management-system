@@ -19,19 +19,17 @@ const swaggerDefinition = {
   },
   host: hostUrl,
   basePath: '/',
-  "securityDefinitions": {
-    "x-access-token": {
-      "type": "x-access-token",
-      "name": "x-access-token",
-      "in": "header"
-    },
-  },
-  "security": [
-    {
-      "x-access-token": [
-      ],
+  securityDefinitions: {
+    APIKeyHeader: {
+     type: 'apiKey',
+     in: 'header',
+     name: 'x-access-token',
     }
-  ]
+  },
+  security: {
+      APIKeyHeader: [
+      ],
+  }
 };
 
 // options for the swagger docs
