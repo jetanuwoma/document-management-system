@@ -98,3 +98,5 @@ Follow the instructions below to contribute.
 
 - Create a pull request
 
+For more about creating Pull request and branch naming convention
+please checkout our wiki [Wiki !](https://github.com/andela-jetanuwoma/document-management-system/wiki)
