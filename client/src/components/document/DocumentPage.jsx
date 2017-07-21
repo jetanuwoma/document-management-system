@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Pagination from 'rc-pagination';
 import Notifications from 'react-notification-system-redux';
+import toastr from 'toastr';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import {
   loadUserDocuments,
@@ -53,7 +54,8 @@ export class DocumentPage extends React.Component {
       this.props.searchDocuments(this.props.location.query.q)
         .then(() => {
           this.setState({ loading: false });
-        });
+        })
+        .catch(() => toastr.error('Error searching for document'));
     } else {
       this.props.clearSearch();
       this.loadListDocument();
@@ -115,7 +117,8 @@ export class DocumentPage extends React.Component {
     this.props.loadUserDocuments()
       .then(() => {
         this.setState({ loading: false });
-      });
+      })
+      .catch(() => toastr.error('Could not load document, please try again'));
   }
 
   /**

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Notifications from 'react-notification-system-redux';
+import toastr from 'toastr';
 import Pagination from 'rc-pagination';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import { listAllDocuments } from '../../actions/adminActions';
@@ -50,6 +51,9 @@ export class ManageDocuments extends React.Component {
       this.props.listAllDocuments()
         .then(() => {
           this.setState({ isFetching: false });
+        })
+        .catch(() => {
+          toastr.error('Error fetching documents');
         });
     }
   }
@@ -89,7 +93,8 @@ export class ManageDocuments extends React.Component {
     this.props.deleteDocument(document)
       .then(() => {
         this.context.store.dispatch(Notifications.success(notificationOpts));
-      });
+      })
+      .catch(() => toastr.error('unable to delete document'));
   }
 
   /**
@@ -101,7 +106,8 @@ export class ManageDocuments extends React.Component {
       this.props.listAllDocuments(page - 1)
         .then(() => {
           this.setState({ activePagination: page });
-        });
+        })
+        .catch(() => toastr.error('Error occurred!'));
     }
   }
 

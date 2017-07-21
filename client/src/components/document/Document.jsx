@@ -33,7 +33,7 @@ const Document = (props) => {
         <li>
           <a
             className="btn-floating waves-effect waves-light red"
-            onClick={() => { props.deleteDocument(props.document); }}
+            onClick={() => props.deleteDocument(props.document)}
           >
             <i className="fa fa-trash" />
           </a>

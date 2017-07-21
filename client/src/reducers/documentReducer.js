@@ -7,7 +7,7 @@ export default function documentReducer(state = initialState.manageDocument, act
     case actionTypes.CREATE_DOCUMENT_SUCCESS:
       return {
         ...state,
-        alldocuments: [...state.alldocuments, action.document],
+        alldocuments: [action.document, ...state.alldocuments],
       };
 
     case actionTypes.LOAD_DOCUMENTS_SUCCESS:

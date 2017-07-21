@@ -6,7 +6,7 @@ import toastr from 'toastr';
 import profilePic from '../assets/images/user-profile.png';
 import backgroundImage from '../assets/images/user-profile-bg.jpg';
 import DocumentForm from './templates/DocumentForm';
-import { updateProfile } from '../actions/userActions';
+import { updateProfile, confirmOldPassword } from '../actions/userActions';
 import { saveDocument } from '../actions/documentsAction';
 
 
@@ -31,6 +31,7 @@ class DashBoard extends React.Component {
       user: { ...this.props.user },
       updateProfile: this.props.updateProfile,
       saveDocument: this.props.saveDocument,
+      confirmOldPassword: this.props.confirmOldPassword,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -108,10 +109,18 @@ class DashBoard extends React.Component {
       },
       submitHandler: () => {
         user.UserId = this.props.user.UserId;
-        this.state.updateProfile(user)
-          .then(() => {
-            toastr.success('Profile Updated Successfully');
-          });
+        if (this.state.user.password !== null && this.state.user.passwordAgain) {
+          this.state.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
+            .then(() => {
+              this.state.updateProfile(user)
+                .then(() => {
+                  toastr.success('Profile Updated Successfully');
+                });
+            })
+            .catch(() => {
+              this.setState({ error: 'Invalid password submitted', user: { password: '', passwordAgain: '' } });
+            });
+        }
       },
     });
   }
@@ -133,7 +142,7 @@ class DashBoard extends React.Component {
       .then(() => {
         toastr.success('Document Created');
         this.clearForm();
-      });
+      }).catch(() => toastr.error('Unable to create document'));
   }
 
   /**
@@ -147,7 +156,7 @@ class DashBoard extends React.Component {
     this.state.updateProfile(user)
       .then(() => {
         toastr.success('Profile Updated Successfully');
-      });
+      }).catch(() => toastr.error('Unable to update profile'));
   }
 
   /**
@@ -273,13 +282,26 @@ class DashBoard extends React.Component {
                       <div className="row margin">
                         <div className="input-field col s12">
                           <input
+                            id="oldPassword"
+                            name="oldPassword"
+                            className="validate"
+                            type="password"
+                            onChange={this.onProfileChange}
+                          />
+                          <label className="center-align">Old Password</label>
+                        </div>
+                        <label className="email-error"> {this.state.error} </label>
+                      </div>
+                      <div className="row margin">
+                        <div className="input-field col s12">
+                          <input
                             id="password"
                             name="password"
                             className="validate"
                             type="password"
                             onChange={this.onProfileChange}
                           />
-                          <label className="center-align">Update Password</label>
+                          <label className="center-align">New Password</label>
                         </div>
                       </div>
                       <div className="row margin">
@@ -317,6 +339,7 @@ DashBoard.propTypes = {
   alldocuments: PropTypes.object.isRequired,
   saveDocument: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
+  confirmOldPassword: PropTypes.func,
 };
 
 /**
@@ -332,4 +355,6 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { saveDocument, updateProfile })(DashBoard);
+export default connect(mapStateToProps, {
+  saveDocument, updateProfile, confirmOldPassword,
+})(DashBoard);

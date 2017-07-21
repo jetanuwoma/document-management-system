@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Notifications from 'react-notification-system-redux';
 import Pagination from 'rc-pagination';
+import toastr from 'toastr';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import {
   loadPublicDocuments,
@@ -56,7 +57,7 @@ export class PublicDocuments extends React.Component {
       this.props.loadPublicDocuments()
       .then(() => {
         this.setState({ loading: false });
-      });
+      }).catch(() => toastr.error('Error fetching document'));
     }
   }
 
@@ -93,7 +94,7 @@ export class PublicDocuments extends React.Component {
     this.props.deleteDocument(document)
       .then(() => {
         this.context.store.dispatch(Notifications.success(notificationOpts));
-      });
+      }).catch(() => toastr.error('Could not delete document'));
   }
 
   /**
@@ -104,7 +105,8 @@ export class PublicDocuments extends React.Component {
     this.props.loadPublicDocuments(page - 1)
       .then(() => {
         this.setState({ activePagination: page });
-      });
+      })
+      .catch('Could not load documents');
   }
 
   /**
