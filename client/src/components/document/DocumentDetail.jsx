@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { loadDocument } from '../../actions/documentsAction';
 
@@ -31,7 +32,8 @@ export class DocumentDetail extends React.Component {
       .then(() => {
         const { id, title, content, permission } = this.props.document;
         this.setState({ document: { id, title, content, permission } });
-      });
+      })
+      .catch(() => toastr.error('Sorry could not load that document'));
   }
 
   /**
@@ -72,7 +74,6 @@ export class DocumentDetail extends React.Component {
 DocumentDetail.propTypes = {
   document: PropTypes.object.isRequired,
   loadDocument: PropTypes.func.isRequired,
-  updateDocument: PropTypes.func.isRequired,
 };
 
 /**
@@ -87,5 +88,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  loadDocument
+  loadDocument,
 })(DocumentDetail);

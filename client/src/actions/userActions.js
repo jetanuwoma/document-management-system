@@ -38,12 +38,12 @@ export function setLoggedInUser(user) {
 export function registerUser(user) {
   return (dispatch) => {
     return axios.post('/api/users', user)
-    .then((result) => {
-      const token = result.data.token;
-      localStorage.setItem('tokenize', token);
-      axios.defaults.headers = { 'x-access-token': result.data.token };
-      dispatch(setLoggedInUser(jwtDecode(token)));
-    });
+      .then((result) => {
+        const token = result.data.token;
+        localStorage.setItem('tokenize', token);
+        axios.defaults.headers = { 'x-access-token': result.data.token };
+        dispatch(setLoggedInUser(jwtDecode(token)));
+      });
   };
 }
 
@@ -61,6 +61,17 @@ export function loginUser(user) {
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
       });
+  };
+}
+
+/**
+ * confirmOldPassword checks if old password is correct
+ * @param {String} email
+ * @param {String} password
+ */
+export function confirmOldPassword(email, password) {
+  return (dispatch) => {
+    return axios.post('/api/users/login', { email, password });
   };
 }
 

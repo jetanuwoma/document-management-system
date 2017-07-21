@@ -96,13 +96,10 @@ export function loadUserDocuments(offset = 0) {
   return (dispatch, getState) => {
     return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`) //eslint-disable-line
       .then((res) => {
-        getDocumentCounts()
-          .then((response) => {
-            dispatch({
-              type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.count,
-            });
-          });
+        dispatch({
+          type: actionTypes.SET_DOCUMENT_COUNT,
+          count: res.data.length,
+        });
         dispatch(loadDocumentsSuccess(res.data));
       });
   };

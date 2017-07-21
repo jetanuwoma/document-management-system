@@ -76,13 +76,11 @@ class SideBar extends React.Component {
             <Link to="/" className="waves-effect waves-cyan">
               <i className="fa fa-dashboard" /> Dashboard</Link>
           </li>
-          {
-            RoleId !== 1 &&
-            <li className="">
-              <Link to="/doc" className="waves-effect waves-cyan my-doc">
-                <i className="fa fa-file-o" /> My Documents</Link>
-            </li>
-          }
+
+          <li className="">
+            <Link to="/doc" className="waves-effect waves-cyan my-doc">
+              <i className="fa fa-file-o" /> My Documents</Link>
+          </li>
           <li className="">
             <Link to="/doc/public" className="waves-effect waves-cyan public-doc">
               <i className="fa fa-file-o" /> Public Documents</Link>
@@ -131,11 +129,11 @@ SideBar.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
- /**
- * mapStateToProps - copies states to component
- * @param {object} state - initalState
- * @return {object} any
- */
+/**
+* mapStateToProps - copies states to component
+* @param {object} state - initalState
+* @return {object} any
+*/
 function mapStateToProps(state) {
   return {
     user: state.auth.user,

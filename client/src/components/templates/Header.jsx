@@ -35,6 +35,7 @@ class Header extends React.Component {
       searchUsers: this.props.searchUsers,
     };
     this.onSearch = this.onSearch.bind(this);
+    this.onFocus = this.onFocus.bind(this);
   }
 
   /**
@@ -52,6 +53,15 @@ class Header extends React.Component {
    */
   componentWillReceiveProps(nextProps) {
     this.setState({ searchSource: nextProps.searchSource });
+  }
+
+  /**
+   * Move user's to document page when user click on search bar
+   */
+  onFocus() {
+    if (this.props.location.pathname === '/') {
+      this.context.router.push('/doc');
+    }
   }
 
   /**
@@ -117,6 +127,7 @@ class Header extends React.Component {
             value={searchValue}
             onKeyUp={this.onSearch}
             onChange={this.onSearch}
+            onFocus={this.onFocus}
           />
         </div>
         <SideBar />

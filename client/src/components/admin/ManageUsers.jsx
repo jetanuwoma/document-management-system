@@ -40,7 +40,8 @@ export class ManageUsers extends React.Component {
     } else {
       this.props.listAllUsers()
         .then(() => {
-        });
+        })
+        .catch(() => toastr.error('Sorry error occurred could not load users'));
     }
   }
   
@@ -81,14 +82,14 @@ export class ManageUsers extends React.Component {
     if (this.state.selectedUsers.length === 0) {
       toastr.error('No user selected');
     } else {
-      // create a copy
       const allUsers = this.state.selectedUsers.slice();
       await this.props.deleteUsers(allUsers).then(() => {
         this.props.listAllUsers().then(() => {
           toastr.success('User(s) deleted!');
           this.setState({ users: this.props.users });
         });
-      });
+      })
+      .catch(() => toastr.error('Some user\'s could not be deleted'));
     }
   }
 

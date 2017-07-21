@@ -17,7 +17,7 @@ class HomePage extends React.Component {
   }
 
   /**
-   * renders either the Landing page or user'sdashboard
+   * renders either the Landing page or user's dashboard
    * @return {Object}
    */
   render() {

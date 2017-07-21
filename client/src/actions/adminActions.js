@@ -134,12 +134,12 @@ export function listAllDocuments(offset = 0) {
  * search for users
  * GET /search/users
  * @export searchUsers
- * @param {string} q - Search query
+ * @param {string} terms - Search query
  * @returns {Promise} - axios promise
  */
-export function searchUsers(q) {
+export function searchUsers(terms) {
   return (dispatch) => {
-    return axios.get(`/api/search/users?q=${q}`)
+    return axios.get(`/api/search/users?q=${terms}`)
       .then((res) => {
         dispatch(loadUsersSuccessful(res.data.result));
       });
