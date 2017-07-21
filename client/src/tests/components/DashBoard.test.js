@@ -113,6 +113,16 @@ describe('DashBoard component', () => {
       expect(TestWrapper.call().state.user.email).toBe('etajuder@gmail.com');
     });
 
+    it('Should change users password', () => {
+      event.target.name = 'password';
+      event.target.value = 'password';
+      TestWrapper.call().onProfileChange(event);
+      expect(TestWrapper.call().state.user.password).toBe('password');
+      event.target.name = 'passwordAgain';
+      event.target.value = 'password';
+      expect(TestWrapper.call().state.user.password).toBe('password');
+    });
+
     it('Should update user profile when form is submitted', () => {
       expect(TestWrapper.call().props.user.fullNames).toBe('Eta Jude');
       const updateProfile = () => {
@@ -124,8 +134,7 @@ describe('DashBoard component', () => {
       };
       TestWrapper.call().state.updateProfile = updateProfile;
       TestWrapper.call().handleProfileSubmit({ preventDefault: () => { } });
-      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Change');
-      expect(TestWrapper.call().props.user.email).toBe('chan@aa.s');
+      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Jude');
     });
   });
 });

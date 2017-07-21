@@ -109,24 +109,7 @@ class DashBoard extends React.Component {
       },
       submitHandler: () => {
         user.UserId = this.props.user.UserId;
-        if (this.state.user.password !== null && this.state.user.passwordAgain) {
-          this.state.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
-            .then(() => {
-              this.state.updateProfile(user)
-                .then(() => {
-                  toastr.success('Profile Updated Successfully');
-                });
-            })
-            .catch(() => {
-              this.setState({ error: 'Invalid password submitted', user: { password: '', passwordAgain: '' } });
-            });
-        } else {
-          this.state.updateProfile(user)
-            .then(() => {
-              toastr.success('Profile Updated Successfully');
-            })
-            .catch(() => toastr.error('Sorry unable to update profile'));
-        }
+       this.handleProfileSubmit(event);
       },
     });
   }
@@ -159,10 +142,24 @@ class DashBoard extends React.Component {
     event.preventDefault();
     const user = this.state.user;
     user.UserId = this.props.user.UserId;
-    this.state.updateProfile(user)
-      .then(() => {
-        toastr.success('Profile Updated Successfully');
-      }).catch(() => toastr.error('Unable to update profile'));
+     if (this.state.user.password !== null && this.state.user.passwordAgain !== null) {
+          this.state.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
+            .then(() => {
+              this.state.updateProfile(user)
+                .then(() => {
+                  toastr.success('Profile Updated Successfully');
+                });
+            })
+            .catch(() => {
+              this.setState({ error: 'Invalid password submitted', user: { password: '', passwordAgain: '' } });
+            });
+        } else {
+          this.state.updateProfile(user)
+            .then(() => {
+              toastr.success('Profile Updated Successfully');
+            })
+            .catch(() => toastr.error('Sorry unable to update profile'));
+        }
   }
 
   /**
