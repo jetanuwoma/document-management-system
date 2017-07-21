@@ -42,7 +42,9 @@ const RoleRoutes = (router) => {
    *         type: string
    *     responses:
    *       200:
-   *         description: An array of roles
+   *         description: Returns lists of role objects
+   *         examples:
+   *           application/json: [{id:1,title:"Some role name",read: true, write: true}]
    *         schema:
    *           $ref: '#/definitions/Roles'
    */
@@ -84,7 +86,9 @@ const RoleRoutes = (router) => {
    *         type: boolean
    *     responses:
    *       200:
-   *         description: Creates a new Role
+   *         description: Returns a role object
+   *         examples:
+   *           application/json: {id:1,title:"Some role name",read: true, write: true}
    *         schema:
    *           $ref: '#/definitions/Roles'
    **/
@@ -113,7 +117,9 @@ const RoleRoutes = (router) => {
    *         type: number
    *     responses:
    *       200:
-   *         description: An array of roles
+   *         description: Return a single role object
+   *         examples:
+   *           application/json: {id:1,title:"Some role name",read: true, write: true}
    *         schema:
    *           $ref: '#/definitions/Roles'
    */
@@ -150,7 +156,9 @@ const RoleRoutes = (router) => {
    *         type: boolean
    *     responses:
    *       200:
-   *         description: Updated role details
+   *         description: Return a single updated role object
+   *         examples:
+   *           application/json: {id:1,title:"Some role name",read: true, write: true}
    *         schema:
    *           $ref: '#/definitions/Roles'
    */
@@ -177,7 +185,9 @@ const RoleRoutes = (router) => {
    *         type: number
    *     responses:
    *       200:
-   *         description: success message
+   *         description: returns success message object
+   *         examples:
+   *           application/json: {message:"Some role name deleted"}
    *         schema:
    *           $ref: '#/definitions/Roles'
    */
