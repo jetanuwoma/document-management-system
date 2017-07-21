@@ -120,6 +120,12 @@ class DashBoard extends React.Component {
             .catch(() => {
               this.setState({ error: 'Invalid password submitted', user: { password: '', passwordAgain: '' } });
             });
+        } else {
+          this.state.updateProfile(user)
+            .then(() => {
+              toastr.success('Profile Updated Successfully');
+            })
+            .catch(() => toastr.error('Sorry unable to update profile'));
         }
       },
     });
