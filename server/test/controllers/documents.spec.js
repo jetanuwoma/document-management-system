@@ -102,8 +102,7 @@ describe('Document', () => {
         .set({ 'x-access-token': testDetails.token })
         .expect(403).end((err, res) => {
           expect(res.body.message)
-          .to.equal('Unauthorized Access to this Document');
-          done();
+          .to.equal('You are forbidden to access this document');
         });
       done();
     });
@@ -156,7 +155,6 @@ describe('Document', () => {
         .expect(200).end((err, res) => {
           expect(res.body.title).to.equal(document.title);
           expect(res.body.permission).to.equal('Private');
-          done();
         });
       done();
     });
