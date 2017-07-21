@@ -69,6 +69,7 @@ class Access {
     Documents.findById(req.params.id)
       .then((document) => {
         if (document) {
+          req.document = document;
           next();
         } else {
           res.status(404)
@@ -125,6 +126,7 @@ class Access {
     Users.findById(req.params.id)
       .then((user) => {
         if (user) {
+          req.user = user;
           next();
         } else {
           res.status(404)

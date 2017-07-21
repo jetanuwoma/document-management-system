@@ -17,14 +17,19 @@ const UsersRoutes = (router) => {
    *     properties:
    *        fullNames:
    *            type: string
+   *            example: jude
    *        username:
    *            type: string
+   *            example: 'juder'
    *        email:
    *            type: string
+   *            example: someemail@domain.com
    *        password:
    *            type: string
+   *            example: somepass
    *        RoleId:
    *            type: number
+   *            example: 1
    */
 
   router.route('/users')
@@ -46,9 +51,9 @@ const UsersRoutes = (router) => {
      *         type: string
      *     responses:
      *       200:
-     *         description: Users List
+     *         description: returns list of users object
      *         schema:
-     *           $ref: '#/definitions/Documents'
+     *           $ref: '#/definitions/User'
      */
     .get(Access.verifyToken, Access.isAdmin, UsersController.getAllUsers)
     /**
@@ -88,7 +93,7 @@ const UsersRoutes = (router) => {
    *         type: number
    *     responses:
    *       201:
-   *         description: User Object created
+   *         description: Return user object
    *         schema:
    *           $ref: '#/definitions/User'
    */
@@ -115,7 +120,7 @@ const UsersRoutes = (router) => {
  *         type: string
  *     responses:
  *       200:
- *         description: Logged in User
+ *         description: Return user object
  *         schema:
  *           $ref: '#/definitions/User'
  */
@@ -155,7 +160,7 @@ const UsersRoutes = (router) => {
    *         type: string
    *     responses:
    *       200:
-   *         description: User Object updated
+   *         description: Return a single updated user object
    *         schema:
    *           $ref: '#/definitions/User'
    */
@@ -182,7 +187,7 @@ const UsersRoutes = (router) => {
  *         type: string
  *     responses:
  *       200:
- *         description: User
+ *         description: return a single user object
  *         schema:
  *           $ref: '#/definitions/User'
  */
@@ -209,7 +214,7 @@ const UsersRoutes = (router) => {
  *         type: number
  *     responses:
  *       200:
- *         description: user deleted successfully
+ *         description: return deleted user object
  *         schema:
  *           $ref: '#/definitions/User'
  */
@@ -234,7 +239,9 @@ const UsersRoutes = (router) => {
  *         type: string
  *     responses:
  *       200:
- *         description: Logged out
+ *         description: returns success message object
+ *         examples:
+ *           application/json: {message:"user logged out successfully"}
  *         schema:
  *           $ref: '#/definitions/User'
  */
@@ -262,9 +269,9 @@ const UsersRoutes = (router) => {
    *          type: string
    *      responses:
    *        200:
-   *          description: user
+   *          description: return list of object
    *          schema:
-   *            type: object
+   *            $ref: '#/definitions/User'
    */
   router.route('/search/users')
     .get(Access.verifyToken, UsersController.searchUsers);

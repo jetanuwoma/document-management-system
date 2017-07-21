@@ -34,11 +34,7 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static getDocumentById(req, res) {
-    Documents.findById(req.params.id)
-      .then((document) => {
-        res.status(200)
-          .send(document);
-      });
+    res.status(200).send(req.document);
   }
 
   /**
@@ -68,6 +64,7 @@ class DocumentsController {
    */
   static getUserDocuments(req, res) {
     Documents.findAll({
+      order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
       where: { OwnerId: req.params.id }
@@ -90,6 +87,7 @@ class DocumentsController {
    */
   static getAllUserPublicDocuments(req, res) {
     Documents.findAll({
+      order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
       where: { permission: req.accessType }
@@ -104,12 +102,9 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static updateDocument(req, res) {
-    Documents.find({ where: { id: req.params.id } })
-      .then((document) => {
-        document.update(req.body)
-          .then((updated) => {
-            res.status(200).send(updated);
-          });
+    req.document.update(req.body)
+      .then((updated) => {
+        res.status(200).send(updated);
       });
   }
 
@@ -144,14 +139,11 @@ class DocumentsController {
    * @returns {void} Returns void
    */
   static deleteDocument(req, res) {
-    Documents.findById(req.params.id)
-      .then((document) => {
-        document.destroy()
-          .then(() => {
-            res.status(200).send({
-              message: `${document.title} has been deleted`
-            });
-          });
+    req.document.destroy()
+      .then(() => {
+        res.status(200).send({
+          message: `${req.document.title} has been deleted`
+        });
       });
   }
 

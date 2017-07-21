@@ -59,11 +59,14 @@ const DocumentsRoutes = (router) => {
      *         type: string
      *     responses:
      *       200:
-     *         description: An array of all documents
+     *         description: Returns list of document objects
      *         schema:
      *           $ref: '#/definitions/Documents'
+     *         examples:
+     *           application/json: [{id:1,title:"Some title",content: "some content"}]
      *       500:
      *         description: Exception Error
+     *
      */
     .get(Access.isAdmin, DocumentsController.getAllDocuments)
     /**
@@ -104,6 +107,8 @@ const DocumentsRoutes = (router) => {
  *     responses:
  *       201:
  *         description: Document Object created
+ *         examples:
+ *           application/json: {id:1,title:"Some title",content: "some content"}
  *         schema:
  *           $ref: '#/definitions/Documents'
  */
@@ -131,7 +136,9 @@ const DocumentsRoutes = (router) => {
  *         type: string
  *     responses:
  *       200:
- *         description: An array of all documents
+ *         description: a list of all documents object
+ *         examples:
+ *           application/json: [{id:1,title:"Some title",content: "some content"}]
  *       500:
  *         description: Error fetching documents with that term
  */
@@ -162,8 +169,10 @@ const DocumentsRoutes = (router) => {
  *     responses:
  *       200:
  *         description: total number of documents
+ *         examples:
+ *           application/json: {count: 30}
  *       500:
- *         description: Error fetching documents with that term
+ *         description: Unble to get documents counts
  */
 
   router.route('/count/document')
@@ -188,9 +197,11 @@ const DocumentsRoutes = (router) => {
      *         type: integer
      *     responses:
      *       200:
-     *         description: A single document
+     *         description: Returns a single document object
      *         schema:
      *           $ref: '#/definitions/Documents'
+     *         examples:
+     *           application/json: {id:1,title:"Some title",content: "some content"}
      *       404:
      *         description: Document not found
      */
@@ -216,7 +227,9 @@ const DocumentsRoutes = (router) => {
 *         type: integer
 *     responses:
 *       200:
-*         description: Successfully updated
+*         description: Returns a single updated document object
+*         examples:
+*           application/json: {id:1,title:"Some title",content: "some content"}
 *       404:
 *         description: Document cannot be found
 */
@@ -242,7 +255,9 @@ const DocumentsRoutes = (router) => {
   *         type: integer
   *     responses:
   *       200:
-  *         description: Successfully deleted
+  *         description: success message
+  *         examples:
+  *           document deleted successfully
   *       404:
   *         description: Document cannot be found
   */
@@ -272,9 +287,11 @@ const DocumentsRoutes = (router) => {
      *         type: integer
      *     responses:
      *       200:
-     *         description: An array of all specified permission documents
+     *         description: Returns list of documents object
      *         schema:
      *           $ref: '#/definitions/Documents'
+     *         examples:
+     *           application/json: [{id:1,title:"Some title",content: "some content"}]
      *       404:
      *         description: Documents not found
      *       412:
@@ -294,9 +311,12 @@ const DocumentsRoutes = (router) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of all documents (data) with pagination
+   *         description: Returns list of documents object
    *         schema:
    *           $ref: '#/definitions/Pagination'
+   *         examples:
+*           application/json: [{id:1,title:"Some title",content: "some content"}]
+
    *       404:
    *         description: Documents not found
    *       412:
@@ -321,7 +341,9 @@ const DocumentsRoutes = (router) => {
      *         type: integer
      *     responses:
      *       200:
-     *         description: An array of all users documents
+     *         description: Returns list of documents object
+     *         examples:
+     *           application/json: [{id:1,title:"Some title",content: "some content"}]
      *       404:
      *         description: No document found
      */
