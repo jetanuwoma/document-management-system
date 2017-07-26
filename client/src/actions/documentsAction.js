@@ -78,9 +78,11 @@ export function saveDocument(document) {
  * @param  {string} access = null - access scope to search
  * @return {Promise}              - axios promise call
  */
-export function getDocumentCounts(access = null) {
+export function getDocumentCounts(access = null, source = '', query = '', type = '') {
   if (access === null) {
-    return axios.get('/api/count/document');
+    return axios.get(`/api/count/document${type === '' ? '': '?personal=1'}`);
+  } else if (access === 'search') {
+    return axios.get(`/api/search/document?q=${query}&access=${source}`)
   }
   return axios.get(`/api/count/document?access=${access}`);
 }
@@ -94,12 +96,15 @@ export function getDocumentCounts(access = null) {
 */
 export function loadUserDocuments(offset = 0) {
   return (dispatch, getState) => {
-    return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`) //eslint-disable-line
+    return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`)
       .then((res) => {
-        dispatch({
-          type: actionTypes.SET_DOCUMENT_COUNT,
-          count: res.data.length,
-        });
+        getDocumentCounts(null, '', '', 'personal')
+          .then((response) => {
+            dispatch({
+              type: actionTypes.SET_DOCUMENT_COUNT,
+              count: response.data.count,
+            });
+          });
         dispatch(loadDocumentsSuccess(res.data));
       });
   };
@@ -198,10 +203,17 @@ export function loadPublicDocuments(offset = 0) {
  * @param  {Number} offset = 0  - offset for Pagination
  * @return {Promise}            - axios promise
  */
-export function searchDocuments(query, source = '') {
+export function searchDocuments(query,  source = '', offset = 0) {
   return (dispatch) => {
-    return axios.get(`/api/search/document?q=${query}&access=${source}`)
+    return axios.get(`/api/search/document?q=${query}&access=${source}&offset=${offset}`)
       .then((result) => {
+         getDocumentCounts('search', source, query)
+           .then((response) => {
+             dispatch({
+              type: actionTypes.SET_DOCUMENT_COUNT,
+              count: response.data.rows.length,
+            });
+           });
         dispatch(loadDocumentsSuccess(result.data.rows));
         dispatch({
           type: actionTypes.CHANGE_SEARCH_QUERY,

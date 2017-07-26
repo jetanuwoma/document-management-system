@@ -71,7 +71,7 @@ class Header extends React.Component {
   onSearch(event) {
     this.setState({ searchValue: event.target.value });
     if (event.keyCode === 13) {
-      this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`); // eslint-disable-line
+      this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`);
       if (this.state.searchSource === 'publicDocuments') {
         this.state.searchDocuments(event.target.value, 'public');
       } else if (this.state.searchSource === 'users') {
@@ -167,7 +167,7 @@ Header.contextTypes = {
 /**
 * mapStateToProps - copies states to component
 * @param {object} state - initalState
-* @return {object} any
+* @return {object} - props object
 */
 function mapStateToProps(state) {
   return {

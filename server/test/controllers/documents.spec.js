@@ -75,7 +75,7 @@ describe('Document', () => {
         .set({ 'x-access-token': adminDetails.token })
         .send({ title: null })
         .end((err, res) => {
-          expect(500);
+          expect(400);
           expect(res.body.message).to.equal('Error creating documents');
           done();
         });
@@ -144,7 +144,7 @@ describe('Document', () => {
       request.get('/api/documents')
         .set({ 'x-access-token': regularDetails.token })
         .expect(200).end((err, res) => {
-          expect(res.body.message).to.equal('Requires an admin access to proceed'); // eslint-disable-line
+          expect(res.body.message).to.equal('Requires an admin access to proceed');
           done();
         });
     });

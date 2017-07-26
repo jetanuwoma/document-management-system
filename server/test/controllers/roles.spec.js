@@ -122,7 +122,7 @@ describe('Role', () => {
       request.put('/api/roles/2')
         .set({ 'x-access-token': admin.token })
         .send({ title: 'Admin' })
-        .expect(500)
+        .expect(409)
         .end((err, res) => {
           expect(res.body.message.includes('Error Updating Role'));
           done();

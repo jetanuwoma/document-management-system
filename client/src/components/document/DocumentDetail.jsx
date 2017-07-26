@@ -79,7 +79,7 @@ DocumentDetail.propTypes = {
 /**
 * mapStateToProps - copies states to component
 * @param {object} state - initalState
-* @return {object} any
+* @return {object} props object
 */
 function mapStateToProps(state) {
   return {

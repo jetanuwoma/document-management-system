@@ -16,7 +16,7 @@ describe('Document Action', () => {
     return store.dispatch(documentsAction.searchDocuments('searchQuery'))
       .then(() => {
         const expectedActions = store.getActions();
-        expect(expectedActions.length).toBe(2);
+        expect(expectedActions.length).toBe(3);
         expect(expectedActions[0].type).toEqual(actionTypes.LOAD_DOCUMENTS_SUCCESS);
         expect(expectedActions[1].type).toEqual(actionTypes.CHANGE_SEARCH_QUERY);
         expect(expectedActions[0].documents.length).toBe(1);
@@ -74,9 +74,9 @@ describe('Document Action', () => {
       .then(() => {
         const expectedActions = store.getActions();
         expect(expectedActions.length).toBe(2);
-        expect(expectedActions[1].type).toEqual(actionTypes.LOAD_DOCUMENTS_SUCCESS);
-        expect(expectedActions[0].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
-        expect(expectedActions[1].documents.length).toBe(2);
+        expect(expectedActions[0].type).toEqual(actionTypes.LOAD_DOCUMENTS_SUCCESS);
+        expect(expectedActions[1].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
+        expect(expectedActions[0].documents.length).toBe(2);
       });
   });
 

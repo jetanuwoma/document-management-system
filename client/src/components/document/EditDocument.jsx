@@ -36,7 +36,8 @@ export class EditDocument extends React.Component {
       .then(() => {
         const { id, title, content, permission } = this.props.document;
         this.setState({ document: { id, title, content, permission } });
-      });
+      })
+      .catch(() => toastr.error('Error loading document'));
   }
 
   /**
@@ -70,7 +71,8 @@ export class EditDocument extends React.Component {
     this.props.updateDocument(this.state.document)
       .then(() => {
         toastr.success('Document Updated');
-      });
+      })
+      .catch(() => toastr.error('Error updating document'));
   }
 
   /**
@@ -125,7 +127,7 @@ EditDocument.contextTypes = {
 /**
 * mapStateToProps - copies states to component
 * @param {object} state - initalState
-* @return {object} any
+* @return {object} props object
 */
 function mapStateToProps(state) {
   return {

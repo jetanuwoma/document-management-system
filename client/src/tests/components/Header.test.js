@@ -59,7 +59,9 @@ describe('Header component', () => {
     const rendered = TestWrapper.renders(Header, { location: { pathname: '/' } }).html();
 
     it('Should display the search input', () => {
-      expect(rendered.includes('<input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Search for allDocuments" value="">')) //eslint-disable-line
+      expect(rendered
+        .includes(`<input type="text" name="Search" class="header-search-input
+        z-depth-2" placeholder="Search for allDocuments" value="">`))
         .toBe(true);
     });
 

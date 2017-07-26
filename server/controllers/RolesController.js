@@ -46,7 +46,7 @@ class RolesController {
               data: update
             }))
           .catch(() => {
-            res.status(500)
+            res.status(400)
               .send({ message: 'An error occurred please try again' });
           });
       })
@@ -77,7 +77,7 @@ class RolesController {
               .send(newRole);
           })
           .catch(() => {
-            res.status(500)
+            res.status(400)
               .send({ message: 'error occurred' });
           });
       });

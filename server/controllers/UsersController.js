@@ -83,7 +83,7 @@ class UsersController {
          if (userExist) {
            return res.status(409)
              .send({
-               message: `This email is in existence please choose a new one or login` //eslint-disable-line
+               message: `This email is in existence please choose a new one or login`
              });
          }
          const { username, fullNames, email, password } = req.body;
@@ -231,14 +231,19 @@ class UsersController {
    * @returns {void} Returns void
    */
   static deleteUser(req, res) {
-    Users.find({ where: {
-      id: req.params.id } })
+    Users.findById(req.params.id)
       .then((user) => {
-        user.destroy()
-      .then(() => {
-        res.status(200).send({ message: `${req.params.id} has been deleted` });
-      });
-      });
+        if (user.id === req.decoded.UserId &&
+          req.decoded.RoleId === user.RoleId) {
+          res.status(401)
+            .send({ message: 'You cant delete yourself' });
+        } else {
+          user.destroy()
+            .then(() => {
+              res.status(200).send({ message: `${req.params.id} has been deleted` });
+            });
+        }
+    });
   }
 
 }

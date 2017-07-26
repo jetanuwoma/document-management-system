@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
@@ -15,7 +14,9 @@ const swaggerDefinition = {
   info: {
     title: 'Document Management System',
     version: '1.0.0',
-    description: 'The system manages documents, users and user roles. Each document defines access rights; the document defines which roles can access it. Also, each document specifies the date it was published.', // eslint-disable-line
+    description: `The system manages documents, users and user roles.
+     Each document defines access rights; the document defines which roles can access it.
+      Also, each document specifies the date it was published.`,
   },
   host: hostUrl,
   basePath: '/',
@@ -54,7 +55,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // eslint-disable-line
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
