@@ -220,7 +220,6 @@ const UsersRoutes = (router) => {
  */
     .delete(Access.verifyToken,
     Access.isAdmin,
-    Access.canDeleteUser,
     UsersController.deleteUser);
   /**
  * @swagger

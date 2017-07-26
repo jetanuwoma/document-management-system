@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import 'babel-polyfill';
 import httpMocks from 'node-mocks-http';
 import supertest from 'supertest';
@@ -110,7 +109,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.documentAccess(req, res, next.callNext);
+      Access.verifyAccess(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         done();
@@ -129,7 +128,7 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.documentAccess(req, res, next.callNext);
+      Access.verifyAccess(req, res, next.callNext);
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         done();
@@ -148,9 +147,9 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.accessType(req, res, next.callNext);
+      Access.verifyAccessParam(req, res, next.callNext);
       res.on('end', () => {
-        expect(req.accessType).to.equal('public');
+        expect(req.verifyAccessParam).to.equal('public');
         expect(next.callNext).to.have.been.called;
         done();
       });
@@ -168,9 +167,9 @@ describe('Access middleware', () => {
         callNext: () => { }
       };
       sinon.spy(next, 'callNext');
-      Access.accessType(req, res, next.callNext);
+      Access.verifyAccessParam(req, res, next.callNext);
       res.on('end', () => {
-        expect(req.accessType).to.equal('role');
+        expect(req.verifyAccessParam).to.equal('role');
         expect(next.callNext).to.have.been.called;
         done();
       });
@@ -190,7 +189,7 @@ describe('Access middleware', () => {
         expect(res._getData().message).to.equal('Sorry you are requesting for a wrong documents type');
         done();
       });
-      Access.accessType(req, res);
+      Access.verifyAccessParam(req, res);
     });
   });
 

@@ -132,7 +132,7 @@ SideBar.propTypes = {
 /**
 * mapStateToProps - copies states to component
 * @param {object} state - initalState
-* @return {object} any
+* @return {object}
 */
 function mapStateToProps(state) {
   return {

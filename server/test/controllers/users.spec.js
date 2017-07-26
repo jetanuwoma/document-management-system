@@ -50,7 +50,7 @@ describe('Users', () => {
       .expect(409)
       .end((err, res) => {
         expect(res.body.message
-           .includes('This email is in existence please choose a new one or login')) //eslint-disable-line
+           .includes('This email is in existence please choose a new one or login'))
            .to.equal(true);
         done();
       });

@@ -22,7 +22,7 @@ class DocumentsController {
           .send(documents);
       })
       .catch(() => {
-        res.status(500)
+        res.status(400)
           .send({ message: 'Error retrieving documents' });
       });
   }
@@ -51,7 +51,7 @@ class DocumentsController {
           .send(document);
       })
       .catch(() => {
-        res.status(500)
+        res.status(400)
           .send({ message: 'Error creating documents' });
       });
   }
@@ -74,7 +74,7 @@ class DocumentsController {
           .send(documents);
       })
       .catch(() => {
-        res.status(500)
+        res.status(400)
           .send({ message: 'Error fetching documents' });
       });
   }
@@ -90,7 +90,7 @@ class DocumentsController {
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
-      where: { permission: req.accessType }
+      where: { permission: req.verifyAccessParam }
     })
       .then(documents => res.status(200).send(documents));
   }
@@ -117,11 +117,15 @@ class DocumentsController {
   static searchDocuments(req, res) {
     // defined in the access middleware
     const searchQuery = req.searchQuery.where;
-
-    Documents.findAndCountAll({
+    const query = {
       order: '"createdAt" DESC',
       where: searchQuery
-    })
+    };
+    if (req.query.offset !== undefined) {
+       query['limit'] = req.query.limit || 6;
+       query['offset'] = req.query.offset * (req.query.limit || 6) || 0;
+    }
+    Documents.findAndCountAll(query)
       .then((results) => {
         res.status(200).send(results);
       })

@@ -79,12 +79,12 @@ class Access {
   }
 
   /**
-   * documentAccess - check if i can access the document
+   * verifyAccess - check if i can access the document
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
    */
-  static documentAccess(req, res, next) {
+  static verifyAccess(req, res, next) {
     Documents.findById(req.params.id)
       .then((document) => {
         if (req.decoded.UserId === document.OwnerId) {
@@ -101,12 +101,12 @@ class Access {
   }
 
   /**
-   * documentsAreMine - check if i can view the respective user documents
+   * isUserOrAdmin - check if i can view the respective user documents
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
    */
-  static documentsAreMine(req, res, next) {
+  static isUserOrAdmin(req, res, next) {
     if (parseInt(req.params.id, 10) === req.decoded.UserId ||
        req.decoded.RoleId === 1) {
       next();
@@ -136,27 +136,24 @@ class Access {
   }
 
   /**
-   * accessType - check requested access type
+   * verifyAccessParam - check requested access type
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
    */
-  static accessType(req, res, next) {
-    if (req.params.access === 'public') {
-      req.accessType = 'public';
-      next();
-    } else if (req.params.access === 'role') {
-      req.accessType = 'role';
-      next();
-    } else {
-      res.status(404).send({
-        message: 'Sorry you are requesting for a wrong documents type'
-      });
+  static verifyAccessParam(req, res, next) {
+    const access = ['public', 'role'].find(val => val === req.params.access);
+    if (access) {
+      req.verifyAccessParam = access;
+      return next();
     }
+    return res.status(404).send({
+      message: 'Sorry you are requesting for a wrong documents type'
+    });
   }
 
   /**
-   * setSearchCriterial - define search zone for users
+   * setSearchCriteria - define search zone for users
    * @param {object} req - Request Object
    * @param {object} res - Response Object
    * @param {callback} next callback to the next middleware or function
@@ -165,7 +162,7 @@ class Access {
     const access = req.query.access;
     const term = req.query.q || '';
     let query = { where: { title: { $iLike: `%${term}%` } } };
-    if (req.decoded.RoleId === 1) {
+    if (req.decoded.RoleId === 1 && req.query.personal === undefined) {
       if (access !== undefined && access !== null && access !== '') {
         query.where.permission = access;
       }
@@ -187,25 +184,6 @@ class Access {
 
 
     next();
-  }
-
-  /**
-   *canDeleteUser - Check if the admin can delete the given user
-   * @param {object} req - Request Object
-   * @param {object} res - Response Object
-   * @param {callback} next callback to the next middleware or function
-   */
-  static canDeleteUser(req, res, next) {
-    Users.findById(req.params.id)
-      .then((user) => {
-        if (user.id === req.decoded.UserId &&
-          req.decoded.RoleId === user.RoleId) {
-          res.status(401)
-            .send({ message: 'You cant delete yourself' });
-        } else {
-          next();
-        }
-      });
   }
 }
 

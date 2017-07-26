@@ -90,7 +90,9 @@ export class DocumentPage extends React.Component {
       autoDismiss: 0,
       action: {
         label: 'Undo!',
-        callback: () => this.props.undoDelete(document),
+        callback: () => this.props.undoDelete(document)
+          .then(() => toastr.success('Delete undo'))
+          .catch(() => toastr.error('Could not undo delete')),
       },
     };
     this.props.deleteDocument(document)
@@ -104,10 +106,18 @@ export class DocumentPage extends React.Component {
    * @param {Number} page - current pagination number
    */
   nextPage(page) {
-    this.props.loadUserDocuments(page - 1)
-      .then(() => {
-        this.setState({ activePagination: page });
-      });
+    if (!this.state.isSearching) {
+      this.props.loadUserDocuments(page - 1)
+        .then(() => {
+          this.setState({ activePagination: page });
+        });
+    } else {
+      this.props.searchDocuments(this.state.searchQuery, '', page - 1)
+        .then(() => {
+          this.setState({ activePagination: page });
+        })
+        .catch(() => toastr.error('Could not load document'));
+    }
   }
 
   /**
@@ -139,16 +149,14 @@ export class DocumentPage extends React.Component {
               deleteDocument={this.deleteDocument}
               isSearching={this.state.isSearching}
               searchQuery={this.state.searchQuery}
-              searchCount={this.state.searchCount}
+              searchCount={this.state.totalDocument}
             />
-            {!this.state.isSearching &&
-              <Pagination
-                onChange={this.nextPage}
-                current={this.state.activePagination}
-                total={this.state.totalDocument}
-                pageSize={6}
-              />
-            }
+            <Pagination
+              onChange={this.nextPage}
+              current={this.state.activePagination}
+              total={this.state.totalDocument}
+              pageSize={6}
+            />
           </div>
         }
       </div>
@@ -179,7 +187,7 @@ DocumentPage.contextTypes = {
 /**
 * mapStateToProps - copies states to component
 * @param {object} state - initalState
-* @return {object} any
+* @return {object} props object
 */
 function mapStateToProps(state) {
   return {

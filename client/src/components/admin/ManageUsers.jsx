@@ -182,7 +182,7 @@ ManageUsers.propTypes = {
 /**
  * mapStateToProps - copies states to component
  * @param {object} state - initalState
- * @return {object} any
+ * @return {object} props objects
  */
 function mapStateToProps(state) {
   return {

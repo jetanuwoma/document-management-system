@@ -206,7 +206,7 @@ const DocumentsRoutes = (router) => {
      *         description: Document not found
      */
     .get(Access.documentExists,
-    Access.documentAccess,
+    Access.verifyAccess,
     DocumentsController.getDocumentById
     )
     /**
@@ -234,7 +234,7 @@ const DocumentsRoutes = (router) => {
 *         description: Document cannot be found
 */
     .put(Access.documentExists,
-    Access.documentAccess,
+    Access.verifyAccess,
     DocumentsController.updateDocument
     )
     /**
@@ -262,7 +262,7 @@ const DocumentsRoutes = (router) => {
   *         description: Document cannot be found
   */
     .delete(Access.documentExists,
-    Access.documentAccess,
+    Access.verifyAccess,
     DocumentsController.deleteDocument
     );
 
@@ -297,7 +297,7 @@ const DocumentsRoutes = (router) => {
      *       412:
      *         description: Exception Error
      */
-    .get(Access.accessType, DocumentsController.getAllUserPublicDocuments);
+    .get(Access.verifyAccessParam, DocumentsController.getAllUserPublicDocuments);
   // Get all Documents Pagination
   /**
    * @swagger
@@ -348,7 +348,7 @@ const DocumentsRoutes = (router) => {
      *         description: No document found
      */
     .get(Access.userExists,
-    Access.documentsAreMine,
+    Access.isUserOrAdmin,
     DocumentsController.getUserDocuments);
 };
 
