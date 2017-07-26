@@ -83,7 +83,6 @@ export class DocumentPage extends React.Component {
    */
   deleteDocument(document) {
     const notificationOpts = {
-      // uid: 'once-please', // you can specify your own uid if required
       title: `${document.title}`,
       message: 'has been deleted!',
       position: 'tr',

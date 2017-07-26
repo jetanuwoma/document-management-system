@@ -4,6 +4,7 @@ import Notifications from 'react-notification-system-redux';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { searchUsers } from '../../actions/adminActions';
 import { searchDocuments } from '../../actions/documentsAction';
 import {
@@ -73,11 +74,14 @@ class Header extends React.Component {
     if (event.keyCode === 13) {
       this.context.router.push(`${this.props.location.pathname}?q=${event.target.value}`);
       if (this.state.searchSource === 'publicDocuments') {
-        this.state.searchDocuments(event.target.value, 'public');
+        this.state.searchDocuments(event.target.value, 'public')
+          .catch(() => toastr.error('Error occurred while searching for documents'));
       } else if (this.state.searchSource === 'users') {
-        this.state.searchUsers(event.target.value);
+        this.state.searchUsers(event.target.value)
+          .catch(() => toastr.error('Error searching for users'));
       } else {
-        this.state.searchDocuments(event.target.value);
+        this.state.searchDocuments(event.target.value)
+          .catch(() => toastr.error('Error occurred while searching for documents'));
       }
     }
   }
