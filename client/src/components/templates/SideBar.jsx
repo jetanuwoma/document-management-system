@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import createHistory from 'history/createBrowserHistory';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { logout } from '../../actions/userActions';
 import profile from '../../assets/images/user-profile.png';
 
@@ -32,7 +33,8 @@ class SideBar extends React.Component {
    */
   logOut(event) {
     event.preventDefault();
-    this.props.logout();
+    this.props.logout()
+     .catch(() => toastr.error('Could not log you out, try again'));
     if (this.context.router === undefined) {
       this.context.router = history;
     }
