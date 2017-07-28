@@ -28,7 +28,7 @@ const DocumentForm =  (props) => (
             required="required"
             onChange={props.onChange}
           />
-          <label className="center-align">Document Title</label>
+          <label className="center-align active">Document Title</label>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ const DocumentForm =  (props) => (
 
 DocumentForm.propTypes = {
   content: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   handleEditorChange: PropTypes.func,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
