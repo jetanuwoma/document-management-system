@@ -16,8 +16,20 @@ describe('Document Action', () => {
     return store.dispatch(documentsAction.searchDocuments('searchQuery'))
       .then(() => {
         const expectedActions = store.getActions();
-        expect(expectedActions.length).toBe(1);
+        expect(expectedActions.length).toBe(3);
         expect(expectedActions[0].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);;
+      });
+  });
+
+    it('Should return public documents', () => {
+    const store = mockStore();
+    return store.dispatch(documentsAction.getPublicDocuments())
+      .then(() => {
+        const expectedActions = store.getActions();
+        expect(expectedActions.length).toBe(2);
+        expect(expectedActions[0].type).toEqual(actionTypes.GET_DOCUMENTS_SUCCESS);
+        expect(expectedActions[1].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
+        expect(expectedActions[0].documents.length).toBe(2);
       });
   });
 
@@ -28,6 +40,18 @@ describe('Document Action', () => {
         const expectedActions = store.getActions();
         expect(expectedActions.length).toBe(1);
         expect(expectedActions[0].type).toEqual(actionTypes.GET_DOCUMENT_SUCCESS);
+      });
+  });
+
+  it('Should load all users documents', () => {
+    const store = mockStore({ auth: { user: { UserId: 1 } } });
+    return store.dispatch(documentsAction.getUserDocuments())
+      .then(() => {
+        const expectedActions = store.getActions();
+        expect(expectedActions.length).toBe(2);
+        expect(expectedActions[0].type).toEqual(actionTypes.GET_DOCUMENTS_SUCCESS);
+        expect(expectedActions[1].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
+        expect(expectedActions[0].documents.length).toBe(2);
       });
   });
 

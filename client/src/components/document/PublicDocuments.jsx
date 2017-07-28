@@ -54,10 +54,8 @@ export class PublicDocuments extends React.Component {
         });
     } else {
       this.props.clearSearch();
-      this.props.getPublicDocuments()
-        .then(() => {
-          this.setState({ loading: false });
-        }).catch(() => toastr.error('Error fetching document'));
+      this.props.getPublicDocuments();
+      this.setState({ loading: false });
     }
   }
 

@@ -25,7 +25,7 @@ export function createDocumentSuccess(document) {
  */
 export function getDocumentsSuccess(documents) {
   return {
-    type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
+    type: actionTypes.GET_DOCUMENTS_SUCCESS,
     documents,
   };
 }
@@ -70,7 +70,7 @@ export function saveDocument(document) {
       dispatch(createDocumentSuccess(result.data));
     })
       .catch((error) => {
-        toastr.error(error.response.data.message)
+        toastr.error('Could not save documents')
       });
   };
 }
@@ -84,20 +84,11 @@ export function saveDocument(document) {
  */
 export function getDocumentCount(access = null, source = '', query = '', type = '') {
   if (access === null) {
-    return axios.get(`/api/count/document${type === '' ? '' : '?personal=1'}`)
-      .catch((error) => {
-        toastr.error(error.response.data.message)
-      });
+     return axios.get(`/api/count/document${type === '' ? '' : '?personal=1'}`);
   } else if (access === 'search') {
-    return axios.get(`/api/search/document?q=${query}&access=${source}`)
-      .catch((error) => {
-        toastr.error(error.response.data.message)
-      });
+    return axios.get(`/api/search/document?q=${query}&access=${source}`);
   }
-  return axios.get(`/api/count/document?access=${access}`)
-    .catch((error) => {
-      toastr.error(error.response.data.message)
-    });
+  return axios.get(`/api/count/document?access=${access}`);
 }
 
 
@@ -121,11 +112,6 @@ export function getUserDocuments(offset = 0) {
         dispatch(getDocumentsSuccess(res.data));
       })
       .catch((error) => {
-        dispatch({
-          type: actionTypes.SET_DOCUMENT_COUNT,
-          count: 0,
-        });
-        dispatch(getDocumentsSuccess([]));
         toastr.error('Error fetching documents')
       });
   };
@@ -145,7 +131,7 @@ export function deleteDocument(document) {
         dispatch(deleteDocSuccess(document));
       })
       .catch((error) => {
-        toastr.error(error.response.data.message)
+        toastr.error('Unable to delete document')
       });
   };
 }
@@ -175,8 +161,8 @@ export function getDocument(id) {
       .then((result) => {
         dispatch(getDocumentSuccess(result.data));
       })
-      .catch((error) => {
-        toastr.error(error.response.data.message)
+      .catch(() => {
+        toastr.error('Unable to get document')
       });
   };
 }
@@ -196,8 +182,8 @@ export function updateDocument(document) {
           type: actionTypes.DOCUMENT_UPDATE_SUCCESS,
         });
       })
-      .catch((error) => {
-        toastr.error(error.response.data.message)
+      .catch(() => {
+        toastr.error('Document could not be updated')
       });
   };
 }
@@ -211,27 +197,22 @@ export function updateDocument(document) {
 */
 export function getPublicDocuments(offset = 0) {
   return (dispatch) => {
-    return axios.get(`/api/documents/access/public?offset=${offset}`)
+     return axios.get(`/api/documents/access/public?offset=${offset}`)
       .then((res) => {
+        dispatch(getDocumentsSuccess(res.data));
         getDocumentCount('public')
           .then((response) => {
-            dispatch(getDocumentsSuccess(res.data));
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.count,
             });
           })
-          .catch((error) => {
-            toastr.error(error.response.data.message)
+          .catch(() => {
+            toastr.error('Error fetching document')
           });
       })
       .catch((error) => {
-        dispatch(getDocumentsSuccess([]));
-        dispatch({
-          type: actionTypes.SET_DOCUMENT_COUNT,
-          count: 0,
-        });
-        toastr.error('Error occurred while getting documents')
+        toastr.error('Error occurred while getting documents');
       });
   };
 }
@@ -260,20 +241,11 @@ export function searchDocuments(query, source = '', offset = 0) {
               query,
             });
           })
-          .catch((error) => {
-            toastr.error(error.response.data.message);
-            dispatch(getDocumentsSuccess([]));
-            dispatch({
-              type: actionTypes.SET_DOCUMENT_COUNT,
-              count: 0,
-            });
-            dispatch({
-              type: actionTypes.CHANGE_SEARCH_QUERY,
-              query,
-            });
+          .catch(() => {
+            toastr.error('Error occurred');
           });
       })
-      .catch((error) => {
+      .catch(() => {
         toastr.error('Error occurred while searching for documents')
       });
   };

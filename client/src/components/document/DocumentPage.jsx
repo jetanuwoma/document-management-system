@@ -51,11 +51,8 @@ export class DocumentPage extends React.Component {
     $('.sidebar-collapse').sideNav();
     this.props.triggerSearch('userDocuments');
     if (this.state.location.query.q !== undefined) {
-      this.props.searchDocuments(this.props.location.query.q)
-        .then(() => {
-          this.setState({ loading: false });
-        })
-        .catch(() => toastr.error('Error searching for document'));
+      this.props.searchDocuments(this.props.location.query.q);
+      this.setState({ loading: false });
     } else {
       this.props.clearSearch();
       this.getDocuments();
