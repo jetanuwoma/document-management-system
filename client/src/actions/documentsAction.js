@@ -154,7 +154,7 @@ export function deleteDocument(document) {
 /**
  * undoDelete - restores deleted document
  *
- * @return {callback}  dispatched undoDelete event
+ * @return {Function}  dispatched undoDelete event
  */
 export function undoDelete(document) {
   return (dispatch) => {
