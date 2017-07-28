@@ -89,7 +89,7 @@ export function confirmOldPassword(email, password) {
  *
  * log user out and delete details from localStorage
  * @export
- * @returns {callback}
+ * @returns {Function}
  */
 export function logout() {
   return (dispatch) => {
