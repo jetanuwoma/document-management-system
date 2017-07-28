@@ -127,11 +127,8 @@ class DashBoard extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-    this.state.saveDocument(this.state.document)
-      .then(() => {
-        toastr.success('Document Created');
-        this.clearForm();
-      }).catch(() => toastr.error('Unable to create document'));
+    this.state.saveDocument(this.state.document);
+    this.clearForm();
   }
 
   /**
