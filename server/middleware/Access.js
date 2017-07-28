@@ -181,8 +181,6 @@ class Access {
       }
       req.searchQuery = query;
     }
-
-
     next();
   }
 }

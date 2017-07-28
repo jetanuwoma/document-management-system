@@ -64,24 +64,21 @@ require('fs').stat(`${BINPATH}selenium.jar`, (err, stat) => { // got it?
 
 /**
  * @desc padLeft
- * @param {any} count
+ * @param {Number} count
  * @returns {bool} count
  */
-function padLeft(count) { // theregister.co.uk/2016/03/23/npm_left_pad_chaos/
+function padLeft(count) {
   return count < 10 ? `0${count}` : count.toString();
 }
 
 let FILECOUNT = 0; // "global" screenshot file count
 /**
- * @desc The default is to save screenshots to the root
+ * The default is to save screenshots to the root
  *  of your project even though
  * there is a screenshots path in the config object above! ... so we need a
  * function that returns the correct path for storing our screenshots.
  * While we're at it, we are adding some meta-data to the filename, specifically
  * the Platform/Browser where the test was run and the test (file) name.
- * @desc padLeft
- * @param {any} browser
- * @returns {*} screen shot
  */
 function imgpath(browser) {
   const a = browser.options.desiredCapabilities;

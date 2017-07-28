@@ -6,7 +6,7 @@ import Pagination from 'rc-pagination';
 import toastr from 'toastr';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import {
-  loadPublicDocuments,
+  getPublicDocuments,
   deleteDocument,
   undoDelete,
   searchDocuments,
@@ -54,7 +54,7 @@ export class PublicDocuments extends React.Component {
         });
     } else {
       this.props.clearSearch();
-      this.props.loadPublicDocuments()
+      this.props.getPublicDocuments()
         .then(() => {
           this.setState({ loading: false });
         }).catch(() => toastr.error('Error fetching document'));
@@ -81,7 +81,6 @@ export class PublicDocuments extends React.Component {
    */
   deleteDocument(document) {
     const notificationOpts = {
-      // uid: 'once-please', // you can specify your own uid if required
       title: `${document.title}`,
       message: 'has been deleted!',
       position: 'tr',
@@ -105,7 +104,7 @@ export class PublicDocuments extends React.Component {
    */
   nextPage(page) {
     if (!this.state.isSearching) {
-      this.props.loadPublicDocuments(page - 1)
+      this.props.getPublicDocuments(page - 1)
         .then(() => {
           this.setState({ activePagination: page });
         })
@@ -121,7 +120,6 @@ export class PublicDocuments extends React.Component {
 
   /**
    * Renders views
-   * @return {Object}
    */
   render() {
     return (
@@ -156,7 +154,7 @@ export class PublicDocuments extends React.Component {
 
 PublicDocuments.propTypes = {
   myDocuments: PropTypes.array,
-  loadPublicDocuments: PropTypes.func,
+  getPublicDocuments: PropTypes.func,
   user: PropTypes.object,
   deleteDocument: PropTypes.func,
   archived: PropTypes.object,
@@ -196,7 +194,7 @@ function mapStateToProps(state) {
 
 
 export default connect(mapStateToProps, {
-  loadPublicDocuments,
+  getPublicDocuments,
   deleteDocument,
   undoDelete,
   triggerSearch,

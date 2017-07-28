@@ -10,7 +10,7 @@ describe('Admin Reducers', () => {
       archived: {},
       selectedDocument: {} };
     expect(documentReducers(initialState.manageDocument, {
-      type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
+      type: actionTypes.GET_DOCUMENTS_SUCCESS,
       documents: [{}, {}, {}] })).toEqual(expected);
   });
 
@@ -20,7 +20,7 @@ describe('Admin Reducers', () => {
       archived: {},
       selectedDocument: { id: 1 } };
     expect(documentReducers(initialState.manageDocument, {
-      type: actionTypes.LOAD_DOCUMENT_SUCCESS,
+      type: actionTypes.GET_DOCUMENT_SUCCESS,
       document: { id: 1 } })).toEqual(expected);
   });
 
@@ -31,7 +31,7 @@ describe('Admin Reducers', () => {
       selectedDocument: {},
     };
     const modified = documentReducers(initialState.manageDocument, {
-      type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
+      type: actionTypes.GET_DOCUMENTS_SUCCESS,
       documents: [{ id: 1 }, { id: 2 }, { id: 3 }] });
     expect(documentReducers(modified, {
       type: actionTypes.DOCUMENT_DELETED_SUCCESSFULLY,
@@ -46,7 +46,7 @@ describe('Admin Reducers', () => {
       selectedDocument: {},
     };
     const modified = documentReducers(initialState.manageDocument, {
-      type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
+      type: actionTypes.GET_DOCUMENTS_SUCCESS,
       documents: [{ id: 2 }, { id: 3 }] });
     expect(documentReducers(modified, {
       type: actionTypes.UNDO_DELETED_ITEM,

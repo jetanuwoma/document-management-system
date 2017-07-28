@@ -1,4 +1,3 @@
-/* global $ */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -181,8 +180,8 @@ ManageUsers.propTypes = {
 
 /**
  * mapStateToProps - copies states to component
- * @param {object} state - initalState
- * @return {object} props objects
+ * @param {Object} state - initalState
+ * @return {Object} props objects
  */
 function mapStateToProps(state) {
   return {

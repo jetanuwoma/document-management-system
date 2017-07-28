@@ -21,7 +21,7 @@ describe('Admin actions', () => {
 
   it('Should retrieve all documents', () => {
     const store = mockStore();
-    return store.dispatch(adminActions.listAllDocuments())
+    return store.dispatch(adminActions.getAllDocuments())
       .then(() => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(2);
@@ -68,7 +68,7 @@ describe('Admin actions', () => {
   });
 
   it('Should return document search result', () => {
-    const result = adminActions.loadDocumentsSearchSucess({});
+    const result = adminActions.searchSuccess({});
     expect(result.type).toEqual(actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS);
   });
 });

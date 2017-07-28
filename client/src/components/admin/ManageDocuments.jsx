@@ -5,7 +5,7 @@ import Notifications from 'react-notification-system-redux';
 import toastr from 'toastr';
 import Pagination from 'rc-pagination';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
-import { listAllDocuments } from '../../actions/adminActions';
+import { getAllDocuments } from '../../actions/adminActions';
 import { deleteDocument, undoDelete, searchDocuments } from '../../actions/documentsAction';
 import PreLoader from '../templates/PreLoader';
 import DocumentList from '../document/DocumentList';
@@ -48,7 +48,7 @@ export class ManageDocuments extends React.Component {
         });
     } else {
       this.props.clearSearch();
-      this.props.listAllDocuments()
+      this.props.getAllDocuments()
         .then(() => {
           this.setState({ isFetching: false });
         })
@@ -102,7 +102,7 @@ export class ManageDocuments extends React.Component {
    */
   nextPage(page) {
     if (!this.state.isSearching) {
-      this.props.listAllDocuments(page - 1)
+      this.props.getAllDocuments(page - 1)
         .then(() => {
           this.setState({ activePagination: page });
         })
@@ -153,7 +153,7 @@ ManageDocuments.propTypes = {
   documents: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
   deleteDocument: PropTypes.func.isRequired,
-  listAllDocuments: PropTypes.func.isRequired,
+  getAllDocuments: PropTypes.func.isRequired,
   archived: PropTypes.object.isRequired,
   undoDelete: PropTypes.func.isRequired,
   isSearching: PropTypes.bool.isRequired,
@@ -171,8 +171,8 @@ ManageDocuments.contextTypes = {
 };
 /**
  * mapStateToProps - copies states to component
- * @param {object} state - initalState
- * @return {object} props object
+ * @param {Object} state - initalState
+ * @return {Object} props object
  */
 function mapStateToProps(state) {
   return {
@@ -187,7 +187,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  listAllDocuments,
+  getAllDocuments,
   deleteDocument,
   undoDelete,
   clearSearch,

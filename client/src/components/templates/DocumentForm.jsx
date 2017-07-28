@@ -49,7 +49,7 @@ const DocumentForm =  (props) => (
             className="center-align"
           >
             Permission
-                          </label>
+          </label>
         </div>
       </div>
 
@@ -63,7 +63,7 @@ const DocumentForm =  (props) => (
         type="submit"
       >
         Save
-                      </button>
+      </button>
     </div>
   </form>
 );

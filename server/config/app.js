@@ -33,11 +33,9 @@ const swaggerDefinition = {
   }
 };
 
-// options for the swagger docs
+
 const options = {
-  // import swaggerDefinitions
   swaggerDefinition,
-  // path to the API docs
   apis: [routesPath],
 };
 

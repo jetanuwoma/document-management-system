@@ -27,14 +27,14 @@ const userDetail = {
   RoleId: 1,
 };
 
-const loadPublicDocuments = () => { return Promise.resolve(true); };
+const getPublicDocuments = () => { return Promise.resolve(true); };
 
 describe('PublicDocuments Component', () => {
   const wrapper = TestWrapper.mounts(PublicDocuments, {
     myDocuments: documents,
     user: userDetail,
     location: { query: {} },
-    loadPublicDocuments,
+    getPublicDocuments,
     triggerSearch: () => true,
     clearSearch: jest.fn(),
     searchDocuments: jest.fn(() => Promise.resolve(true)),

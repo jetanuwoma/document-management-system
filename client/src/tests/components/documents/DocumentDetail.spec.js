@@ -20,7 +20,7 @@ const userDetail = {
   RoleId: 1
 };
 
-const loadDocument = () => { return Promise.resolve(true); };
+const getDocument = () => { return Promise.resolve(true); };
 
 const params = { id: 1 };
 describe('Document Component', () => {
@@ -28,7 +28,7 @@ describe('Document Component', () => {
     user: userDetail,
     params,
     document: documentDetail,
-    loadDocument
+    getDocument
   });
   const rendered = wrapper.render().html();
 

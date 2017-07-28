@@ -6,12 +6,7 @@
       "import"
   ],
     "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/jsx-no-literals": "off",
-    "import/no-named-as-default": "off",
-    "class-methods-use-this": ["off", { "exceptMethods": ["getItemsState",
-    "componentWillMount","getInitialState"] }],
-    "jsx-a11y/no-static-element-interactions": ["off", { "handlers": ["onMouseDown"]}]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   },
   "parserOptions": {
   "ecmaVersion": 6,

@@ -60,8 +60,7 @@ describe('Header component', () => {
 
     it('Should display the search input', () => {
       expect(rendered
-        .includes(`<input type="text" name="Search" class="header-search-input
-        z-depth-2" placeholder="Search for allDocuments" value="">`))
+        .includes(`<input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Search for allDocuments" value="">`))
         .toBe(true);
     });
 

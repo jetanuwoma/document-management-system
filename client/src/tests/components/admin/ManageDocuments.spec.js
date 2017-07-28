@@ -36,7 +36,7 @@ const userDetail = {
   RoleId: 1,
 };
 
-const listAllDocuments = mockFunc();
+const getAllDocuments = mockFunc();
 
 describe('ManageDocuments Component', () => {
   describe('When admin is logged in', () => {
@@ -44,7 +44,7 @@ describe('ManageDocuments Component', () => {
       documents,
       user: userDetail,
       location: { query: {} },
-      listAllDocuments,
+      getAllDocuments,
       triggerSearch: jest.fn(),
       clearSearch: jest.fn(),
       searchDocuments: jest.fn(() => { return Promise.resolve(true); }),

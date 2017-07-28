@@ -27,7 +27,7 @@ describe('Admin Reducers', () => {
       users: [],
       selectedUsers: [] };
     expect(adminReducers(initialState.adminManagement, {
-      type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
+      type: actionTypes.GET_DOCUMENTS_SUCCESS,
       documents: [{}, {}, {}] })).toEqual(expected);
   });
 
@@ -56,7 +56,7 @@ describe('Admin Reducers', () => {
       users: [],
       selectedUsers: [] };
     const modified = adminReducers(initialState.adminManagement, {
-      type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
+      type: actionTypes.GET_DOCUMENTS_SUCCESS,
       documents: [{ id: 1 }, { id: 2 }, { id: 3 }] });
     expect(adminReducers(modified, {
       type: actionTypes.DOCUMENT_DELETED_SUCCESSFULLY,

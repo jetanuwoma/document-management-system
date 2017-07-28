@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import toastr from 'toastr';
 import actionTypes from '../constants';
 
 /**
@@ -32,7 +33,7 @@ export function setLoggedInUser(user) {
 /**
  * Creates a new user details
  * @export registerUser
- * @param {object} user - user record to be created
+ * @param {Object} user - user record to be created
  * @returns {Promise}  -  axios response
  */
 export function registerUser(user) {
@@ -43,23 +44,29 @@ export function registerUser(user) {
         localStorage.setItem('tokenize', token);
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(token)));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
 
 /**
- * loginUser logs in a user
+ * login logs in a user
  * @export saveUser
- * @param {object} user - user record for authorization
+ * @param {Object} user - user record for authorization
  * @returns {Promise} - axios promise call
  */
-export function loginUser(user) {
+export function login(user) {
   return (dispatch) => {
     return axios.post('/api/users/login', user)
       .then((result) => {
         localStorage.setItem('tokenize', result.data.token);
         axios.defaults.headers = { 'x-access-token': result.data.token };
         dispatch(setLoggedInUser(jwtDecode(result.data.token)));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
@@ -71,7 +78,10 @@ export function loginUser(user) {
  */
 export function confirmOldPassword(email, password) {
   return (dispatch) => {
-    return axios.post('/api/users/login', { email, password });
+    return axios.post('/api/users/login', { email, password })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
+      });
   };
 }
 
@@ -79,7 +89,7 @@ export function confirmOldPassword(email, password) {
  *
  * log user out and delete details from localStorage
  * @export
- * @returns {Object}
+ * @returns {callback}
  */
 export function logout() {
   return (dispatch) => {
@@ -93,7 +103,7 @@ export function logout() {
  * updateProfile updates a user profile
  * PUT /users/:id
  * @export updateProfile
- * @param {object} user
+ * @param {Object} user
  * @returns {Promise} - axios promise
  */
 export function updateProfile(user) {

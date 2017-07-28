@@ -32,7 +32,7 @@ const userDetail = {
   RoleId: 1,
 };
 
-const loadDocument = () => Promise.resolve(true);
+const getDocument = () => Promise.resolve(true);
 
 describe('EditDocument Component', () => {
   const wrapper = TestWrapper.mounts(EditDocument, {
@@ -40,7 +40,7 @@ describe('EditDocument Component', () => {
     user: userDetail,
     params: { id: 1 },
     updateDocument: () => Promise.resolve(true),
-    loadDocument,
+    getDocument,
   });
   const rendered = wrapper.render().html();
 

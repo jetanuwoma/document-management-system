@@ -23,7 +23,6 @@ class UsersController {
    *
    * @param  {Object} req - Request Object
    * @param  {Object} res - Response Object
-   * @return {void}
    */
   static login(req, res) {
     // find if record exists in the database
@@ -55,7 +54,6 @@ class UsersController {
    * logout - Logs out a user
    * @param {Object} req Request Object
    * @param {Object} res Response Object
-   * @returns {void} Returns void
    */
   static logout(req, res) {
     ExpiredTokens.create({ token: req.headers['x-access-token']
@@ -70,7 +68,6 @@ class UsersController {
   * signUp - Create a user
   * @param {Object} req - Request Object
   * @param {Object} res - Response Object
-  * @returns {void} Returns void
   */
   static signUp(req, res) {
     Users.findOne({
@@ -99,7 +96,6 @@ class UsersController {
              email,
              password
            };
-           // Create user's account and set session to expire in 3 days
            Users.create(userToCreate)
                .then((newUser) => {
                  const token = jwt.sign({
@@ -132,10 +128,8 @@ class UsersController {
    * getUser - Get a single user based on email or username
    * @param {Object} req Request Object
    * @param {Object} res Response Object
-   * @returns {void} Returns void
    */
   static getUser(req, res) {
-    // Find user with either their username or email
     Users.findOne({
       where: {
         $or: [{ email: req.params.id },
@@ -143,13 +137,11 @@ class UsersController {
         ]
       }
     }).then((user) => {
-      // User not found
       if (!user) {
         return res.status(404)
         .send({ message: `User with ${req.params.id} does not exists` });
       }
 
-      // Display result
       res.status(200).send(user);
     });
   }
@@ -182,7 +174,6 @@ class UsersController {
    * matches the fullnames
    * @param {Object} req Request Object
    * @param {Object} res Response Object
-   * @returns {void} Returns void
    */
   static searchUsers(req, res) {
     const query = req.query.q;
@@ -209,7 +200,6 @@ class UsersController {
    * getAllUsers - Gets all user details in the databae
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
-   * @returns {void} Returns void
    */
   static getAllUsers(req, res) {
     Users.findAll({ attributes: [
@@ -228,7 +218,6 @@ class UsersController {
    * deleteUser - Delete a user
    * @param {Object} req Request Object
    * @param {Object} res Response Object
-   * @returns {void} Returns void
    */
   static deleteUser(req, res) {
     Users.findById(req.params.id)
