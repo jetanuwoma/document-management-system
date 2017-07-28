@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr';
 import actionTypes from '../constants';
 
 
@@ -17,12 +18,12 @@ export function createDocumentSuccess(document) {
 
 
 /**
- * loadDocumentsSuccess - Dispatches documents retriving success
+ * getDocumentsSuccess - Dispatches documents retriving success
  *
  * @param  {array} documents - documents retrieved
  * @return {Object}          - action type and documents retrieved
  */
-export function loadDocumentsSuccess(documents) {
+export function getDocumentsSuccess(documents) {
   return {
     type: actionTypes.LOAD_DOCUMENTS_SUCCESS,
     documents,
@@ -31,26 +32,26 @@ export function loadDocumentsSuccess(documents) {
 
 
 /**
- * loadDocumentSuccess - Single document loaded Successfully
+ * getDocumentSuccess - Single document loaded Successfully
  *
  * @param  {Object} document - single document retrieved from the database
  * @return {Object}          - action type and document retrieved
  */
-export function loadDocumentSuccess(document) {
+export function getDocumentSuccess(document) {
   return {
-    type: actionTypes.LOAD_DOCUMENT_SUCCESS,
+    type: actionTypes.GET_DOCUMENT_SUCCESS,
     document,
   };
 }
 
 
 /**
- * documentDeletedSuccessfully - Tells if document have been deleted
+ * deleteDocSuccess - Tells if document have been deleted
  *
  * @param  {Object} document document deleted from the database
  * @return {Object}          action type and single document deleted
  */
-export function documentDeletedSuccessfully(document) {
+export function deleteDocSuccess(document) {
   return {
     type: actionTypes.DOCUMENT_DELETED_SUCCESSFULLY,
     document,
@@ -67,45 +68,65 @@ export function saveDocument(document) {
   return (dispatch) => {
     return axios.post('/api/documents', document).then((result) => {
       dispatch(createDocumentSuccess(result.data));
-    });
+    })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
+      });
   };
 }
 
 
 /**
- * getDocumentCounts - gets total number of a user document
+ * getDocumentCount - gets total number of a user document
  *
  * @param  {string} access = null - access scope to search
  * @return {Promise}              - axios promise call
  */
-export function getDocumentCounts(access = null, source = '', query = '', type = '') {
+export function getDocumentCount(access = null, source = '', query = '', type = '') {
   if (access === null) {
-    return axios.get(`/api/count/document${type === '' ? '': '?personal=1'}`);
+    return axios.get(`/api/count/document${type === '' ? '' : '?personal=1'}`)
+      .catch((error) => {
+        toastr.error(error.response.data.message)
+      });
   } else if (access === 'search') {
     return axios.get(`/api/search/document?q=${query}&access=${source}`)
+      .catch((error) => {
+        toastr.error(error.response.data.message)
+      });
   }
-  return axios.get(`/api/count/document?access=${access}`);
+  return axios.get(`/api/count/document?access=${access}`)
+    .catch((error) => {
+      toastr.error(error.response.data.message)
+    });
 }
 
 
 /**
-* loadUserDocuments - Get users documents from the api call
+* getUserDocuments - Get users documents from the api call
 * /api/users/:id/documents
 * @param  {Number} offset = 0 - offset for pagination
 * @return {Promise}            axios promise call
 */
-export function loadUserDocuments(offset = 0) {
+export function getUserDocuments(offset = 0) {
   return (dispatch, getState) => {
     return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`)
       .then((res) => {
-        getDocumentCounts(null, '', '', 'personal')
+        getDocumentCount(null, '', '', 'personal')
           .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.count,
             });
           });
-        dispatch(loadDocumentsSuccess(res.data));
+        dispatch(getDocumentsSuccess(res.data));
+      })
+      .catch((error) => {
+        dispatch({
+          type: actionTypes.SET_DOCUMENT_COUNT,
+          count: 0,
+        });
+        dispatch(getDocumentsSuccess([]));
+        toastr.error('Error fetching documents')
       });
   };
 }
@@ -121,7 +142,10 @@ export function deleteDocument(document) {
   return (dispatch) => {
     return axios.delete(`/api/documents/${document.id}`)
       .then(() => {
-        dispatch(documentDeletedSuccessfully(document));
+        dispatch(deleteDocSuccess(document));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
@@ -140,16 +164,19 @@ export function undoDelete(document) {
 
 
 /**
-* loadDocument - get single document
+* getDocument - get single document
 *
 * @param  {Number} id - document id to be retrieved
 * @return {Promise}   - axios promise call
 */
-export function loadDocument(id) {
+export function getDocument(id) {
   return (dispatch) => {
     return axios.get(`/api/documents/${id}`)
       .then((result) => {
-        dispatch(loadDocumentSuccess(result.data));
+        dispatch(getDocumentSuccess(result.data));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
@@ -168,29 +195,43 @@ export function updateDocument(document) {
         dispatch({
           type: actionTypes.DOCUMENT_UPDATE_SUCCESS,
         });
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
 
 
 /**
-* loadPublicDocuments - Retrieves all public documents
+* getPublicDocuments - Retrieves all public documents
 *
 * @param  {Number} offset = 0 - offset pagination
 * @return {Promise}           - axios call
 */
-export function loadPublicDocuments(offset = 0) {
+export function getPublicDocuments(offset = 0) {
   return (dispatch) => {
     return axios.get(`/api/documents/access/public?offset=${offset}`)
       .then((res) => {
-        getDocumentCounts('public')
+        getDocumentCount('public')
           .then((response) => {
+            dispatch(getDocumentsSuccess(res.data));
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.count,
             });
+          })
+          .catch((error) => {
+            toastr.error(error.response.data.message)
           });
-        dispatch(loadDocumentsSuccess(res.data));
+      })
+      .catch((error) => {
+        dispatch(getDocumentsSuccess([]));
+        dispatch({
+          type: actionTypes.SET_DOCUMENT_COUNT,
+          count: 0,
+        });
+        toastr.error('Error occurred while getting documents')
       });
   };
 }
@@ -203,22 +244,37 @@ export function loadPublicDocuments(offset = 0) {
  * @param  {Number} offset = 0  - offset for Pagination
  * @return {Promise}            - axios promise
  */
-export function searchDocuments(query,  source = '', offset = 0) {
+export function searchDocuments(query, source = '', offset = 0) {
   return (dispatch) => {
     return axios.get(`/api/search/document?q=${query}&access=${source}&offset=${offset}`)
       .then((result) => {
-         getDocumentCounts('search', source, query)
-           .then((response) => {
-             dispatch({
+        getDocumentCount('search', source, query)
+          .then((response) => {
+            dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.rows.length,
             });
-           });
-        dispatch(loadDocumentsSuccess(result.data.rows));
-        dispatch({
-          type: actionTypes.CHANGE_SEARCH_QUERY,
-          query,
-        });
+            dispatch(getDocumentsSuccess(result.data.rows));
+            dispatch({
+              type: actionTypes.CHANGE_SEARCH_QUERY,
+              query,
+            });
+          })
+          .catch((error) => {
+            toastr.error(error.response.data.message);
+            dispatch(getDocumentsSuccess([]));
+            dispatch({
+              type: actionTypes.SET_DOCUMENT_COUNT,
+              count: 0,
+            });
+            dispatch({
+              type: actionTypes.CHANGE_SEARCH_QUERY,
+              query,
+            });
+          });
+      })
+      .catch((error) => {
+        toastr.error('Error occurred while searching for documents')
       });
   };
 }

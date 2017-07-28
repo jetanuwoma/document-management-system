@@ -64,7 +64,7 @@ const DocumentsRoutes = (router) => {
      *           $ref: '#/definitions/Documents'
      *         examples:
      *           application/json: [{id:1,title:"Some title",content: "some content"}]
-     *       500:
+     *       400:
      *         description: Exception Error
      *
      */
@@ -139,7 +139,7 @@ const DocumentsRoutes = (router) => {
  *         description: a list of all documents object
  *         examples:
  *           application/json: [{id:1,title:"Some title",content: "some content"}]
- *       500:
+ *       400:
  *         description: Error fetching documents with that term
  */
   router.route('/search/document')
@@ -171,12 +171,12 @@ const DocumentsRoutes = (router) => {
  *         description: total number of documents
  *         examples:
  *           application/json: {count: 30}
- *       500:
+ *       400:
  *         description: Unble to get documents counts
  */
 
   router.route('/count/document')
-    .get(Access.setSearchCriteria, DocumentsController.getDocumentCounts);
+    .get(Access.setSearchCriteria, DocumentsController.getDocumentCount);
 
   router.route('/documents/:id')
     /**
@@ -297,7 +297,7 @@ const DocumentsRoutes = (router) => {
      *       412:
      *         description: Exception Error
      */
-    .get(Access.verifyAccessParam, DocumentsController.getAllUserPublicDocuments);
+    .get(Access.verifyAccessParam, DocumentsController.getPublicDocuments);
   // Get all Documents Pagination
   /**
    * @swagger

@@ -175,7 +175,6 @@ class DashBoard extends React.Component {
 
   /**
    *Displays the login page
-   * @return Object
   */
   render() {
     const { fullNames, RoleId, email } = this.state.user;

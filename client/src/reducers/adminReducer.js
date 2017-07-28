@@ -15,7 +15,7 @@ export default function adminReducer(state = initialState.adminManagement, actio
         allUsersDocuments: [...action.documents],
       };
 
-    case actionTypes.LOAD_DOCUMENTS_SUCCESS:
+    case actionTypes.GET_DOCUMENTS_SUCCESS:
       return {
         ...state,
         allUsersDocuments: [...action.documents],

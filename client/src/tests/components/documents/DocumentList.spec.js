@@ -28,13 +28,13 @@ const userDetail = {
   RoleId: 1
 };
 
-const loadDocument = () => { return Promise.resolve(true); };
+const getDocument = () => { return Promise.resolve(true); };
 
 describe('DocumentList Component', () => {
   const wrapper = TestWrapper.mounts(DocumentList, {
     documents: documentDetail,
     user: userDetail,
-    loadDocument
+    getDocument
   });
 
   it('Should list all 2 documents', () => {
@@ -44,7 +44,7 @@ describe('DocumentList Component', () => {
   it('Should show total number search result', () => {
     const wrapper = TestWrapper.mounts(DocumentList, {
       documents: documentDetail,
-      loadDocument,
+      getDocument,
       user: userDetail,
       isSearching: true,
       searchCount: 2,

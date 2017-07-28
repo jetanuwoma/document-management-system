@@ -8,7 +8,6 @@ export default {
   auth: {
     user: {},
     isAuthenticated: false,
-    error: {},
   },
   pageControls: {
     searchSource: 'document',

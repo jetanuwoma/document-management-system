@@ -1,27 +1,30 @@
 import axios from 'axios';
+import toastr from 'toastr';
 import actionTypes from '../constants';
-import { getDocumentCounts } from './documentsAction';
+import { getDocumentCount } from './documentsAction';
 
 
 /**
- * loadDocumentsSucess - Dispatches document loading success from the database
+ * getDocumentsSucess - Dispatches document loading success from the database
  *
  * @param  {array} documents - array to be dispatched
- * @return {object}         - dispatched action type and documents
+ * @return {Object}         - dispatched action type and documents
  */
-export function loadDocumentsSucess(documents) {
+export function getDocumentsSucess(documents) {
   return {
     type: actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS,
     documents,
   };
 }
+
+
 /**
- * loadDocumentsSearchSucess - Dispatches searches results
+ * searchSuccess - Dispatches searches results
  *
  * @param  {array} result  - array of documents
- * @return {object}         - dispatched action type and documents
+ * @return {Object}         - dispatched action type and documents
  */
-export function loadDocumentsSearchSucess(result) {
+export function searchSuccess(result) {
   return {
     type: actionTypes.LOAD_DOCUMENT_SEARCH_SUCCESS,
     result,
@@ -29,12 +32,12 @@ export function loadDocumentsSearchSucess(result) {
 }
 
 /**
- * loadUsersSuccessful - lists of all users
+ * getUsersSuccess - lists of all users
  *
  * @param  {array} users - list of users
- * @return {object}       -   dispatched action type and results
+ * @return {Object}       -   dispatched action type and results
  */
-export function loadUsersSuccessful(users) {
+export function getUsersSuccess(users) {
   return {
     type: actionTypes.LOAD_USERS_SUCCESSFUL,
     users,
@@ -50,7 +53,10 @@ export function listAllUsers() {
   return (dispatch) => {
     return axios.get('api/users')
       .then((users) => {
-        dispatch(loadUsersSuccessful(users.data));
+        dispatch(getUsersSuccess(users.data));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
@@ -77,7 +83,7 @@ export function removeSelectedUser(id, index) {
  * selectUser - Add a user to list of selected users
  *
  * @param  {Number} id - user id
- * @return {callback}  -  dispatch callback
+ * @return {Function}  -  dispatch callback
  */
 export function selectUser(id) {
   return (dispatch) => {
@@ -103,29 +109,35 @@ export function deleteUsers(allUsers) {
       type: actionTypes.REMOVE_SELECTED_USER,
       users: [],
     });
-    return Promise.all(actionCall);
+    return Promise.all(actionCall)
+      .catch(() => toastr.error('Could not delete user(s)'));
   };
 }
 
 
 /**
- * listAllDocuments - get all users documents
+ * getAllDocuments - get all users documents
  * api/documents
  * @param  {Number} offset = 0 - offset
  * @return {Promise}          - axios promise call
  */
-export function listAllDocuments(offset = 0) {
+export function getAllDocuments(offset = 0) {
   return (dispatch) => {
     return axios.get(`api/documents?offset=${offset}`)
       .then((documents) => {
-        getDocumentCounts()
+        getDocumentCount()
           .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.count,
             });
-          });
-        dispatch(loadDocumentsSucess(documents.data));
+          }).catch((error) => {
+            toastr.error(error.response.data.message)
+          });;
+        dispatch(getDocumentsSucess(documents.data));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }
@@ -134,14 +146,17 @@ export function listAllDocuments(offset = 0) {
  * search for users
  * GET /search/users
  * @export searchUsers
- * @param {string} terms - Search query
+ * @param {String} terms - Search query
  * @returns {Promise} - axios promise
  */
 export function searchUsers(terms) {
   return (dispatch) => {
     return axios.get(`/api/search/users?q=${terms}`)
       .then((res) => {
-        dispatch(loadUsersSuccessful(res.data.result));
+        dispatch(getUsersSuccess(res.data.result));
+      })
+      .catch((error) => {
+        toastr.error(error.response.data.message)
       });
   };
 }

@@ -9,7 +9,6 @@ class DocumentsController {
    * Gets all documents in the database
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} Returns void
    */
   static getAllDocuments(req, res) {
     Documents.findAll({
@@ -31,7 +30,6 @@ class DocumentsController {
    * Get a specific document
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} Returns void
    */
   static getDocumentById(req, res) {
     res.status(200).send(req.document);
@@ -41,7 +39,6 @@ class DocumentsController {
    * Creates a new document
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} no return
    */
   static createDocument(req, res) {
     req.body.OwnerId = req.decoded.UserId;
@@ -60,7 +57,6 @@ class DocumentsController {
    * Get all documents that belongs to a particular user
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} Returns void
    */
   static getUserDocuments(req, res) {
     Documents.findAll({
@@ -83,9 +79,8 @@ class DocumentsController {
    * Get all public or role documents of a users
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} Returns void
    */
-  static getAllUserPublicDocuments(req, res) {
+  static getPublicDocuments(req, res) {
     Documents.findAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
@@ -96,10 +91,9 @@ class DocumentsController {
   }
 
   /**
-   * Update documet's details
+   * Update documet details
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} Returns void
    */
   static updateDocument(req, res) {
     req.document.update(req.body)
@@ -112,7 +106,6 @@ class DocumentsController {
    * searchDocuments - Search list of documents by their title
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
-   * @returns {void} Returns void
    */
   static searchDocuments(req, res) {
     // defined in the access middleware
@@ -140,7 +133,6 @@ class DocumentsController {
    * Delete a particular document
    * @param {Object} req Request object
    * @param {Object} res Response object
-   * @returns {void} Returns void
    */
   static deleteDocument(req, res) {
     req.document.destroy()
@@ -155,9 +147,8 @@ class DocumentsController {
    * Get total number of users documents based on access level
    * @param {Object} req Request object
    * @param {Object} res Response object
-   * @returns {void} Returns void
    */
-  static getDocumentCounts(req, res) {
+  static getDocumentCount(req, res) {
     const searchQuery = req.searchQuery.where;
     Documents.findAndCountAll({
       where: searchQuery

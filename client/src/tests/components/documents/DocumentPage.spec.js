@@ -28,14 +28,14 @@ const userDetail = {
   RoleId: 1,
 };
 
-const loadUserDocuments = () => { return Promise.resolve(true).then(); };
+const getUserDocuments = () => { return Promise.resolve(true).then(); };
 
 describe('DocumentPage Component', () => {
   const wrapper = TestWrapper.mounts(DocumentPage, {
     myDocuments: documents,
     user: userDetail,
     location: { query: {} },
-    loadUserDocuments,
+    getUserDocuments,
     triggerSearch: jest.fn(),
     clearSearch: jest.fn(),
     searchDocuments: jest.fn(() => { return Promise.resolve(true); }),

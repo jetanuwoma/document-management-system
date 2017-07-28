@@ -10,14 +10,14 @@ export default function documentReducer(state = initialState.manageDocument, act
         alldocuments: [action.document, ...state.alldocuments],
       };
 
-    case actionTypes.LOAD_DOCUMENTS_SUCCESS:
+    case actionTypes.GET_DOCUMENTS_SUCCESS:
       return {
         ...state,
         loaded: true,
         alldocuments: [...action.documents],
       };
 
-    case actionTypes.LOAD_DOCUMENT_SUCCESS:
+    case actionTypes.GET_DOCUMENT_SUCCESS:
       return {
         ...state,
         selectedDocument: action.document,

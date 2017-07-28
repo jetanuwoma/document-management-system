@@ -9,7 +9,6 @@ class RolesController {
    * getAllRoles - Get all Roles
    * @param {Object} req - Request object
    * @param {Object} res - Response object
-   * @returns {void} - Returns void
    */
   static getAllRoles(req, res) {
     Roles.findAll()
@@ -23,7 +22,6 @@ class RolesController {
    * getRole - Get a single Role by ID supplied
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
-   * @returns {void} - Returns void
    */
   static getRole(req, res) {
     res.status(200)
@@ -33,7 +31,6 @@ class RolesController {
    * updateRoles - Update an existing Roles
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
-   * @returns {void} - Returns void
    */
   static updateRole(req, res) {
     Roles.findById(req.params.id)
@@ -59,10 +56,8 @@ class RolesController {
    * createRoles - Creates a new role
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
-   * @returns {void} - Returns void
    */
   static createRole(req, res) {
-    // If roles have been created, just alert the user
     Roles.findOne({ where: { title: req.body.title } })
       .then((role) => {
         if (role) {
@@ -70,7 +65,6 @@ class RolesController {
             .send({ message: `${req.body.title} Role is already created` });
         }
 
-        // Create Role if is not existing before
         Roles.create(req.body)
           .then((newRole) => {
             res.status(201)
@@ -87,7 +81,6 @@ class RolesController {
    * deleteRole - Delete a single role by id
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
-   * @returns {void} Returns void
    */
   static deleteRole(req, res) {
     Roles.findById(req.params.id)

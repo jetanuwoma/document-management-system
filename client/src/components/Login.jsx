@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
-import { loginUser } from '../actions/userActions';
+import { login } from '../actions/userActions';
 
 const history = createHistory({
   forceRefresh: false,
@@ -56,7 +56,7 @@ class Login extends React.Component {
         },
       },
       submitHandler: () => {
-        this.props.loginUser(this.state.user)
+        this.props.login(this.state.user)
           .then(() => {
             toastr.success('Login Successfull');
             if (this.context.router === undefined) {
@@ -84,7 +84,6 @@ class Login extends React.Component {
 
   /**
    * renders the login page
-   * @return {Object}
    */
   render() {
     return (
@@ -154,7 +153,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
@@ -173,4 +172,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(mapStateToProps, { login })(Login);

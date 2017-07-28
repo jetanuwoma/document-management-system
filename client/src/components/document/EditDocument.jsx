@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import DocumentForm from '../templates/DocumentForm';
-import { loadDocument, updateDocument } from '../../actions/documentsAction';
+import { getDocument, updateDocument } from '../../actions/documentsAction';
 
 /**
  * Edit Component - Hanled Documents modifications
@@ -32,7 +32,7 @@ export class EditDocument extends React.Component {
   componentDidMount() {
     $('#selectRole')
       .on('change', this.onChange);
-    this.props.loadDocument(this.props.params.id)
+    this.props.getDocument(this.props.params.id)
       .then(() => {
         const { id, title, content, permission } = this.props.document;
         this.setState({ document: { id, title, content, permission } });
@@ -77,7 +77,6 @@ export class EditDocument extends React.Component {
 
   /**
    * Displays the document form
-   * @return Object
    */
   render() {
     const { title } = this.state.document;
@@ -116,7 +115,7 @@ export class EditDocument extends React.Component {
 
 EditDocument.propTypes = {
   document: PropTypes.object.isRequired,
-  loadDocument: PropTypes.func.isRequired,
+  getDocument: PropTypes.func.isRequired,
   updateDocument: PropTypes.func.isRequired,
 };
 
@@ -136,6 +135,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  loadDocument,
+  getDocument,
   updateDocument,
 })(EditDocument);

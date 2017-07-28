@@ -7,7 +7,7 @@ import Notifications from 'react-notification-system-redux';
 import toastr from 'toastr';
 import { triggerSearch, clearSearch } from '../../actions/pageAction';
 import {
-  loadUserDocuments,
+  getUserDocuments,
   deleteDocument,
   undoDelete,
 } from '../../actions/documentsAction';
@@ -40,7 +40,7 @@ export class DocumentPage extends React.Component {
     };
 
     this.nextPage = this.nextPage.bind(this);
-    this.loadListDocument = this.loadListDocument.bind(this);
+    this.getDocuments = this.getDocuments.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
   }
 
@@ -58,7 +58,7 @@ export class DocumentPage extends React.Component {
         .catch(() => toastr.error('Error searching for document'));
     } else {
       this.props.clearSearch();
-      this.loadListDocument();
+      this.getDocuments();
     }
   }
 
@@ -106,7 +106,7 @@ export class DocumentPage extends React.Component {
    */
   nextPage(page) {
     if (!this.state.isSearching) {
-      this.props.loadUserDocuments(page - 1)
+      this.props.getUserDocuments(page - 1)
         .then(() => {
           this.setState({ activePagination: page });
         });
@@ -122,8 +122,8 @@ export class DocumentPage extends React.Component {
   /**
    * Retrieves all users document from the action
    */
-  loadListDocument() {
-    this.props.loadUserDocuments()
+  getDocuments() {
+    this.props.getUserDocuments()
       .then(() => {
         this.setState({ loading: false });
       })
@@ -165,7 +165,7 @@ export class DocumentPage extends React.Component {
 
 DocumentPage.propTypes = {
   myDocuments: PropTypes.array,
-  loadUserDocuments: PropTypes.func,
+  getUserDocuments: PropTypes.func,
   user: PropTypes.object,
   deleteDocument: PropTypes.func,
   undoDelete: PropTypes.func,
@@ -202,7 +202,7 @@ function mapStateToProps(state) {
 
 export default
   connect(mapStateToProps, {
-    loadUserDocuments,
+    getUserDocuments,
     deleteDocument,
     undoDelete,
     searchDocuments,

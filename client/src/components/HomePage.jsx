@@ -18,7 +18,6 @@ class HomePage extends React.Component {
 
   /**
    * renders either the Landing page or user's dashboard
-   * @return {Object}
    */
   render() {
     const { isAuthenticated } = this.props;
@@ -36,8 +35,6 @@ HomePage.propTypes = {
 };
 
 /**
- *
- *
  * @param {Object} state
  * @returns {boolean}
  */

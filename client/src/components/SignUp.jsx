@@ -84,7 +84,6 @@ class SignUp extends React.Component {
 
   /**
    * render - Renders Signup Page
-   * @return {Object}
    */
   render() {
     return (

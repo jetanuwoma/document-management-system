@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-import { loadDocument } from '../../actions/documentsAction';
+import { getDocument } from '../../actions/documentsAction';
 
 /**
  * DocumentDetail- Displays the content of a document
@@ -28,7 +28,7 @@ export class DocumentDetail extends React.Component {
    */
   componentDidMount() {
     $('.sidebar-collapse').sideNav();
-    this.props.loadDocument(this.props.params.id)
+    this.props.getDocument(this.props.params.id)
       .then(() => {
         const { id, title, content, permission } = this.props.document;
         this.setState({ document: { id, title, content, permission } });
@@ -73,7 +73,7 @@ export class DocumentDetail extends React.Component {
 
 DocumentDetail.propTypes = {
   document: PropTypes.object.isRequired,
-  loadDocument: PropTypes.func.isRequired,
+  getDocument: PropTypes.func.isRequired,
 };
 
 /**
@@ -88,5 +88,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  loadDocument,
+  getDocument,
 })(DocumentDetail);

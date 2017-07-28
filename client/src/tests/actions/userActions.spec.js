@@ -25,7 +25,7 @@ describe('User Actions', () => {
   
   it('Should login user', () => {
     const store = mockStore();
-    return store.dispatch(userActions.loginUser({ username: 'ss', password: '' }))
+    return store.dispatch(userActions.login({ username: 'ss', password: '' }))
       .then(() => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(1);

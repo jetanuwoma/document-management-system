@@ -4,7 +4,7 @@ import actionTypes from '../constants';
  * changeSearchSource - set search scope
  *
  * @param  {String} source - search scope
- * @return {func}        dispatch callback
+ * @return {Function}        dispatch callback
 */
 export function changeSearchSource(source) {
   return (dispatch) => {
@@ -20,7 +20,7 @@ export function changeSearchSource(source) {
  * changeSearchQuery - dispatched search query
  *
  * @param  {String} query - search term
- * @return {func}       dispatch callback
+ * @return {Function}       dispatch function
  */
 export function changeSearchQuery(query) {
   return (dispatch) => {
@@ -36,7 +36,7 @@ export function changeSearchQuery(query) {
  * triggerSearch - dispatches search source
  *
  * @param  {type} source - search scope, where to search from
- * @return {func}        dispatch callback
+ * @return {Function}        dispatch callback
 */
 export function triggerSearch(source) {
   return (dispatch) => {
@@ -47,7 +47,7 @@ export function triggerSearch(source) {
 /**
  * clearSearch - clear search query
  *
- * @return {func} - dispatch callback
+ * @return {Function} - dispatch callback
  */
 export function clearSearch() {
   return (dispatch) => {
