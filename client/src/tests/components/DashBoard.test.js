@@ -80,21 +80,6 @@ describe('DashBoard component', () => {
       expect(TestWrapper.call().state.document.content).toBe('Some updated content');
     });
 
-    it('Should add to document when form is submitted', () => {
-      expect(TestWrapper.call().props.alldocuments.alldocuments.length).toBe(0);
-
-      const saveDocument = (document) => {
-        TestWrapper.dispatch({
-          type: actionTypes.CREATE_DOCUMENT_SUCCESS,
-          document,
-        });
-        return Promise.resolve(() => true);
-      };
-
-      TestWrapper.call().state.saveDocument = saveDocument;
-      TestWrapper.call().handleSubmit({ preventDefault: () => { } });
-      expect(TestWrapper.call().props.alldocuments.alldocuments.length).toBe(1);
-    });
   });
 
   describe('When user update profile', () => {

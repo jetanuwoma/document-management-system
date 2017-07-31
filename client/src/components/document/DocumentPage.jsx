@@ -103,7 +103,7 @@ export class DocumentPage extends React.Component {
    */
   nextPage(page) {
     if (!this.state.isSearching) {
-      this.props.getUserDocuments(page - 1)
+      this.props.getUserDocuments(this.props.user.userId,page - 1)
         .then(() => {
           this.setState({ activePagination: page });
         });
@@ -120,7 +120,7 @@ export class DocumentPage extends React.Component {
    * Retrieves all users document from the action
    */
   getDocuments() {
-    this.props.getUserDocuments()
+    this.props.getUserDocuments(this.props.user.userId)
       .then(() => {
         this.setState({ loading: false });
       })

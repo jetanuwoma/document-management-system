@@ -49,7 +49,6 @@ class DashBoard extends React.Component {
     $('ul.tabs').tabs();
     $('.sidebar-collapse').sideNav();
     $('select').material_select();
-    // https://github.com/Dogfalo/materialize/issues/1160
     $('#selectRole')
       .on('change', this.onChange);
   }
@@ -71,7 +70,7 @@ class DashBoard extends React.Component {
   onChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    const document = this.state.document;
+    const document = {...this.state.document};
     document[name] = value;
     this.setState({ document });
   }
@@ -84,7 +83,7 @@ class DashBoard extends React.Component {
     event.preventDefault();
     const name = event.target.name;
     const value = event.target.value;
-    const user = this.state.user;
+    const user = {...this.state.user};
     user[name] = value;
     this.setState({ user });
     $('.update-form').validate({
@@ -127,7 +126,7 @@ class DashBoard extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-    this.state.saveDocument(this.state.document);
+    this.props.saveDocument(this.state.document);
     this.clearForm();
   }
 
@@ -137,12 +136,12 @@ class DashBoard extends React.Component {
    */
   handleProfileSubmit(event) {
     event.preventDefault();
-    const user = this.state.user;
+    const user = {...this.state.user};
     user.userId = this.props.user.userId;
      if (this.state.user.password !== null && this.state.user.passwordAgain !== null) {
-          this.state.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
+          this.props.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
             .then(() => {
-              this.state.updateProfile(user)
+              this.props.updateProfile(user)
                 .then(() => {
                   toastr.success('Profile Updated Successfully');
                 });
@@ -151,7 +150,7 @@ class DashBoard extends React.Component {
               this.setState({ error: 'Invalid password submitted', user: { password: '', passwordAgain: '' } });
             });
         } else {
-          this.state.updateProfile(user)
+          this.props.updateProfile(user)
             .then(() => {
               toastr.success('Profile Updated Successfully');
             })

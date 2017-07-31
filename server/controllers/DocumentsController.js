@@ -11,7 +11,7 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static getAllDocuments(req, res) {
-    Documents.findAll({
+    Documents.findAndCountAll({
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
       order: '"createdAt" DESC',
@@ -59,7 +59,7 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static getUserDocuments(req, res) {
-    Documents.findAll({
+    Documents.findAndCountAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
@@ -81,7 +81,7 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static getPublicDocuments(req, res) {
-    Documents.findAll({
+    Documents.findAndCountAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,

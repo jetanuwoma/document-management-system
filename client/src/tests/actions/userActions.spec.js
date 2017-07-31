@@ -30,8 +30,6 @@ describe('User Actions', () => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(1);
         expect(expectedAction[0].type).toEqual(actionTypes.LOGIN_USER);
-        expect(expectedAction[0].user.fullName).toEqual('Etanuwoma John');
-        expect(expectedAction[0].user.roleId).toBe(1);
       });
   });
 
@@ -42,8 +40,6 @@ describe('User Actions', () => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(1);
         expect(expectedAction[0].type).toEqual(actionTypes.LOGIN_USER);
-        expect(expectedAction[0].user.fullName).toEqual('Etanuwoma John');
-        expect(expectedAction[0].user.roleId).toBe(1);
       });
   });
 

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import toastr from 'toastr';
 import actionTypes from '../constants';
-import { getDocumentCount } from './documentsAction';
 
 
 /**
@@ -124,17 +123,12 @@ export function deleteUsers(allUsers) {
 export function getAllDocuments(offset = 0) {
   return (dispatch) => {
     return axios.get(`api/documents?offset=${offset}`)
-      .then((documents) => {
-        getDocumentCount()
-          .then((response) => {
+      .then((response) => {
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
               count: response.data.count,
             });
-          }).catch((error) => {
-            toastr.error(error.response.data.message)
-          });;
-        dispatch(getDocumentsSucess(documents.data));
+        dispatch(getDocumentsSucess(response.data.rows));
       })
       .catch((error) => {
         toastr.error(error.response.data.message)

@@ -2,7 +2,7 @@ import React from 'react';
 import TinyMCEInput from 'react-tinymce-input';
 import PropTypes from 'prop-types';
 
-const tinyMCEConfig = {
+const editorConfig = {
   language: 'en',
   theme: 'modern',
   toolbar: 'bold italic underline strikethrough hr | bullist numlist | link unlink | undo redo | spellchecker code',
@@ -55,7 +55,7 @@ const DocumentForm =  (props) => (
 
       <TinyMCEInput
         value={props.content}
-        tinymceConfig={tinyMCEConfig}
+        tinymceConfig={editorConfig}
         onChange={props.handleEditorChange}
       />
       <button
