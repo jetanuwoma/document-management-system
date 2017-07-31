@@ -107,14 +107,13 @@ describe('Document', () => {
       done();
     });
 
-    it('Should get all documents for a specific user', (done) => {
+    it('Should get all documents of a specific user', (done) => {
       request.get(`/api/users/${adminDetails.user.id}/documents`)
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(res.body.length).to.equal(3);
-          expect(res.body[0].ownerId).to.equal(adminDetails.user.id);
-          expect(res.body[2].ownerId).to.equal(adminDetails.user.id);
+          expect(res.body.rows.length).to.equal(3);
+          expect(res.body.rows[0].ownerId).to.equal(adminDetails.user.id);
           done();
         });
     });
@@ -125,7 +124,7 @@ describe('Document', () => {
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(res.body[0].ownerId).to.equal(adminDetails.user.id);
+          expect(res.body.rows[0].ownerId).to.equal(adminDetails.user.id);
           done();
         });
     });
@@ -135,7 +134,7 @@ describe('Document', () => {
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(res.body.length).to.equal(6);
+          expect(res.body.rows.length).to.equal(6);
           done();
         });
     });
