@@ -41,7 +41,7 @@ describe('HomePage component', () => {
   describe('When user is logged in', () => {
     TestWrapper.dispatch({
       type: actionTypes.LOGIN_USER,
-      user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' }
+      user: { userId: 1, roleId: 1, fullName: 'Eta Jude' }
     });
 
     const rendered = TestWrapper.renders(HomePage,

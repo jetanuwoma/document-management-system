@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: { is: /\w+$/i }
     },
-    fullNames: {
+    fullName: {
       allowNull: false,
       type: DataTypes.STRING,
       validate: { is: /\w+$/i }
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: { isEmail: true }
     },
-    RoleId: {
+    roleId: {
       type: DataTypes.INTEGER,
       defaultValue: 2
     },
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         Users.belongsTo(models.Roles, {
           onDelete: 'CASCADE',
-          foreignKey: 'RoleId'
+          foreignKey: 'roleId'
         });
       }
     },

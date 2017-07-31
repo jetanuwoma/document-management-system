@@ -100,7 +100,7 @@ export function getDocumentCount(access = null, source = '', query = '', type = 
 */
 export function getUserDocuments(offset = 0) {
   return (dispatch, getState) => {
-    return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`)
+    return axios.get(`/api/users/${getState().auth.user.userId}/documents?offset=${offset}`)
       .then((res) => {
         getDocumentCount(null, '', '', 'personal')
           .then((response) => {

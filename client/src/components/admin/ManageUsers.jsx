@@ -38,9 +38,7 @@ export class ManageUsers extends React.Component {
       this.props.searchUsers(this.props.location.query.q);
     } else {
       this.props.listAllUsers()
-        .then(() => {
-        })
-        .catch(() => toastr.error('Sorry error occurred could not load users'));
+       .catch(() => toastr.error('Sorry error occurred could not load users'));
     }
   }
   
@@ -142,10 +140,10 @@ export class ManageUsers extends React.Component {
                       <input type="checkbox"
                         onChange={this.selectUser}
                         id={user.id} />
-                      <label htmlFor={user.id}>{user.fullNames}</label>
+                      <label htmlFor={user.id}>{user.fullName}</label>
                       <label className="email-add">{user.email}</label>
                       <span className="task-cat teal white-label">
-                        {user.RoleId === 1 ? 'Admin' : 'Regular'}
+                        {user.roleId === 1 ? 'Admin' : 'Regular'}
                       </span>
                     </li>
                   );

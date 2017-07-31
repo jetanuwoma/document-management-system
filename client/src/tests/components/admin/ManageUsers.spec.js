@@ -17,22 +17,22 @@ const mockSearch = jest.fn();
 mockFunc.mockReturnValue(() => Promise.resolve(true));
 
 const users = [{
-  UserId: 1,
-  fullNames: 'Etanuwoma Jude',
+  userId: 1,
+  fullName: 'Etanuwoma Jude',
   email: 'email@email.com',
-  RoleId: 1,
+  roleId: 1,
 },
 {
-  UserId: 2,
-  fullNames: 'Etanuwoma Peter',
+  userId: 2,
+  fullName: 'Etanuwoma Peter',
   email: 'email1@email.com',
-  RoleId: 2,
+  roleId: 2,
 },
 ];
 const userDetail = {
-  UserId: 1,
-  fullNames: 'Jude Admin',
-  RoleId: 1,
+  userId: 1,
+  fullName: 'Jude Admin',
+  roleId: 1,
 };
 
 const listAllUsers = mockFunc();
@@ -60,10 +60,10 @@ describe('ManageUsers Component', () => {
 
     it('Should update state when component receive props', () => {
       users.push({
-        UserId: 3,
-        fullNames: 'Etanuwoma Me',
+        userId: 3,
+        fullName: 'Etanuwoma Me',
         email: 'email1@email.com',
-        RoleId: 2,
+        roleId: 2,
       });
       TestWrapper.call().componentWillReceiveProps({ users, selectedUsers: [] });
       expect(TestWrapper.call().state.users.length).toBe(3);

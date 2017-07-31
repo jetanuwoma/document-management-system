@@ -4,10 +4,10 @@ import { Users, Roles } from '../../models';
 const expect = chai.expect;
 const userDetails = {
   username: 'judetest',
-  fullNames: 'Jude Test',
+  fullName: 'Jude Test',
   email: 'wapjudetest@mail.com',
   password: 'password',
-  RoleId: 2 };
+  roleId: 2 };
 
 describe('Users model', () => {
   describe('Create user', () => {

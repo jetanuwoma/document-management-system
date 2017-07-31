@@ -13,23 +13,23 @@ global.window.tinymce = {
 TestWrapper.componentName = 'EditDocument';
 const documents = [{
   id: 2,
-  OwnerId: 1,
+  ownerId: 1,
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
 },
 {
   id: 3,
-  OwnerId: 1,
+  ownerId: 1,
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
 },
 ];
 const userDetail = {
-  UserId: 1,
-  fullNames: 'Jude Admin',
-  RoleId: 1,
+  userId: 1,
+  fullName: 'Jude Admin',
+  roleId: 1,
 };
 
 const getDocument = () => Promise.resolve(true);

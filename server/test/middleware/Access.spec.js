@@ -102,8 +102,8 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/1',
-        decoded: { RoleId: 1, UserId: 1 },
-        document: { OwnerId: 1 }
+        decoded: { roleId: 1, userId: 1 },
+        document: { ownerId: 1 }
       });
       const next = {
         callNext: () => { }
@@ -121,8 +121,8 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/1',
-        decoded: { RoleId: 1, UserId: 1 },
-        document: { OwnerId: 2 }
+        decoded: { roleId: 1, userId: 1 },
+        document: { ownerId: 2 }
       });
       const next = {
         callNext: () => { }
@@ -140,7 +140,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents',
-        decoded: { RoleId: 1, UserId: 1 },
+        decoded: { roleId: 1, userId: 1 },
         params: { access: 'public' }
       });
       const next = {
@@ -160,7 +160,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents',
-        decoded: { RoleId: 1, UserId: 1 },
+        decoded: { roleId: 1, userId: 1 },
         params: { access: 'role' }
       });
       const next = {
@@ -180,7 +180,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents',
-        decoded: { RoleId: 1, UserId: 1 },
+        decoded: { roleId: 1, userId: 1 },
         params: { access: 'mule' }
       });
 
@@ -200,7 +200,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/search',
-        decoded: { RoleId: 1, UserId: 1 },
+        decoded: { roleId: 1, userId: 1 },
         query: { q: 'jude' },
       });
 
@@ -221,7 +221,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/search',
-        decoded: { RoleId: 1, UserId: 1 },
+        decoded: { roleId: 1, userId: 1 },
         query: { q: 'jude', access: 'private' },
       });
 
@@ -242,7 +242,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/search',
-        decoded: { RoleId: 2, UserId: 2 },
+        decoded: { roleId: 2, userId: 2 },
         query: { q: 'peter' },
       });
 
@@ -254,7 +254,7 @@ describe('Access middleware', () => {
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
-        expect(req.query.where.$and[1].OwnerId).to.equal(2);
+        expect(req.query.where.$and[1].ownerId).to.equal(2);
         done();
       });
     });
@@ -264,7 +264,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/search',
-        decoded: { RoleId: 2, UserId: 2 },
+        decoded: { roleId: 2, userId: 2 },
         query: { q: 'peter', access: 'public' },
       });
 
@@ -276,7 +276,7 @@ describe('Access middleware', () => {
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
-        expect(req.query.where.$and[1].OwnerId).to.equal(2);
+        expect(req.query.where.$and[1].ownerId).to.equal(2);
         expect(req.query.where.$and[2].permission).to.equal('public');
         done();
       });
@@ -287,7 +287,7 @@ describe('Access middleware', () => {
       const req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/documents/search',
-        decoded: { RoleId: 2, UserId: 2 },
+        decoded: { roleId: 2, userId: 2 },
         query: { q: 'peter', access: 'private' },
       });
 
@@ -299,7 +299,7 @@ describe('Access middleware', () => {
       res.on('end', () => {
         expect(next.callNext).to.have.been.called;
         expect(req.query).to.exist;
-        expect(req.query.where.$and[1].OwnerId).to.equal(2);
+        expect(req.query.where.$and[1].ownerId).to.equal(2);
         expect(req.query.where.$and[2].permission).to.equal('public');
         done();
       });

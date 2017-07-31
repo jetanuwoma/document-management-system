@@ -8,7 +8,7 @@ const DocumentsRoutes = (router) => {
    * definition:
    *   Documents:
    *     properties:
-   *       OwnerId:
+   *       ownerId:
    *         type: integer
    *       title:
    *         type: string
@@ -99,7 +99,7 @@ const DocumentsRoutes = (router) => {
  *         in: form
  *         required: true
  *         type: string
- *       - name: OwnerId
+ *       - name: ownerId
  *         description: document creator ID
  *         in: form
  *         required: true

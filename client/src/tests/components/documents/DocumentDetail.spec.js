@@ -8,16 +8,16 @@ import { DocumentDetail } from '../../../components/document/DocumentDetail.jsx'
 TestWrapper.componentName = 'DocumentDetail';
 const documentDetail = {
   id: 2,
-  OwnerId: 1,
+  ownerId: 1,
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
 };
 
 const userDetail = {
-  UserId: 1,
-  fullNames: 'Jude Admin',
-  RoleId: 1
+  userId: 1,
+  fullName: 'Jude Admin',
+  roleId: 1
 };
 
 const getDocument = () => { return Promise.resolve(true); };

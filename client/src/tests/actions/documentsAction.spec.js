@@ -44,7 +44,7 @@ describe('Document Action', () => {
   });
 
   it('Should load all users documents', () => {
-    const store = mockStore({ auth: { user: { UserId: 1 } } });
+    const store = mockStore({ auth: { user: { userId: 1 } } });
     return store.dispatch(documentsAction.getUserDocuments())
       .then(() => {
         const expectedActions = store.getActions();

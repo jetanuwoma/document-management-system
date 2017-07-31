@@ -16,14 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'public'
     },
 
-    OwnerId: DataTypes.INTEGER
+    ownerId: DataTypes.INTEGER
   },
     {
       classMethods: {
         associate(models) {
           Documents.belongsTo(models.Users, {
             onDelete: 'cascade',
-            foreignKey: 'OwnerId'
+            foreignKey: 'ownerId'
           });
         }
       }

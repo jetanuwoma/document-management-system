@@ -11,7 +11,7 @@ let regularDetails;
 let testDetails;
 const testUser = {
   username: faker.internet.userName(),
-  fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
   email: faker.internet.email(),
   password: faker.internet.password(),
 };
@@ -19,14 +19,14 @@ const testDocuments = {
   title: faker.lorem.words(),
   content: faker.lorem.paragraph(),
   permission: 'public',
-  OwnerId: '1'
+  ownerId: '1'
 };
 
 const testPrivateDocuments = {
   title: 'My Private Document',
   content: 'some content of this document',
   permission: 'Private',
-  OwnerId: '2'
+  ownerId: '2'
 };
 
 describe('Document', () => {
@@ -65,7 +65,7 @@ describe('Document', () => {
         .end((err, res) => {
           expect(res.body.title).to.equal(testDocuments.title);
           expect(res.body.content).to.equal(testDocuments.content);
-          expect(res.body.OwnerId).to.equal(testDocuments.OwnerId);
+          expect(res.body.ownerId).to.equal(testDocuments.ownerId);
           done();
         });
     });
@@ -86,7 +86,7 @@ describe('Document', () => {
     let document;
     testDocuments.title = faker.lorem.words();
     testDocuments.permission = 'Private';
-    testDocuments.OwnerId = 1;
+    testDocuments.ownerId = 1;
     before((done) => {
       request.post('/api/documents')
         .set({ 'x-access-token': regularDetails.token })
@@ -113,8 +113,8 @@ describe('Document', () => {
         .expect(200)
         .end((err, res) => {
           expect(res.body.length).to.equal(3);
-          expect(res.body[0].OwnerId).to.equal(adminDetails.user.id);
-          expect(res.body[2].OwnerId).to.equal(adminDetails.user.id);
+          expect(res.body[0].ownerId).to.equal(adminDetails.user.id);
+          expect(res.body[2].ownerId).to.equal(adminDetails.user.id);
           done();
         });
     });
@@ -125,7 +125,7 @@ describe('Document', () => {
         .set({ 'x-access-token': adminDetails.token })
         .expect(200)
         .end((err, res) => {
-          expect(res.body[0].OwnerId).to.equal(adminDetails.user.id);
+          expect(res.body[0].ownerId).to.equal(adminDetails.user.id);
           done();
         });
     });

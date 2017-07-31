@@ -23,7 +23,7 @@ describe('SideBar component', () => {
      { location: { pathname: '/' } });
   TestWrapper.dispatch({
     type: actionTypes.LOGIN_USER,
-    user: { UserId: 1, RoleId: 2, fullNames: 'Eta Jude' }
+    user: { userId: 1, roleId: 2, fullName: 'Eta Jude' }
   });
   const rendered = TestWrapper.renders(SideBar,
         { location: { pathname: '/' } }).html();
@@ -49,7 +49,7 @@ describe('SideBar component', () => {
   describe('When user is an admin', () => {
     TestWrapper.dispatch({
       type: actionTypes.LOGIN_USER,
-      user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' },
+      user: { userId: 1, roleId: 1, fullName: 'Eta Jude' },
     });
     const rendered = TestWrapper.renders(SideBar,
         { location: { pathname: '/' } }).html();
@@ -75,9 +75,9 @@ describe('SideBar component', () => {
     const rendered = TestWrapper.renders(SideBar,
         { location: { pathname: '/' } }).html();
     it('should clear user state', () => {
-      expect(TestWrapper.call().props.user.fullNames).toBe(undefined);
+      expect(TestWrapper.call().props.user.fullName).toBe(undefined);
       expect(rendered.includes('Eta Jude')).toBe(false);
-      expect(TestWrapper.call().props.user.UserId).toBe(undefined);
+      expect(TestWrapper.call().props.user.userId).toBe(undefined);
     });
   });
 });

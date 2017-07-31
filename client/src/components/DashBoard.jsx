@@ -108,7 +108,7 @@ class DashBoard extends React.Component {
         }
       },
       submitHandler: () => {
-        user.UserId = this.props.user.UserId;
+        user.userId = this.props.user.userId;
        this.handleProfileSubmit(event);
       },
     });
@@ -138,7 +138,7 @@ class DashBoard extends React.Component {
   handleProfileSubmit(event) {
     event.preventDefault();
     const user = this.state.user;
-    user.UserId = this.props.user.UserId;
+    user.userId = this.props.user.userId;
      if (this.state.user.password !== null && this.state.user.passwordAgain !== null) {
           this.state.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
             .then(() => {
@@ -174,7 +174,7 @@ class DashBoard extends React.Component {
    *Displays the login page
   */
   render() {
-    const { fullNames, RoleId, email } = this.state.user;
+    const { fullName, roleId, email } = this.state.user;
     return (
       <div className="main">
         <div className="main-section">
@@ -190,10 +190,10 @@ class DashBoard extends React.Component {
                 <div className="row">
                   <div className="col s3 offset-s2">
                     <h4 className="card-title grey-text text-darken-4">
-                      {fullNames}
+                      {fullName}
                     </h4>
                     <p className="medium-small grey-text">
-                      {RoleId === 1 ? 'Administrator' : 'Regular'}
+                      {roleId === 1 ? 'Administrator' : 'Regular'}
                     </p>
                   </div>
                   <div className="col s2 center-align">
@@ -252,15 +252,15 @@ class DashBoard extends React.Component {
                       <div className="row margin">
                         <div className="input-field col s12">
                           <input
-                            id="fullNames"
-                            name="fullNames"
+                            id="fullName"
+                            name="fullName"
                             className="validate"
                             type="text"
                             required="required"
                             onChange={this.onProfileChange}
-                            value={fullNames}
+                            value={fullName}
                           />
-                          <label className="center-align active">fullNames</label>
+                          <label className="center-align active">fullName</label>
                         </div>
                       </div>
                       <div className="row margin">

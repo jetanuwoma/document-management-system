@@ -7,16 +7,16 @@ import Document from '../../../components/document/Document.jsx';
 TestWrapper.componentName = 'Document';
 
 const documentDetail = {
-  OwnerId: 1,
+  ownerId: 1,
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
 };
 
 const userDetail = {
-  UserId: 1,
-  fullNames: 'Jude Admin',
-  RoleId: 1
+  userId: 1,
+  fullName: 'Jude Admin',
+  roleId: 1
 };
 
 const deleteDocument = (someDoc) => {
@@ -55,9 +55,9 @@ describe('Document Component', () => {
   });
 
   describe('When user is the owner', () => {
-    userDetail.RoleId = 2;
-    userDetail.UserId = 2;
-    documentDetail.OwnerId = 2;
+    userDetail.roleId = 2;
+    userDetail.userId = 2;
+    documentDetail.ownerId = 2;
       const rendered = TestWrapper.renders(Document,
     { user: userDetail, document: documentDetail }).html();
 
@@ -74,9 +74,9 @@ describe('Document Component', () => {
   });
 
   describe('When user is not the owner and its a public document', () => {
-    userDetail.RoleId = 2;
-    userDetail.UserId = 2;
-    documentDetail.OwnerId = 3;
+    userDetail.roleId = 2;
+    userDetail.userId = 2;
+    documentDetail.ownerId = 3;
       const rendered = TestWrapper.renders(Document,
     { user: userDetail, document: documentDetail }).html();
 

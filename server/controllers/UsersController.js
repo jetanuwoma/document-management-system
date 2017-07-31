@@ -5,9 +5,9 @@ import { Users, ExpiredTokens } from '../models';
 const userRecordDetail = newUser => ({
   id: newUser.id,
   username: newUser.username,
-  fullNames: newUser.fullNames,
+  fullName: newUser.fullName,
   email: newUser.email,
-  RoleId: newUser.RoleId,
+  roleId: newUser.roleId,
   createdAt: newUser.createdAt,
   updatedAt: newUser.updatedAt
 });
@@ -36,9 +36,9 @@ class UsersController {
       // compare password to check if it matched
       if (user && user.validPassword(req.body.password)) {
         const token = jwt.sign({
-          UserId: user.id,
-          RoleId: user.RoleId,
-          fullNames: user.fullNames,
+          userId: user.id,
+          roleId: user.roleId,
+          fullName: user.fullName,
           email: user.email
         }, req.secret, { expiresIn: '3 days' });
         res.status(200)
@@ -83,25 +83,25 @@ class UsersController {
                message: `This email is in existence please choose a new one or login`
              });
          }
-         const { username, fullNames, email, password } = req.body;
+         const { username, fullName, email, password } = req.body;
          // Reject non admin creating an admin account
-         if (req.body.RoleId === 1) {
+         if (req.body.roleId === 1) {
            return res.status(403)
              .send({
                message: 'You can\'t create an admin account yourself'
              });
          } else {
            const userToCreate = { username,
-             fullNames,
+             fullName,
              email,
              password
            };
            Users.create(userToCreate)
                .then((newUser) => {
                  const token = jwt.sign({
-                   UserId: newUser.id,
-                   RoleId: newUser.RoleId,
-                   fullNames: newUser.fullNames,
+                   userId: newUser.id,
+                   roleId: newUser.roleId,
+                   fullName: newUser.fullName,
                    email: newUser.email,
                  }, req.secret, {
                    expiresIn: '3 days'
@@ -117,11 +117,11 @@ class UsersController {
                .catch((err) => {
                  res.status(400)
                  .send({
-                   message: 'Username exists please choose a new one'
+                   message: 'Error creating user account'
                  });
                });
          }
-       });
+       }).catch(() => res.status(500).send('Erorr occurred'));
   }
 
   /**
@@ -143,7 +143,7 @@ class UsersController {
       }
 
       res.status(200).send(user);
-    });
+    }).catch(() => res.status(500).send({ message: 'Error occurred' }));
   }
 
   /**
@@ -171,7 +171,7 @@ class UsersController {
 
   /**
    * searchUsers - Search list of user where the search term
-   * matches the fullnames
+   * matches the fullName
    * @param {Object} req Request Object
    * @param {Object} res Response Object
    */
@@ -179,7 +179,7 @@ class UsersController {
     const query = req.query.q;
     Users.findAndCountAll({
       order: '"createdAt" DESC',
-      where: { fullNames: { $iLike: `%${query}%` } }
+      where: { fullName: { $iLike: `%${query}%` } }
     })
     .then((result) => {
       res.status(200)
@@ -205,13 +205,14 @@ class UsersController {
     Users.findAll({ attributes: [
       'id',
       'username',
-      'fullNames',
+      'fullName',
       'email',
-      'RoleId',
+      'roleId',
       'createdAt',
       'updatedAt'
     ] })
-      .then(Allusers => res.status(200).send(Allusers));
+      .then(Allusers => res.status(200).send(Allusers))
+      .catch(() => res.status(500).send({ message: 'Error fetching users' }));
   }
 
   /**
@@ -222,8 +223,8 @@ class UsersController {
   static deleteUser(req, res) {
     Users.findById(req.params.id)
       .then((user) => {
-        if (user.id === req.decoded.UserId &&
-          req.decoded.RoleId === user.RoleId) {
+        if (user.id === req.decoded.userId &&
+          req.decoded.roleId === user.roleId) {
           res.status(401)
             .send({ message: 'You cant delete yourself' });
         } else {
@@ -232,6 +233,8 @@ class UsersController {
               res.status(200).send({ message: `${req.params.id} has been deleted` });
             });
         }
+    }).catch(() => {
+      res.status(400).send({ message: 'Bad request' })
     });
   }
 
