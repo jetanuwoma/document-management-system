@@ -30,8 +30,6 @@ describe('User Actions', () => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(1);
         expect(expectedAction[0].type).toEqual(actionTypes.LOGIN_USER);
-        expect(expectedAction[0].user.fullNames).toEqual('Etanuwoma John');
-        expect(expectedAction[0].user.RoleId).toBe(1);
       });
   });
 
@@ -42,14 +40,12 @@ describe('User Actions', () => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(1);
         expect(expectedAction[0].type).toEqual(actionTypes.LOGIN_USER);
-        expect(expectedAction[0].user.fullNames).toEqual('Etanuwoma John');
-        expect(expectedAction[0].user.RoleId).toBe(1);
       });
   });
 
   it('Should update user record', () => {
     const store = mockStore();
-    return store.dispatch(userActions.updateProfile({ username: 'user', fullNames: 'Eta jude' }))
+    return store.dispatch(userActions.updateProfile({ username: 'user', fullName: 'Eta jude' }))
       .then(() => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(1);

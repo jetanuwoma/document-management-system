@@ -15,7 +15,7 @@ class SignUp extends React.Component {
     super(props);
 
     this.state = {
-      user: { fullNames: '', username: '', password: '', passwordAgain: '', email: '' },
+      user: { fullName: '', username: '', password: '', passwordAgain: '', email: '' },
       error: '',
     };
 
@@ -35,7 +35,7 @@ class SignUp extends React.Component {
     this.setState({ user });
     $('.signup-form').validate({
       rules: {
-        fullNames: {
+        fullName: {
           required: true,
           minlength: 6,
         },
@@ -103,8 +103,8 @@ class SignUp extends React.Component {
               <div className="row margin">
                 <div className="input-field col s12">
                   <input
-                    name="fullNames"
-                    id="fullNames"
+                    name="fullName"
+                    id="fullName"
                     type="text"
                     onChange={this.onChange}
                   />
@@ -112,7 +112,7 @@ class SignUp extends React.Component {
                     data-error="Your full name is required"
                     className="center-align"
                   >
-                    Fullnames
+                    fullName
                   </label>
                 </div>
               </div>

@@ -19,13 +19,19 @@ class RolesController {
   }
 
   /**
-   * getRole - Get a single Role by ID supplied
+   * getRole - Get a single Role by id supplied
    * @param {Object} req - Request Object
    * @param {Object} res - Response Object
    */
   static getRole(req, res) {
-    res.status(200)
-      .send(req.body.role);
+    Roles.findById(req.params.id)
+    .then((role) => {
+       res.status(200)
+      .send(role);
+    })
+    .catch(() => {
+      res.status(404).send({ message: 'Role does not exists' })
+    });
   }
   /**
    * updateRoles - Update an existing Roles

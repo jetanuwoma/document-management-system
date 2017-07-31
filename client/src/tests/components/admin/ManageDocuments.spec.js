@@ -17,23 +17,23 @@ mockFunc.mockReturnValue(() => Promise.resolve(true));
 
 const documents = [{
   id: 2,
-  OwnerId: 1,
+  ownerId: 1,
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
 },
 {
   id: 3,
-  OwnerId: 1,
+  ownerId: 1,
   permission: 'public',
   title: 'The book of mistery',
   content: 'The content of mistery',
 },
 ];
 const userDetail = {
-  UserId: 1,
-  fullNames: 'Jude Admin',
-  RoleId: 1,
+  userId: 1,
+  fullName: 'Jude Admin',
+  roleId: 1,
 };
 
 const getAllDocuments = mockFunc();
@@ -64,7 +64,7 @@ describe('ManageDocuments Component', () => {
         id: 4,
         title: 'this is andela',
         content: 'some content here',
-        OwnerId: 1,
+        ownerId: 1,
         permission: 'public',
       });
 

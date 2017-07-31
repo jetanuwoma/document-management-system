@@ -9,13 +9,13 @@ const UsersRoutes = (router) => {
    *   User:
    *     type: object
    *     required:
-   *        - fullNames
+   *        - fullName
    *        - username
    *        - email
    *        - password
-   *        - RoleId
+   *        - roleId
    *     properties:
-   *        fullNames:
+   *        fullName:
    *            type: string
    *            example: jude
    *        username:
@@ -27,7 +27,7 @@ const UsersRoutes = (router) => {
    *        password:
    *            type: string
    *            example: somepass
-   *        RoleId:
+   *        roleId:
    *            type: number
    *            example: 1
    */
@@ -66,7 +66,7 @@ const UsersRoutes = (router) => {
    *     produces:
    *       - application/json
    *     parameters:
-   *       - name: fullNames
+   *       - name: fullName
    *         description: User firstname and lastname
    *         in: form
    *         required: true
@@ -86,7 +86,7 @@ const UsersRoutes = (router) => {
    *         in: form
    *         required: true
    *         type: string
-   *       - name: RoleId
+   *       - name: roleId
    *         description: user role
    *         in: form
    *         required: true
@@ -148,7 +148,7 @@ const UsersRoutes = (router) => {
    *         in: path
    *         required: true
    *         type: number
-   *       - name: fullNames
+   *       - name: fullName
    *         description: user full names
    *         in: form
    *         required: false
@@ -248,7 +248,7 @@ const UsersRoutes = (router) => {
     .post(UsersController.logout);
   /**
    * @swagger
-   * /api/search/users?q={fullNames}:
+   * /api/search/users?q={fullName}:
    *    get:
    *      description: Finds a user by their names
    *      tags:
@@ -263,7 +263,7 @@ const UsersRoutes = (router) => {
    *          type: string
    *        - name: q
    *          in: path
-   *          description: fullNames of the user
+   *          description: fullName of the user
    *          required: true
    *          type: string
    *      responses:

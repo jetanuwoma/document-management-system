@@ -11,7 +11,7 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static getAllDocuments(req, res) {
-    Documents.findAll({
+    Documents.findAndCountAll({
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
       order: '"createdAt" DESC',
@@ -21,7 +21,7 @@ class DocumentsController {
           .send(documents);
       })
       .catch(() => {
-        res.status(400)
+        res.status(500)
           .send({ message: 'Error retrieving documents' });
       });
   }
@@ -41,7 +41,7 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static createDocument(req, res) {
-    req.body.OwnerId = req.decoded.UserId;
+    req.body.ownerId = req.decoded.userId;
     Documents.create(req.body)
       .then((document) => {
         res.status(201)
@@ -59,18 +59,18 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static getUserDocuments(req, res) {
-    Documents.findAll({
+    Documents.findAndCountAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
-      where: { OwnerId: req.params.id }
+      where: { ownerId: req.params.id }
     })
       .then((documents) => {
         res.status(200)
           .send(documents);
       })
       .catch(() => {
-        res.status(400)
+        res.status(500)
           .send({ message: 'Error fetching documents' });
       });
   }
@@ -81,13 +81,17 @@ class DocumentsController {
    * @param {Object} res - Response object
    */
   static getPublicDocuments(req, res) {
-    Documents.findAll({
+    Documents.findAndCountAll({
       order: '"createdAt" DESC',
       limit: req.query.limit || 6,
       offset: req.query.offset * (req.query.limit || 6) || 0,
       where: { permission: req.verifyAccessParam }
     })
-      .then(documents => res.status(200).send(documents));
+      .then(documents => res.status(200).send(documents))
+      .catch(() => {
+        res.status(500)
+          .send({ message: 'Error fetching documents' });
+      });
   }
 
   /**
@@ -99,6 +103,8 @@ class DocumentsController {
     req.document.update(req.body)
       .then((updated) => {
         res.status(200).send(updated);
+      }).catch(() => {
+        res.status(400).send({ message: 'Error updating documents' });
       });
   }
 
@@ -115,16 +121,16 @@ class DocumentsController {
       where: searchQuery
     };
     if (req.query.offset !== undefined) {
-       query['limit'] = req.query.limit || 6;
-       query['offset'] = req.query.offset * (req.query.limit || 6) || 0;
+      query['limit'] = req.query.limit || 6;
+      query['offset'] = req.query.offset * (req.query.limit || 6) || 0;
     }
     Documents.findAndCountAll(query)
       .then((results) => {
         res.status(200).send(results);
       })
       .catch(() => {
-        res.status(404).send({
-          message: 'Error fetching documents with that term'
+        res.status(500).send({
+          message: 'Error fetching documents'
         });
       });
   }
@@ -139,7 +145,7 @@ class DocumentsController {
       .then(() => {
         res.status(200).send({
           message: `${req.document.title} has been deleted`
-        });
+        }).catch(() => res.status(500).send({ message: 'Error occurred' }));
       });
   }
 
@@ -156,7 +162,8 @@ class DocumentsController {
       res.send({ count: result.count });
     }).catch((error) => {
       res.send({ message: error });
-    });
+    })
+    .catch(() => res.status(400).send({ message: 'Error occurred' }));
   }
 
 }

@@ -29,7 +29,6 @@ describe('Document Action', () => {
         expect(expectedActions.length).toBe(2);
         expect(expectedActions[0].type).toEqual(actionTypes.GET_DOCUMENTS_SUCCESS);
         expect(expectedActions[1].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
-        expect(expectedActions[0].documents.length).toBe(2);
       });
   });
 
@@ -44,14 +43,13 @@ describe('Document Action', () => {
   });
 
   it('Should load all users documents', () => {
-    const store = mockStore({ auth: { user: { UserId: 1 } } });
+    const store = mockStore({ auth: { user: { userId: 1 } } });
     return store.dispatch(documentsAction.getUserDocuments())
       .then(() => {
         const expectedActions = store.getActions();
         expect(expectedActions.length).toBe(2);
-        expect(expectedActions[0].type).toEqual(actionTypes.GET_DOCUMENTS_SUCCESS);
-        expect(expectedActions[1].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
-        expect(expectedActions[0].documents.length).toBe(2);
+        expect(expectedActions[1].type).toEqual(actionTypes.GET_DOCUMENTS_SUCCESS);
+        expect(expectedActions[0].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
       });
   });
 

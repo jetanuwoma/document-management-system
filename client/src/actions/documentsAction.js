@@ -77,39 +77,20 @@ export function saveDocument(document) {
 
 
 /**
- * getDocumentCount - gets total number of a user document
- *
- * @param  {string} access = null - access scope to search
- * @return {Promise}              - axios promise call
- */
-export function getDocumentCount(access = null, source = '', query = '', type = '') {
-  if (access === null) {
-     return axios.get(`/api/count/document${type === '' ? '' : '?personal=1'}`);
-  } else if (access === 'search') {
-    return axios.get(`/api/search/document?q=${query}&access=${source}`);
-  }
-  return axios.get(`/api/count/document?access=${access}`);
-}
-
-
-/**
 * getUserDocuments - Get users documents from the api call
 * /api/users/:id/documents
 * @param  {Number} offset = 0 - offset for pagination
 * @return {Promise}            axios promise call
 */
-export function getUserDocuments(offset = 0) {
+export function getUserDocuments(userId, offset = 0) {
   return (dispatch, getState) => {
-    return axios.get(`/api/users/${getState().auth.user.UserId}/documents?offset=${offset}`)
+    return axios.get(`/api/users/${userId}/documents?offset=${offset}`)
       .then((res) => {
-        getDocumentCount(null, '', '', 'personal')
-          .then((response) => {
-            dispatch({
-              type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.count,
-            });
-          });
-        dispatch(getDocumentsSuccess(res.data));
+        dispatch({
+          type: actionTypes.SET_DOCUMENT_COUNT,
+          count: res.data.count,
+        });
+        dispatch(getDocumentsSuccess(res.data.rows));
       })
       .catch((error) => {
         toastr.error('Error fetching documents')
@@ -197,19 +178,13 @@ export function updateDocument(document) {
 */
 export function getPublicDocuments(offset = 0) {
   return (dispatch) => {
-     return axios.get(`/api/documents/access/public?offset=${offset}`)
+    return axios.get(`/api/documents/access/public?offset=${offset}`)
       .then((res) => {
-        dispatch(getDocumentsSuccess(res.data));
-        getDocumentCount('public')
-          .then((response) => {
+        dispatch(getDocumentsSuccess(res.data.rows));
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.count,
+              count: res.data.count,
             });
-          })
-          .catch(() => {
-            toastr.error('Error fetching document')
-          });
       })
       .catch((error) => {
         toastr.error('Error occurred while getting documents');
@@ -228,23 +203,18 @@ export function getPublicDocuments(offset = 0) {
 export function searchDocuments(query, source = '', offset = 0) {
   return (dispatch) => {
     return axios.get(`/api/search/document?q=${query}&access=${source}&offset=${offset}`)
-      .then((result) => {
-        getDocumentCount('search', source, query)
-          .then((response) => {
+      .then((response) => {
+
             dispatch({
               type: actionTypes.SET_DOCUMENT_COUNT,
-              count: response.data.rows.length,
+              count: response.data.count,
             });
-            dispatch(getDocumentsSuccess(result.data.rows));
+            dispatch(getDocumentsSuccess(response.data.rows));
             dispatch({
               type: actionTypes.CHANGE_SEARCH_QUERY,
               query,
             });
           })
-          .catch(() => {
-            toastr.error('Error occurred');
-          });
-      })
       .catch(() => {
         toastr.error('Error occurred while searching for documents')
       });

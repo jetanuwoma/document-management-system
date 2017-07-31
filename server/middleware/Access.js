@@ -51,7 +51,7 @@ class Access {
    * @param {callback} next callback to the next middleware or function
    */
   static isAdmin(req, res, next) {
-    if (req.decoded.RoleId === 1) {
+    if (req.decoded.roleId === 1) {
       next();
     } else {
       res.status(401)
@@ -87,9 +87,9 @@ class Access {
   static verifyAccess(req, res, next) {
     Documents.findById(req.params.id)
       .then((document) => {
-        if (req.decoded.UserId === document.OwnerId) {
+        if (req.decoded.userId === document.ownerId) {
           next();
-        } else if (req.decoded.RoleId === 1) {
+        } else if (req.decoded.roleId === 1) {
           next();
         } else if (document.permission === 'public') {
           next();
@@ -107,8 +107,8 @@ class Access {
    * @param {callback} next callback to the next middleware or function
    */
   static isUserOrAdmin(req, res, next) {
-    if (parseInt(req.params.id, 10) === req.decoded.UserId ||
-       req.decoded.RoleId === 1) {
+    if (parseInt(req.params.id, 10) === req.decoded.userId ||
+       req.decoded.roleId === 1) {
       next();
     } else {
       res.status(404)
@@ -162,7 +162,7 @@ class Access {
     const access = req.query.access;
     const term = req.query.q || '';
     let query = { where: { title: { $iLike: `%${term}%` } } };
-    if (req.decoded.RoleId === 1 && req.query.personal === undefined) {
+    if (req.decoded.roleId === 1 && req.query.personal === undefined) {
       if (access !== undefined && access !== null && access !== '') {
         query.where.permission = access;
       }
@@ -170,7 +170,7 @@ class Access {
     } else {
       query = { where: { $and: [
         { title: { $iLike: `%${term}%` } },
-        { OwnerId: req.decoded.UserId }
+        { ownerId: req.decoded.userId }
       ] } };
 
       if (access !== undefined && access !== null && access !== '') {

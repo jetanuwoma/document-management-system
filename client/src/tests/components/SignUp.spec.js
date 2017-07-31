@@ -18,25 +18,25 @@ describe('SignUp component', () => {
 
 
   it('should load form field', () => {
-    expect(rendered.includes('<input type="text" name="fullNames" id="fullNames">')).toBe(true);
+    expect(rendered.includes('<input type="text" name="fullName" id="fullName">')).toBe(true);
   });
 
   it('should update user state when filling form', () => {
-    event.target.name = 'fullNames';
+    event.target.name = 'fullName';
     event.target.value = 'Chioma Jude';
     TestWrapper.call().onChange(event);
     event.target.name = 'email';
     event.target.value = 'wapjude@gmail.com';
     TestWrapper.call().onChange({ target: { name: 'email', value: 'wapjude@gmail.com' }, preventDefault: jest.fn() });
-    expect(TestWrapper.call().state.user.fullNames).toBe('Chioma Jude');
+    expect(TestWrapper.call().state.user.fullName).toBe('Chioma Jude');
     expect(TestWrapper.call().state.user.email).toBe('wapjude@gmail.com');
   });
 
   it('should submit when form is submitted with all details', () => {
-    const user = { fullNames: 'jude', username: 'wapjude', password: 'password', passwordAgain: 'password', email: 'email@aol.com' };
+    const user = { fullName: 'jude', username: 'wapjude', password: 'password', passwordAgain: 'password', email: 'email@aol.com' };
     TestWrapper.call().state.user = user;
     TestWrapper.call().onChange(event);
-    expect(TestWrapper.call().state.error.fullNames).toBe(undefined);
+    expect(TestWrapper.call().state.error.fullName).toBe(undefined);
     expect(TestWrapper.call().state.error.username).toBe(undefined);
     expect(TestWrapper.call().state.error.password).toBe(undefined);
     expect(TestWrapper.call().state.error.email).toBe(undefined);

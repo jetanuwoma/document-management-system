@@ -108,7 +108,7 @@ export function logout() {
  */
 export function updateProfile(user) {
   return (dispatch) => {
-    return axios.put(`/api/users/${user.UserId}`, user)
+    return axios.put(`/api/users/${user.userId}`, user)
       .then((res) => {
         dispatch({
           type: actionTypes.USER_RECORD_UPDATED,

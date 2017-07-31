@@ -7,16 +7,16 @@ const request = supertest.agent(app);
 const expect = chai.expect;
 const testUser = {
   username: faker.internet.userName(),
-  fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
   email: faker.internet.email(),
   password: faker.internet.password(),
 };
 const testFakeAdmin = {
   username: faker.internet.userName(),
-  fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
   email: faker.internet.email(),
   password: faker.internet.password(),
-  RoleId: 1,
+  roleId: 1,
 };
 
 let adminDetails;
@@ -36,10 +36,10 @@ describe('Users', () => {
       .send(testUser)
       .end((err, res) => {
         expect(res.statusCode).to.equal(201);
-        expect(res.body.user.fullNames).to.equal(testUser.fullNames);
+        expect(res.body.user.fullName).to.equal(testUser.fullName);
         expect(res.body.user.username).to.equal(testUser.username);
         expect(res.body.user.email).to.equal(testUser.email);
-        expect(res.body.user.RoleId).to.equal(2);
+        expect(res.body.user.roleId).to.equal(2);
         done();
       });
     });
@@ -74,7 +74,7 @@ describe('Users', () => {
       .send(testUser)
       .expect(201)
       .end((err, res) => {
-        expect(res.body.user.RoleId).to.equal(2);
+        expect(res.body.user.roleId).to.equal(2);
         done();
       });
      });
@@ -224,7 +224,7 @@ describe('Users', () => {
      (done) => {
        request.put(`/api/users/${regularDetails.user.id}`)
        .send({
-         fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`
+         fullName: `${faker.name.firstName()} ${faker.name.lastName()}`
        })
           .end((err, res) => {
             expect(res.status).to.equal(401);
@@ -238,13 +238,13 @@ describe('Users', () => {
       request.put(`/api/users/${regularDetails.user.id}`)
     .set({ 'x-access-token': adminDetails.token })
     .send({
-      fullNames: `Teddy bear`
+      fullName: `Teddy bear`
     })
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message)
         .to.be.equal(`${regularDetails.user.id} updated`);
-        expect(res.body.data.fullNames).to.equal('Teddy bear');
+        expect(res.body.data.fullName).to.equal('Teddy bear');
         done();
       });
     });
@@ -253,13 +253,13 @@ describe('Users', () => {
       request.put(`/api/users/${regularDetails.user.id}`)
     .set({ 'x-access-token': regularDetails.token })
     .send({
-      fullNames: `Creche baby`
+      fullName: `Creche baby`
     })
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message)
         .to.be.equal(`${regularDetails.user.id} updated`);
-        expect(res.body.data.fullNames).to.equal('Creche baby')
+        expect(res.body.data.fullName).to.equal('Creche baby')
         done();
       });
     });

@@ -29,9 +29,6 @@ class DashBoard extends React.Component {
         title: '',
       },
       user: { ...this.props.user },
-      updateProfile: this.props.updateProfile,
-      saveDocument: this.props.saveDocument,
-      confirmOldPassword: this.props.confirmOldPassword,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -49,7 +46,6 @@ class DashBoard extends React.Component {
     $('ul.tabs').tabs();
     $('.sidebar-collapse').sideNav();
     $('select').material_select();
-    // https://github.com/Dogfalo/materialize/issues/1160
     $('#selectRole')
       .on('change', this.onChange);
   }
@@ -71,7 +67,7 @@ class DashBoard extends React.Component {
   onChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    const document = this.state.document;
+    const document = {...this.state.document};
     document[name] = value;
     this.setState({ document });
   }
@@ -84,7 +80,7 @@ class DashBoard extends React.Component {
     event.preventDefault();
     const name = event.target.name;
     const value = event.target.value;
-    const user = this.state.user;
+    const user = {...this.state.user};
     user[name] = value;
     this.setState({ user });
     $('.update-form').validate({
@@ -108,7 +104,7 @@ class DashBoard extends React.Component {
         }
       },
       submitHandler: () => {
-        user.UserId = this.props.user.UserId;
+        user.userId = this.props.user.userId;
        this.handleProfileSubmit(event);
       },
     });
@@ -127,7 +123,7 @@ class DashBoard extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-    this.state.saveDocument(this.state.document);
+    this.props.saveDocument(this.state.document);
     this.clearForm();
   }
 
@@ -137,12 +133,12 @@ class DashBoard extends React.Component {
    */
   handleProfileSubmit(event) {
     event.preventDefault();
-    const user = this.state.user;
-    user.UserId = this.props.user.UserId;
+    const user = {...this.state.user};
+    user.userId = this.props.user.userId;
      if (this.state.user.password !== null && this.state.user.passwordAgain !== null) {
-          this.state.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
+          this.props.confirmOldPassword(this.props.user.email, this.state.user.oldPassword)
             .then(() => {
-              this.state.updateProfile(user)
+              this.props.updateProfile(user)
                 .then(() => {
                   toastr.success('Profile Updated Successfully');
                 });
@@ -151,7 +147,7 @@ class DashBoard extends React.Component {
               this.setState({ error: 'Invalid password submitted', user: { password: '', passwordAgain: '' } });
             });
         } else {
-          this.state.updateProfile(user)
+          this.props.updateProfile(user)
             .then(() => {
               toastr.success('Profile Updated Successfully');
             })
@@ -174,7 +170,7 @@ class DashBoard extends React.Component {
    *Displays the login page
   */
   render() {
-    const { fullNames, RoleId, email } = this.state.user;
+    const { fullName, roleId, email } = this.state.user;
     return (
       <div className="main">
         <div className="main-section">
@@ -190,10 +186,10 @@ class DashBoard extends React.Component {
                 <div className="row">
                   <div className="col s3 offset-s2">
                     <h4 className="card-title grey-text text-darken-4">
-                      {fullNames}
+                      {fullName}
                     </h4>
                     <p className="medium-small grey-text">
-                      {RoleId === 1 ? 'Administrator' : 'Regular'}
+                      {roleId === 1 ? 'Administrator' : 'Regular'}
                     </p>
                   </div>
                   <div className="col s2 center-align">
@@ -252,15 +248,15 @@ class DashBoard extends React.Component {
                       <div className="row margin">
                         <div className="input-field col s12">
                           <input
-                            id="fullNames"
-                            name="fullNames"
+                            id="fullName"
+                            name="fullName"
                             className="validate"
                             type="text"
                             required="required"
                             onChange={this.onProfileChange}
-                            value={fullNames}
+                            value={fullName}
                           />
-                          <label className="center-align active">fullNames</label>
+                          <label className="center-align active">fullName</label>
                         </div>
                       </div>
                       <div className="row margin">
@@ -335,7 +331,7 @@ class DashBoard extends React.Component {
 
 DashBoard.propTypes = {
   user: PropTypes.object.isRequired,
-  alldocuments: PropTypes.object.isRequired,
+  allDocuments: PropTypes.object.isRequired,
   saveDocument: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
   confirmOldPassword: PropTypes.func,
@@ -349,7 +345,7 @@ DashBoard.propTypes = {
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
-    alldocuments: state.manageDocument,
+    allDocuments: state.manageDocument,
   };
 }
 

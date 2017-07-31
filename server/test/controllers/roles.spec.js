@@ -21,10 +21,10 @@ describe('Role', () => {
           request.post('/api/users')
             .send({
               username: faker.internet.userName(),
-              fullNames: `${faker.name.firstName()} ${faker.name.lastName()}`,
+              fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
               email: `${faker.internet.email()}`,
               password: faker.internet.password(),
-              RoleId: 2 })
+              roleId: 2 })
             .end((err, res) => {
               regularUser = res.body;
               done();

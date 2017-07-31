@@ -25,8 +25,8 @@ describe('Admin actions', () => {
       .then(() => {
         const expectedAction = store.getActions();
         expect(expectedAction.length).toBe(2);
-        expect(expectedAction[0].type).toEqual(actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS);
-        expect(expectedAction[1].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
+        expect(expectedAction[1].type).toEqual(actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS);
+        expect(expectedAction[0].type).toEqual(actionTypes.SET_DOCUMENT_COUNT);
       });
   });
 

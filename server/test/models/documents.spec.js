@@ -7,7 +7,7 @@ const newDocument = {
   title: faker.lorem.word(),
   content: faker.lorem.paragraph(),
   permission: 'public',
-  OwnerId: 1
+  ownerId: 1
 };
 
 describe('Document model', () => {
@@ -36,8 +36,8 @@ describe('Document model', () => {
       expect(document.content).to.equal(newDocument.content);
     });
 
-    it('should create a document with OwnerId', () => {
-      expect(document.OwnerId).to.equal(1);
+    it('should create a document with ownerId', () => {
+      expect(document.ownerId).to.equal(1);
     });
 
     it('should create a document with date', () => {

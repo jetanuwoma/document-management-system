@@ -7,11 +7,11 @@ import sampleDoc from '../../assets/images/document.png';
  * A single Document Card
  */
 const Document = (props) => {
-  const { UserId, RoleId } = props.user;
-  const { OwnerId, permission } = props.document;
+  const { userId, roleId } = props.user;
+  const { ownerId, permission } = props.document;
   let action;
 
-  if (RoleId === 1 || OwnerId === UserId) {
+  if (roleId === 1 || ownerId === userId) {
     action = (
       <ul className="card-action-buttons">
         <li>

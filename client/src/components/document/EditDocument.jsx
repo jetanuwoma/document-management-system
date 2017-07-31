@@ -47,7 +47,7 @@ export class EditDocument extends React.Component {
   onChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    const document = this.state.document;
+    const document = {...this.state.document};
     document[name] = value;
     this.setState({ document });
   }

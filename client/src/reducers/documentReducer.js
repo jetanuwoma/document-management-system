@@ -7,14 +7,14 @@ export default function documentReducer(state = initialState.manageDocument, act
     case actionTypes.CREATE_DOCUMENT_SUCCESS:
       return {
         ...state,
-        alldocuments: [action.document, ...state.alldocuments],
+        allDocuments: [action.document, ...state.allDocuments],
       };
 
     case actionTypes.GET_DOCUMENTS_SUCCESS:
       return {
         ...state,
         loaded: true,
-        alldocuments: [...action.documents],
+        allDocuments: [...action.documents],
       };
 
     case actionTypes.GET_DOCUMENT_SUCCESS:
@@ -26,14 +26,14 @@ export default function documentReducer(state = initialState.manageDocument, act
     case actionTypes.DOCUMENT_DELETED_SUCCESSFULLY:
       return {
         ...state,
-        alldocuments: state.alldocuments.filter(({ id }) => id !== action.document.id),
+        allDocuments: state.allDocuments.filter(({ id }) => id !== action.document.id),
         archived: action.document,
       };
 
     case actionTypes.UNDO_DELETED_ITEM:
       return {
         ...state,
-        alldocuments: [...action.documents],
+        allDocuments: [...action.documents],
       };
 
     default:

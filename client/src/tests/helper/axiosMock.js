@@ -4,7 +4,7 @@ const mockcall = jest.fn((url) => {
   if (url.includes('/api/documents')) {
     return Promise.resolve({ data: {
       id: 2,
-      OwnerId: 1,
+      ownerId: 1,
       permission: 'public',
       title: 'The book of mistery',
       content: 'The content of mistery',
@@ -22,14 +22,14 @@ axios.get = jest.fn((url) => {
   if (url.includes('/api/users/1/documents') || url.includes('/api/documents') || url.includes('/api/users/undefined/documents')) {
     return Promise.resolve({ data: [{
       id: 2,
-      OwnerId: 1,
+      ownerId: 1,
       permission: 'public',
       title: 'The book of mistery',
       content: 'The content of mistery',
     },
     {
       id: 3,
-      OwnerId: 1,
+      ownerId: 1,
       permission: 'public',
       title: 'The book of mistery 2',
       content: 'The content of mistery',
@@ -39,7 +39,7 @@ axios.get = jest.fn((url) => {
   } else if (url.includes('/api/search/document')) {
     return Promise.resolve({ data: { rows: [{
       id: 2,
-      OwnerId: 1,
+      ownerId: 1,
       permission: 'public',
       title: 'The book of mistery',
       content: 'The content of mistery',

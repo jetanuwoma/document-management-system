@@ -43,7 +43,7 @@ class SideBar extends React.Component {
    * Displays the logout view
    */
   render() {
-    const { fullNames, RoleId } = this.props.user;
+    const { fullName, roleId } = this.props.user;
 
     return (
       <aside id="left-sidebar-nav">
@@ -62,11 +62,11 @@ class SideBar extends React.Component {
               </div>
               <div className="col col s8 m8 l8">
                 <a className="btn-flat dropdown-button waves-effect waves-light white-text profile-btn">
-                  {fullNames}
+                  {fullName}
                 </a>
 
                 <p className="user-roal">
-                  {RoleId === 1 ? 'Administrator' : 'Regular'}
+                  {roleId === 1 ? 'Administrator' : 'Regular'}
                 </p>
               </div>
             </div>
@@ -85,14 +85,14 @@ class SideBar extends React.Component {
               <i className="fa fa-file-o" /> Public Documents</Link>
           </li>
 
-          {RoleId === 1 &&
+          {roleId === 1 &&
             <li className="">
               <Link to="/users" className="waves-effect waves-cyan">
                 <i className="fa fa-users" /> Manage Users</Link>
             </li>
           }
           {
-            RoleId === 1 &&
+            roleId === 1 &&
             <li className="">
               <Link to="/documents" className="waves-effect waves-cyan">
                 <i className="fa fa-file-o" /> Manage Documents</Link>

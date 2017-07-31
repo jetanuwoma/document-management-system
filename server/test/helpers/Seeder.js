@@ -65,22 +65,22 @@ class Seeder {
         username: 'wapjude',
         email: 'wapjude@gmail.com',
         password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
-        fullNames: 'Etanuwoma Jude',
-        RoleId: 1
+        fullName: 'Etanuwoma Jude',
+        roleId: 1
       },
       {
         username: 'smalling',
         email: 'small@gmail.com',
         password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
-        fullNames: 'Small Jude',
-        RoleId: 2
+        fullName: 'Small Jude',
+        roleId: 2
       },
       {
         username: 'kingsley',
         email: 'kigsley@gmail.com',
         password: bcrypt.hashSync('password', bcrypt.genSaltSync(5)),
-        fullNames: 'Kigsley Jude',
-        RoleId: 3
+        fullName: 'Kigsley Jude',
+        roleId: 3
       }
     ];
     return Users.bulkCreate(users);
@@ -96,31 +96,31 @@ class Seeder {
         title: 'Admin test case',
         content: faker.lorem.paragraph(),
         permission: 'private',
-        OwnerId: '1'
+        ownerId: '1'
       },
       {
         title: faker.lorem.words(),
         content: faker.lorem.paragraph(),
         permission: 'public',
-        OwnerId: '1'
+        ownerId: '1'
       },
       {
         title: 'The second chance',
         content: faker.lorem.words(),
         permission: 'public',
-        OwnerId: '3'
+        ownerId: '3'
       },
       {
         title: 'Harry potter gold',
         content: faker.lorem.words(),
         permission: 'private',
-        OwnerId: '3'
+        ownerId: '3'
       },
       {
         title: 'The wake of humanism',
         content: faker.lorem.words(),
         permission: 'private',
-        OwnerId: '3'
+        ownerId: '3'
       }
     ];
     return Documents.bulkCreate(documents);

@@ -15,7 +15,7 @@ module.exports = {
       .waitForElementVisible('a[href="signup"]', 1000)
       .click('a[href="signup"]')
       .waitForElementVisible('.signup-form', 5000)
-      .setValue('input[name="fullNames"]', `${faker.name.firstName()} ${faker.name.lastName()}`)
+      .setValue('input[name="fullName"]', `${faker.name.firstName()} ${faker.name.lastName()}`)
       .setValue('input[name=email]', 'wapjude@gmail.com')
       .setValue('input[name=username]', faker.internet.userName())
       .setValue('input[name=password]', 'password')

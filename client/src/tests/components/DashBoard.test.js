@@ -27,7 +27,7 @@ describe('DashBoard component', () => {
     { location: { pathname: '/' } });
   TestWrapper.dispatch({
     type: actionTypes.LOGIN_USER,
-    user: { UserId: 1, RoleId: 1, fullNames: 'Eta Jude' },
+    user: { userId: 1, roleId: 1, fullName: 'Eta Jude' },
   });
   const rendered = TestWrapper.renders(DashBoard,
     { location: { pathname: '/' } }).html();
@@ -42,9 +42,9 @@ describe('DashBoard component', () => {
     });
 
     it('Should receive all user props', () => {
-      expect(TestWrapper.call().props.user.RoleId).toBe(1);
-      expect(TestWrapper.call().props.user.UserId).toBe(1);
-      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Jude');
+      expect(TestWrapper.call().props.user.roleId).toBe(1);
+      expect(TestWrapper.call().props.user.userId).toBe(1);
+      expect(TestWrapper.call().props.user.fullName).toBe('Eta Jude');
     });
 
     it('Should receive dispatch functions', () => {
@@ -80,30 +80,15 @@ describe('DashBoard component', () => {
       expect(TestWrapper.call().state.document.content).toBe('Some updated content');
     });
 
-    it('Should add to document when form is submitted', () => {
-      expect(TestWrapper.call().props.alldocuments.alldocuments.length).toBe(0);
-
-      const saveDocument = (document) => {
-        TestWrapper.dispatch({
-          type: actionTypes.CREATE_DOCUMENT_SUCCESS,
-          document,
-        });
-        return Promise.resolve(() => true);
-      };
-
-      TestWrapper.call().state.saveDocument = saveDocument;
-      TestWrapper.call().handleSubmit({ preventDefault: () => { } });
-      expect(TestWrapper.call().props.alldocuments.alldocuments.length).toBe(1);
-    });
   });
 
   describe('When user update profile', () => {
 
-    it('Should change users Fullnames state', () => {
-      event.target.name = 'fullNames';
+    it('Should change users fullName state', () => {
+      event.target.name = 'fullName';
       event.target.value = 'Etanuwoma Jude';
       TestWrapper.call().onProfileChange(event);
-      expect(TestWrapper.call().state.user.fullNames).toBe('Etanuwoma Jude');
+      expect(TestWrapper.call().state.user.fullName).toBe('Etanuwoma Jude');
     });
 
     it('Should change users email address', () => {
@@ -124,17 +109,17 @@ describe('DashBoard component', () => {
     });
 
     it('Should update user profile when form is submitted', () => {
-      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Jude');
+      expect(TestWrapper.call().props.user.fullName).toBe('Eta Jude');
       const updateProfile = () => {
         TestWrapper.dispatch({
           type: actionTypes.USER_RECORD_UPDATED,
-          user: { UserId: 1, RoleId: 1, fullNames: 'Eta Change', email: 'chan@aa.s' }
+          user: { userId: 1, roleId: 1, fullName: 'Eta Change', email: 'chan@aa.s' }
         });
         return Promise.resolve(true);
       };
       TestWrapper.call().state.updateProfile = updateProfile;
       TestWrapper.call().handleProfileSubmit({ preventDefault: () => { } });
-      expect(TestWrapper.call().props.user.fullNames).toBe('Eta Jude');
+      expect(TestWrapper.call().props.user.fullName).toBe('Eta Jude');
     });
   });
 });
