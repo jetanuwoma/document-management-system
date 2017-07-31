@@ -29,9 +29,6 @@ class DashBoard extends React.Component {
         title: '',
       },
       user: { ...this.props.user },
-      updateProfile: this.props.updateProfile,
-      saveDocument: this.props.saveDocument,
-      confirmOldPassword: this.props.confirmOldPassword,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -334,7 +331,7 @@ class DashBoard extends React.Component {
 
 DashBoard.propTypes = {
   user: PropTypes.object.isRequired,
-  alldocuments: PropTypes.object.isRequired,
+  allDocuments: PropTypes.object.isRequired,
   saveDocument: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
   confirmOldPassword: PropTypes.func,
@@ -348,7 +345,7 @@ DashBoard.propTypes = {
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
-    alldocuments: state.manageDocument,
+    allDocuments: state.manageDocument,
   };
 }
 
