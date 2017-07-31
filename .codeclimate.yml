@@ -1,0 +1,17 @@
+engines:
+  eslint:
+    enabled: true
+    checks:
+      import/extensions:
+        enabled: false
+
+ratings:
+  paths:
+  - client/**
+  - server/**
+
+exclude_paths: 
+  - server/tests/
+  - client/src/tests/
+  - client/dist/
+  - client/public/
