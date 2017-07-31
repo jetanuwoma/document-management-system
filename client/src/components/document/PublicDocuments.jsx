@@ -179,7 +179,7 @@ PublicDocuments.contextTypes = {
  */
 function mapStateToProps(state) {
   return {
-    myDocuments: state.manageDocument.alldocuments,
+    myDocuments: state.manageDocument.allDocuments,
     documentLoaded: state.manageDocument.loaded,
     user: state.auth.user,
     archived: state.manageDocument.archived,

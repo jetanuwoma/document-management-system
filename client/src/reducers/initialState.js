@@ -19,7 +19,7 @@ export default {
   isAuthenticated: false,
   manageDocument: {
     loaded: false,
-    alldocuments: [],
+    allDocuments: [],
     archived: {},
     selectedDocument: {},
   },

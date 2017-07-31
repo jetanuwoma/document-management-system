@@ -187,7 +187,7 @@ DocumentPage.contextTypes = {
 */
 function mapStateToProps(state) {
   return {
-    myDocuments: state.manageDocument.alldocuments,
+    myDocuments: state.manageDocument.allDocuments,
     user: state.auth.user,
     isSearching: state.pageControls.isSearching,
     searchQuery: state.pageControls.searchQuery,

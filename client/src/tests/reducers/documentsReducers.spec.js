@@ -5,7 +5,7 @@ import initialState from '../../reducers/initialState';
 
 describe('Admin Reducers', () => {
   it('Should load all user documents successfully', () => {
-    const expected = { alldocuments: [{}, {}, {}],
+    const expected = { allDocuments: [{}, {}, {}],
       loaded: true,
       archived: {},
       selectedDocument: {} };
@@ -15,7 +15,7 @@ describe('Admin Reducers', () => {
   });
 
   it('Should load a single document', () => {
-    const expected = { alldocuments: [],
+    const expected = { allDocuments: [],
       loaded: false,
       archived: {},
       selectedDocument: { id: 1 } };
@@ -25,7 +25,7 @@ describe('Admin Reducers', () => {
   });
 
   it('Should remove deleted document and add it to archived', () => {
-    const expected = { alldocuments: [{ id: 2 }, { id: 3 }],
+    const expected = { allDocuments: [{ id: 2 }, { id: 3 }],
       loaded: true,
       archived: { id: 1 },
       selectedDocument: {},
@@ -40,7 +40,7 @@ describe('Admin Reducers', () => {
   });
 
   it('Should undo deleted document', () => {
-    const expected = { alldocuments: [{ id: 1 }, { id: 2 }, { id: 3 }],
+    const expected = { allDocuments: [{ id: 1 }, { id: 2 }, { id: 3 }],
       loaded: true,
       archived: {},
       selectedDocument: {},
